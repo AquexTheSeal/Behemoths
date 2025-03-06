@@ -1,0 +1,42 @@
+{
+  "parent": "behemoths:item/ballista",
+  "overrides": [
+    {
+      "model": "behemoths:item/behemoth_ballista_pulling_0",
+      "predicate": {
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "behemoths:item/behemoth_ballista_pulling_1",
+      "predicate": {
+        "minecraft:pull": 0.58,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "behemoths:item/behemoth_ballista_pulling_2",
+      "predicate": {
+        "minecraft:pull": 1.0,
+        "minecraft:pulling": 1.0
+      }
+    },
+    {
+      "model": "behemoths:item/behemoth_ballista_arrow",
+      "predicate": {
+        "minecraft:charged": 1.0
+      }
+    },
+    {
+      "model": "behemoths:item/behemoth_ballista_firework",
+      "predicate": {
+        "minecraft:charged": 1.0,
+        "minecraft:firework": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "0": "behemoths:item/behemoth_ballista_base",
+    "1": "behemoths:item/behemoth_ballista_standby"
+  }
+}

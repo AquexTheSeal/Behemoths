@@ -1,0 +1,18 @@
+{
+  "feature": "behemoths:barren_island",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 50
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:biome"
+    },
+    {
+      "type": "behemoths:sky_grouped_placement"
+    }
+  ]
+}

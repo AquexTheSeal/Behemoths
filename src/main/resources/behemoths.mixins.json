@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.aqutheseal.behemoths.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "behemoths.refmap.json",
+  "mixins": [
+    "AbstractArrowMixin",
+    "CrossbowItemMixin",
+    "PlayerMixin"
+  ],
+  "client": [
+    "ItemInHandRendererMixin",
+    "LivingEntityRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

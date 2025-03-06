@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "item": "behemoths:sky_beast_bone"
+    },
+    "O": {
+      "item": "behemoths:polished_lush_sky_beast_skin"
+    }
+  },
+  "pattern": [
+    "O  ",
+    "O  ",
+    "I  "
+  ],
+  "result": {
+    "item": "behemoths:lush_sky_beast_sword"
+  },
+  "show_notification": true
+}

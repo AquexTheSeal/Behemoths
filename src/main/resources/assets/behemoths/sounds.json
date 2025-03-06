@@ -1,0 +1,38 @@
+{
+  "sky_charydbis_ambient": {
+    "subtitle": "subtitles.behemoths.entity.sky_charydbis.ambient",
+    "sounds": [
+      "behemoths:sky_charydbis_ambient"
+    ]
+  },
+  "sky_charydbis_hurt": {
+    "subtitle": "subtitles.behemoths.entity.sky_charydbis.hurt",
+    "sounds": [
+      "behemoths:sky_charydbis_hurt"
+    ]
+  },
+  "sky_charydbis_death": {
+    "subtitle": "subtitles.behemoths.entity.sky_charydbis.death",
+    "sounds": [
+      "behemoths:sky_charydbis_death"
+    ]
+  },
+  "ballista_start": {
+    "subtitle": "subtitles.behemoths.item.ballista.start",
+    "sounds": [
+      "behemoths:ballista_start"
+    ]
+  },
+  "ballista_loaded": {
+    "subtitle": "subtitles.behemoths.item.ballista.loaded",
+    "sounds": [
+      "behemoths:ballista_loaded"
+    ]
+  },
+  "ballista_shoot": {
+    "subtitle": "subtitles.behemoths.item.ballista.shoot",
+    "sounds": [
+      "behemoths:ballista_shoot"
+    ]
+  }
+}

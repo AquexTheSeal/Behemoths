@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "behemoths:item/barren_sky_beast_sword"
+  }
+}

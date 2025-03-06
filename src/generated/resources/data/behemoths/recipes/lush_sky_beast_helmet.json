@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "O": {
+      "item": "behemoths:polished_lush_sky_beast_skin"
+    }
+  },
+  "pattern": [
+    "OOO",
+    "O O",
+    "   "
+  ],
+  "result": {
+    "item": "behemoths:lush_sky_beast_helmet"
+  },
+  "show_notification": true
+}

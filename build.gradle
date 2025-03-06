@@ -33,6 +33,9 @@ minecraft {
     mappings channel: mapping_channel, version: mapping_version
     copyIdeResources = true
 
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+
     runs {
         configureEach {
             workingDirectory project.file('run')
@@ -87,17 +90,27 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.0"))
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.4.0")) {
-        jarJar.ranged(it, "[0.4.0,)")
-    }
+//    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.0"))
+//    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.4.0")) {
+//        jarJar.ranged(it, "[0.4.0,)")
+//    }
+
+    // Main Dependencies
+    implementation fg.deobf("curse.maven:citadel-331936:6002521")
 
     // Integration
     implementation fg.deobf("curse.maven:jei-238222:5626488")
+    implementation fg.deobf("curse.maven:geckolib-388172:6027567")
+    implementation fg.deobf("curse.maven:better-combat-by-daedelus-639842:5625757")
+
+    // Integration Dependencies
+    runtimeOnly fg.deobf("curse.maven:cloth-config-348521:5729105")
+    runtimeOnly fg.deobf("curse.maven:playeranimator-658587:4587214")
 
     // Testing Experience
-    runtimeOnly fg.deobf("curse.maven:xenon-564239:5752040")
-    runtimeOnly fg.deobf("curse.maven:oculus-581495:6020952")
+//    runtimeOnly fg.deobf("curse.maven:xenon-564239:5752040")
+//    runtimeOnly fg.deobf("curse.maven:oculus-581495:6020952")
+    runtimeOnly fg.deobf("curse.maven:blessfulled-1182590:6174088")
 }
 
 tasks.named('processResources', ProcessResources).configure {

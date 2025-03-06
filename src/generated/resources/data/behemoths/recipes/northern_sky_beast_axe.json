@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "item": "behemoths:sky_beast_bone"
+    },
+    "O": {
+      "item": "behemoths:polished_northern_sky_beast_skin"
+    }
+  },
+  "pattern": [
+    "OO ",
+    "OI ",
+    " I "
+  ],
+  "result": {
+    "item": "behemoths:northern_sky_beast_axe"
+  },
+  "show_notification": true
+}

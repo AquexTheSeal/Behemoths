@@ -1,0 +1,7 @@
+{
+  "parent": "behemoths:item/ballista",
+  "textures": {
+    "0": "behemoths:item/behemoth_ballista_base",
+    "1": "behemoths:item/behemoth_ballista_firework"
+  }
+}
