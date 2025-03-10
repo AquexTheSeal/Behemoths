@@ -27,38 +27,42 @@ public class BMFlyAroundGoal extends Goal {
     }
 
     public void start() {
-        this.tick = 0;
+        this.tick = mob.getRandom().nextInt(5);
         this.move();
     }
 
     @Override
     public void stop() {
-        this.tick = 0;
+        this.tick = mob.getRandom().nextInt(5);
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        tick++;
-        if (tick % 100 == 0 || mob.onGround() || mob.verticalCollision) {
+        if (++tick >= 200) {
             this.move();
+            tick = 0;
         }
     }
 
     public void move() {
         RandomSource randomsource = this.mob.getRandom();
         Vec3 point = this.mob.position();
-        int distance = 48;
+        int distance = 64;
+        boolean allowVerticalRoaming = true;
         if (this.mob instanceof SkyCharydbis charydbis) {
             if (charydbis.homePosition != null) {
                 point = charydbis.homePosition;
-                distance /= 2;
+                allowVerticalRoaming = false;
             }
         }
-        double d0 = point.x() + (-distance + randomsource.nextInt(distance * 2));
-        double d1 = point.y() + (this.mob.onGround() ? randomsource.nextInt(distance) : (-distance + randomsource.nextInt(distance * 2)));
-        double d2 = point.z() + (-distance + randomsource.nextInt(distance * 2));
+        double d0 = point.x() + -distance + randomsource.nextInt(distance * 2);
+        double d1 = point.y() + -distance + randomsource.nextInt(distance * 2);
+        if (!allowVerticalRoaming) {
+            d1 = point.y();
+        }
+        double d2 = point.z() + -distance + randomsource.nextInt(distance * 2);
         this.mob.getMoveControl().setWantedPosition(d0, d1, d2, 1.0D);
     }
 }

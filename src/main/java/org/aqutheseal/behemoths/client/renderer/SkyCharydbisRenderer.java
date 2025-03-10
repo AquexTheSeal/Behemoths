@@ -5,6 +5,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.layers.SaddleLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.aqutheseal.behemoths.Behemoths;
@@ -15,12 +16,15 @@ public class SkyCharydbisRenderer extends MobRenderer<SkyCharydbis, SkyCharydbis
 
     public SkyCharydbisRenderer(EntityRendererProvider.Context pContext) {
         super(pContext, new SkyCharydbisModel<>(pContext.bakeLayer(SkyCharydbisModel.LAYER_LOCATION)), 2.5F);
+        this.addLayer(new SaddleLayer<>(this, new SkyCharydbisModel<>(pContext.bakeLayer(SkyCharydbisModel.LAYER_LOCATION)),
+                Behemoths.location("textures/entity/layers/sky_charydbis_saddle.png")
+        ));
     }
 
     @Override
     public void render(SkyCharydbis pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
         pPoseStack.pushPose();
-        float scale = pEntity.getSizeMultiplier();
+        float scale = pEntity.getCurrentGrowth();
         pPoseStack.scale(scale, scale, scale);
         super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
         pPoseStack.popPose();

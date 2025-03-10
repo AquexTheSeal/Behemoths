@@ -29,8 +29,8 @@ public class BHPartEntity<T extends Mob> extends PartEntity<Mob> {
 
     @Override
     public EntityDimensions getDimensions(Pose pPose) {
-        if (parentMob instanceof ISizableEntity sze) {
-            return size.scale(sze.getSizeMultiplier());
+        if (parentMob instanceof IGrowingEntity sze) {
+            return size.scale(sze.getCurrentGrowth());
         } else {
             return size;
         }
@@ -40,11 +40,11 @@ public class BHPartEntity<T extends Mob> extends PartEntity<Mob> {
     public InteractionResult interactAt(Player pPlayer, Vec3 pVec, InteractionHand pHand) {
         if (parentMob instanceof SkyCharydbis test) {
             if (pPlayer.getMainHandItem().getItem() == Items.BEDROCK) {
-                test.setSizeMultiplier(test.getSizeMultiplier() + 0.5F);
+                test.setCurrentGrowth(test.getCurrentGrowth() + 0.5F);
                 return InteractionResult.SUCCESS;
             }
             if (pPlayer.getMainHandItem().getItem() == Items.WHITE_WOOL) {
-                test.setSizeMultiplier(test.getSizeMultiplier() - 0.5F);
+                test.setCurrentGrowth(test.getCurrentGrowth() - 0.5F);
                 return InteractionResult.SUCCESS;
             }
         }
@@ -63,6 +63,9 @@ public class BHPartEntity<T extends Mob> extends PartEntity<Mob> {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
+        if (parentMob.getPassengers().contains(pSource.getEntity())) {
+            return false;
+        }
         return !isInvulnerableTo(pSource) && this.getParent().hurt(pSource, pAmount);
     }
 

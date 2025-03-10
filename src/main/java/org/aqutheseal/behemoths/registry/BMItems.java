@@ -2,6 +2,7 @@ package org.aqutheseal.behemoths.registry;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -44,6 +45,13 @@ public class BMItems {
             new Item.Properties().rarity(Rarity.EPIC).stacksTo(1))
     );
 
+    // Mob Spawn Eggs
+    public static final RegistryObject<Item> BARREN_SKY_CHARYDBIS_SPAWN_EGG = ITEMS.register("barren_sky_charydbis_spawn_egg", () -> new ForgeSpawnEggItem(BMEntityTypes.BARREN_SKY_CHARYDBIS, 7298625, 14661267, new Item.Properties()));
+    public static final RegistryObject<Item> LUSH_SKY_CHARYDBIS_SPAWN_EGG = ITEMS.register("lush_sky_charydbis_spawn_egg", () -> new ForgeSpawnEggItem(BMEntityTypes.LUSH_SKY_CHARYDBIS, 7317057, 10999991, new Item.Properties()));
+    public static final RegistryObject<Item> NORTHERN_SKY_CHARYDBIS_SPAWN_EGG = ITEMS.register("northern_sky_charydbis_spawn_egg", () -> new ForgeSpawnEggItem(BMEntityTypes.NORTHERN_SKY_CHARYDBIS, 6782627, 8374745, new Item.Properties()));
+    public static final RegistryObject<Item> NETHER_SKY_CHARYDBIS_SPAWN_EGG = ITEMS.register("nether_sky_charydbis_spawn_egg", () -> new ForgeSpawnEggItem(BMEntityTypes.NETHER_SKY_CHARYDBIS, 12919637, 15518116, new Item.Properties()));
+    public static final RegistryObject<Item> SOUL_SKY_CHARYDBIS_SPAWN_EGG = ITEMS.register("soul_sky_charydbis_spawn_egg", () -> new ForgeSpawnEggItem(BMEntityTypes.SOUL_SKY_CHARYDBIS, 4929843, 3138527, new Item.Properties()));
+    public static final RegistryObject<Item> VOID_SKY_CHARYDBIS_SPAWN_EGG = ITEMS.register("void_sky_charydbis_spawn_egg", () -> new ForgeSpawnEggItem(BMEntityTypes.VOID_SKY_CHARYDBIS, 38, 13893852, new Item.Properties()));
     // Complete Armor Sets
     public static BasicGearSet barrenSkyBeastSet;
     public static BasicGearSet lushSkyBeastSet;

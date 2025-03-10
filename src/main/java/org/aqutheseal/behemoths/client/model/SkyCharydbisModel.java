@@ -12,6 +12,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import org.aqutheseal.behemoths.Behemoths;
+import org.aqutheseal.behemoths.client.model.anims.SkyCharydbisAnimations;
 import org.aqutheseal.behemoths.entity.SkyCharydbis;
 
 import java.util.List;
@@ -206,6 +207,9 @@ public class SkyCharydbisModel<T extends SkyCharydbis> extends HierarchicalModel
 
 	@Override
 	public void setupAnim(SkyCharydbis entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.root.getAllParts().forEach(ModelPart::resetPose);
+
+		this.animateWalk(SkyCharydbisAnimations.SHAKE, limbSwing, limbSwingAmount, 1.0F, 2.5F);
 
 		float partialTick = ageInTicks - entity.tickCount;
 		float rollX = Mth.rotLerp(partialTick, entity.rollXO, entity.rollX);
@@ -214,30 +218,30 @@ public class SkyCharydbisModel<T extends SkyCharydbis> extends HierarchicalModel
 		root.zRot = rollY * Mth.DEG_TO_RAD;
 
 		this.chainableParts().forEach(part -> {
-			part.xRot = rollX * 0.03F;
-			part.yRot = rollY * 0.03F;
+			part.xRot += rollX * 0.03F;
+			part.yRot += rollY * 0.03F;
 		});
 
-		wingl.yRot = -Mth.sin(limbSwing * 0.1F) * limbSwingAmount * 0.35F;
-		wingr.yRot = Mth.sin(limbSwing * 0.1F) * limbSwingAmount * 0.35F;
-		wingl.zRot = Mth.cos(limbSwing * 0.1F) * limbSwingAmount * 0.35F;
-		wingr.zRot = -Mth.cos(limbSwing * 0.1F) * limbSwingAmount * 0.35F;
-		wingl2.zRot = Mth.cos(limbSwing * 0.1F) * limbSwingAmount * 0.5F;
-		wingr2.zRot = -Mth.cos(limbSwing * 0.1F) * limbSwingAmount * 0.5F;
+		wingl.yRot += -Mth.sin(limbSwing * 0.1F) * limbSwingAmount * 0.35F;
+		wingr.yRot += Mth.sin(limbSwing * 0.1F) * limbSwingAmount * 0.35F;
+		wingl.zRot += Mth.cos(limbSwing * 0.1F) * limbSwingAmount * 0.35F;
+		wingr.zRot += -Mth.cos(limbSwing * 0.1F) * limbSwingAmount * 0.35F;
+		wingl2.zRot += Mth.cos(limbSwing * 0.1F) * limbSwingAmount * 0.5F;
+		wingr2.zRot += -Mth.cos(limbSwing * 0.1F) * limbSwingAmount * 0.5F;
 
-		stringl.xRot = rad(-60 + Mth.sin(ageInTicks * 0.3F) * 5) + rollY * 0.03F;
-		stringl2.xRot = rad(-Mth.cos(ageInTicks * 0.3F) * 5) + rollY * 0.03F;
-		stringl3.xRot = rad(-Mth.cos(ageInTicks * 0.3F) * 5) + rollY * 0.03F;
-		stringr.xRot = rad(-60 + Mth.sin(ageInTicks * 0.3F) * 5) + rollY * -0.03F;
-		stringr2.xRot = rad(-Mth.cos(ageInTicks * 0.3F) * 5) + rollY * -0.03F;
-		stringr3.xRot = rad(-Mth.cos(ageInTicks * 0.3F) * 5) + rollY * -0.03F;
+		stringl.xRot += rad(-60 + Mth.sin(ageInTicks * 0.3F) * 5) + rollY * 0.03F;
+		stringl2.xRot += rad(-Mth.cos(ageInTicks * 0.3F) * 5) + rollY * 0.03F;
+		stringl3.xRot += rad(-Mth.cos(ageInTicks * 0.3F) * 5) + rollY * 0.03F;
+		stringr.xRot += rad(-60 + Mth.sin(ageInTicks * 0.3F) * 5) + rollY * -0.03F;
+		stringr2.xRot += rad(-Mth.cos(ageInTicks * 0.3F) * 5) + rollY * -0.03F;
+		stringr3.xRot += rad(-Mth.cos(ageInTicks * 0.3F) * 5) + rollY * -0.03F;
 
 		this.leftFinParts().forEach(part -> {
-			part.zRot = rad(45 + Mth.sin(ageInTicks * 0.2F) * 5);
+			part.zRot += rad(45 + Mth.sin(ageInTicks * 0.2F) * 5);
 		});
 
 		this.rightFinParts().forEach(part -> {
-			part.zRot = -rad(45 + Mth.sin(ageInTicks * 0.2F) * 5);
+			part.zRot += -rad(45 + Mth.sin(ageInTicks * 0.2F) * 5);
 		});
 	}
 

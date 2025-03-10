@@ -16,10 +16,8 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.aqutheseal.behemoths.datagen.*;
 import org.aqutheseal.behemoths.registry.*;
-import org.aqutheseal.behemoths.registry.BMPlacementModifierTypes;
 import org.slf4j.Logger;
 
 import java.util.Set;
@@ -43,8 +41,8 @@ public class Behemoths {
         BMEntityTypes.ENTITIES.register(modEventBus);
         BMParticleTypes.PARTICLE_TYPES.register(modEventBus);
         BMSoundEvents.SOUND_EVENTS.register(modEventBus);
-        BMFeatures.FEATURES.register(modEventBus);
-        BMPlacementModifierTypes.PLACEMENT_MODIFIERS.register(modEventBus);
+        BMStructures.STRUCTURE_TYPE.register(modEventBus);
+        BMStructures.STRUCTURE_PIECE.register(modEventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ModCommonConfig.SPEC);
 
@@ -59,18 +57,19 @@ public class Behemoths {
 
         generator.addProvider(event.includeClient(), new BMItemModelProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new BMLanguageProvider(packOutput, "en_us"));
+        generator.addProvider(event.includeClient(), new BMSoundDefinitionsProvider(packOutput, existingFileHelper));
 
         BMTagsProvider.Blocks blockTagsProvider = new BMTagsProvider.Blocks(packOutput, lookupProvider, existingFileHelper);
         generator.addProvider(event.includeServer(), blockTagsProvider);
         generator.addProvider(event.includeServer(), new BMTagsProvider.Items(packOutput, lookupProvider, blockTagsProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new BMTagsProvider.EntityTypes(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new BMTagsProvider.Biomes(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new BMRecipeProvider(packOutput));
 
         event.getGenerator().addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(
                 packOutput, lookupProvider, new RegistrySetBuilder()
-                .add(Registries.CONFIGURED_FEATURE, BMFeatureProvider.ConfiguredFeatures::bootstrap)
-                .add(Registries.PLACED_FEATURE, BMFeatureProvider.PlacedFeatures::bootstrap)
-                .add(ForgeRegistries.Keys.BIOME_MODIFIERS, BMFeatureProvider.BiomeModifiers::bootstrap),
+                .add(Registries.STRUCTURE_SET, BMStructureProvider.StructureSets::bootstrap)
+                .add(Registries.STRUCTURE, BMStructureProvider.Structures::bootstrap),
                 Set.of(Behemoths.MODID)
         ));
     }

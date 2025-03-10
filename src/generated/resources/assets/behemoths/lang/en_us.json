@@ -9,6 +9,7 @@
   "item.behemoths.barren_sky_beast_shovel": "Barren Sky Beast Shovel",
   "item.behemoths.barren_sky_beast_skin": "Barren Sky Beast Skin",
   "item.behemoths.barren_sky_beast_sword": "Barren Sky Beast Sword",
+  "item.behemoths.barren_sky_charydbis_spawn_egg": "Barren Sky Charydbis Spawn Egg",
   "item.behemoths.behemoth_ballista": "Behemoth Ballista",
   "item.behemoths.lush_sky_beast_axe": "Lush Sky Beast Axe",
   "item.behemoths.lush_sky_beast_boots": "Lush Sky Beast Boots",
@@ -20,6 +21,7 @@
   "item.behemoths.lush_sky_beast_shovel": "Lush Sky Beast Shovel",
   "item.behemoths.lush_sky_beast_skin": "Lush Sky Beast Skin",
   "item.behemoths.lush_sky_beast_sword": "Lush Sky Beast Sword",
+  "item.behemoths.lush_sky_charydbis_spawn_egg": "Lush Sky Charydbis Spawn Egg",
   "item.behemoths.nether_sky_beast_axe": "Nether Sky Beast Axe",
   "item.behemoths.nether_sky_beast_boots": "Nether Sky Beast Boots",
   "item.behemoths.nether_sky_beast_chestplate": "Nether Sky Beast Chestplate",
@@ -30,6 +32,7 @@
   "item.behemoths.nether_sky_beast_shovel": "Nether Sky Beast Shovel",
   "item.behemoths.nether_sky_beast_skin": "Nether Sky Beast Skin",
   "item.behemoths.nether_sky_beast_sword": "Nether Sky Beast Sword",
+  "item.behemoths.nether_sky_charydbis_spawn_egg": "Nether Sky Charydbis Spawn Egg",
   "item.behemoths.northern_sky_beast_axe": "Northern Sky Beast Axe",
   "item.behemoths.northern_sky_beast_boots": "Northern Sky Beast Boots",
   "item.behemoths.northern_sky_beast_chestplate": "Northern Sky Beast Chestplate",
@@ -40,6 +43,7 @@
   "item.behemoths.northern_sky_beast_shovel": "Northern Sky Beast Shovel",
   "item.behemoths.northern_sky_beast_skin": "Northern Sky Beast Skin",
   "item.behemoths.northern_sky_beast_sword": "Northern Sky Beast Sword",
+  "item.behemoths.northern_sky_charydbis_spawn_egg": "Northern Sky Charydbis Spawn Egg",
   "item.behemoths.polished_barren_sky_beast_skin": "Polished Barren Sky Beast Skin",
   "item.behemoths.polished_lush_sky_beast_skin": "Polished Lush Sky Beast Skin",
   "item.behemoths.polished_nether_sky_beast_skin": "Polished Nether Sky Beast Skin",
@@ -78,6 +82,7 @@
   "item.behemoths.soul_sky_beast_shovel": "Soul Sky Beast Shovel",
   "item.behemoths.soul_sky_beast_skin": "Soul Sky Beast Skin",
   "item.behemoths.soul_sky_beast_sword": "Soul Sky Beast Sword",
+  "item.behemoths.soul_sky_charydbis_spawn_egg": "Soul Sky Charydbis Spawn Egg",
   "item.behemoths.void_sky_beast_axe": "Void Sky Beast Axe",
   "item.behemoths.void_sky_beast_boots": "Void Sky Beast Boots",
   "item.behemoths.void_sky_beast_chestplate": "Void Sky Beast Chestplate",
@@ -87,5 +92,6 @@
   "item.behemoths.void_sky_beast_pickaxe": "Void Sky Beast Pickaxe",
   "item.behemoths.void_sky_beast_shovel": "Void Sky Beast Shovel",
   "item.behemoths.void_sky_beast_skin": "Void Sky Beast Skin",
-  "item.behemoths.void_sky_beast_sword": "Void Sky Beast Sword"
+  "item.behemoths.void_sky_beast_sword": "Void Sky Beast Sword",
+  "item.behemoths.void_sky_charydbis_spawn_egg": "Void Sky Charydbis Spawn Egg"
 }

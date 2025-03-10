@@ -1,4 +1,2 @@
-// 1.20.1	2025-03-06T18:30:00.1599273	Registries
-c57774144c0403825cd8f074a793bf792d422b41 data/behemoths/forge/biome_modifier/barren_island.json
-edf347538b4dd369ba3a701ffb2bee033d1fb556 data/behemoths/worldgen/configured_feature/barren_island.json
-ad7b6ecff88e4fadb49baf781e3330f5180a7b4c data/behemoths/worldgen/placed_feature/barren_island_placed.json
+// 1.20.1	2025-03-09T19:30:29.983677	Registries
+dc77e97e5c8818e918095633b68c7bab119b7a4a data/behemoths/worldgen/structure/charydbis_isles.json

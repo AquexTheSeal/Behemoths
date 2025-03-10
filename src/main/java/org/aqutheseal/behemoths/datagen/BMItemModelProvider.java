@@ -26,6 +26,13 @@ public class BMItemModelProvider extends ItemModelProvider {
         basicItem(BMItems.BARREN_SKY_BEAST_SKIN.get());
         basicItem(BMItems.POLISHED_BARREN_SKY_BEAST_SKIN.get());
 
+        spawnEggItem(BMItems.BARREN_SKY_CHARYDBIS_SPAWN_EGG.get());
+        spawnEggItem(BMItems.LUSH_SKY_CHARYDBIS_SPAWN_EGG.get());
+        spawnEggItem(BMItems.NORTHERN_SKY_CHARYDBIS_SPAWN_EGG.get());
+        spawnEggItem(BMItems.NETHER_SKY_CHARYDBIS_SPAWN_EGG.get());
+        spawnEggItem(BMItems.SOUL_SKY_CHARYDBIS_SPAWN_EGG.get());
+        spawnEggItem(BMItems.VOID_SKY_CHARYDBIS_SPAWN_EGG.get());
+
         generateGearSetModels(BMItems.barrenSkyBeastSet);
     }
 
@@ -45,10 +52,10 @@ public class BMItemModelProvider extends ItemModelProvider {
         handheldItem(set.pickaxe.get());
         handheldItem(set.shovel.get());
         handheldItem(set.hoe.get());
-//        basicItem(set.helmet.get());
-//        basicItem(set.chestplate.get());
-//        basicItem(set.leggings.get());
-//        basicItem(set.boots.get());
+        basicItem(set.helmet.get());
+        basicItem(set.chestplate.get());
+        basicItem(set.leggings.get());
+        basicItem(set.boots.get());
     }
 
     public ItemModelBuilder ballistaItem(Item item) {
@@ -61,23 +68,18 @@ public class BMItemModelProvider extends ItemModelProvider {
                 .parent(parent)
                 .texture("0", new ResourceLocation(loc.getNamespace(), itemPath + "_base"))
                 .texture("1", new ResourceLocation(loc.getNamespace(), itemPath + "_standby"))
-
                 .override().predicate(new ResourceLocation("pulling"), 1).model(getBuilder(itemPath + "_pulling_0")
                         .parent(parent).texture("0", new ResourceLocation(loc.getNamespace(), itemPath + "_base"))
                         .texture("1", new ResourceLocation(loc.getNamespace(), itemPath + "_pulling_0"))).end()
-
                 .override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), 0.58f).model(getBuilder(itemPath + "_pulling_1")
                         .parent(parent).texture("0", new ResourceLocation(loc.getNamespace(), itemPath + "_base"))
                         .texture("1", new ResourceLocation(loc.getNamespace(), itemPath + "_pulling_1"))).end()
-
                 .override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), 1.0f).model(getBuilder(itemPath + "_pulling_2")
                         .parent(parent).texture("0", new ResourceLocation(loc.getNamespace(), itemPath + "_base"))
                         .texture("1", new ResourceLocation(loc.getNamespace(), itemPath + "_pulling_2"))).end()
-
                 .override().predicate(new ResourceLocation("charged"), 1).model(getBuilder(itemPath + "_arrow")
                         .parent(parent).texture("0", new ResourceLocation(loc.getNamespace(), itemPath + "_base"))
                         .texture("1", new ResourceLocation(loc.getNamespace(), itemPath + "_arrow"))).end()
-
                 .override().predicate(new ResourceLocation("charged"), 1).predicate(new ResourceLocation("firework"), 1).model(getBuilder(itemPath + "_firework")
                         .parent(parent).texture("0", new ResourceLocation(loc.getNamespace(), itemPath + "_base"))
                         .texture("1", new ResourceLocation(loc.getNamespace(), itemPath + "_firework"))).end();

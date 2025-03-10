@@ -4,11 +4,9 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.control.LookControl;
 
 public class SmoothFlyingLookControl extends LookControl {
-    private final int maxYRotFromCenter;
 
-    public SmoothFlyingLookControl(Mob pMob, int pMaxYRotFromCenter) {
+    public SmoothFlyingLookControl(Mob pMob) {
         super(pMob);
-        this.maxYRotFromCenter = pMaxYRotFromCenter;
     }
 
     @Override

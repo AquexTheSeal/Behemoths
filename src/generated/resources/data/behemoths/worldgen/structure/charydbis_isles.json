@@ -1,0 +1,6 @@
+{
+  "type": "behemoths:charydbis_isles_structure",
+  "biomes": "#behemoths:has_structure/has_charydbis_isles",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

@@ -3,9 +3,12 @@ package org.aqutheseal.behemoths.mixin;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import org.aqutheseal.behemoths.item.ISkyBeastTool;
 import org.aqutheseal.behemoths.util.compat.BetterCombatUtil;
 import org.aqutheseal.behemoths.util.mixin.IScreenShaker;
+import org.jline.utils.Log;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,7 +33,10 @@ public abstract class PlayerMixin implements IScreenShaker {
     private float modifyDamage(float damage, Entity target) {
         if (target instanceof LivingEntity livingTarget) {
             Player player = (Player) (Object) this;
-            if (BetterCombatUtil.getSwingingStack(player).getItem() instanceof ISkyBeastTool sbTool) {
+            ItemStack stack = BetterCombatUtil.getSwingingStack(player);
+            Item item = stack.getItem();
+            if (item instanceof ISkyBeastTool sbTool) {
+                Log.debug("Stack: " + item.getName(stack));
                 return sbTool.getFinalSentDamage(player, livingTarget, damage);
             }
         }

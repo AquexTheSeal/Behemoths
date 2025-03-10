@@ -16,7 +16,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.aqutheseal.behemoths.Behemoths;
 import org.aqutheseal.behemoths.client.armor.SkyBeastArmorModel;
 import org.aqutheseal.behemoths.client.gui.CustomCrosshairGui;
+import org.aqutheseal.behemoths.client.model.CharydbisOrbModel;
 import org.aqutheseal.behemoths.client.model.SkyCharydbisModel;
+import org.aqutheseal.behemoths.client.renderer.CharydbisOrbRenderer;
 import org.aqutheseal.behemoths.client.renderer.EmptyRenderer;
 import org.aqutheseal.behemoths.client.renderer.SkyCharydbisRenderer;
 import org.aqutheseal.behemoths.particle.BasicAnimatedParticle;
@@ -33,6 +35,8 @@ public class ModClientSetup {
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(SkyCharydbisModel.LAYER_LOCATION, SkyCharydbisModel::createBodyLayer);
+
+        event.registerLayerDefinition(CharydbisOrbModel.LAYER_LOCATION, CharydbisOrbModel::createBodyLayer);
 
         event.registerLayerDefinition(SkyBeastArmorModel.LAYER_LOCATION, SkyBeastArmorModel::createBodyLayer);
     }
@@ -64,6 +68,8 @@ public class ModClientSetup {
         event.registerEntityRenderer(BMEntityTypes.NETHER_SKY_CHARYDBIS.get(), SkyCharydbisRenderer::new);
         event.registerEntityRenderer(BMEntityTypes.SOUL_SKY_CHARYDBIS.get(), SkyCharydbisRenderer::new);
         event.registerEntityRenderer(BMEntityTypes.VOID_SKY_CHARYDBIS.get(), SkyCharydbisRenderer::new);
+
+        event.registerEntityRenderer(BMEntityTypes.CHARYDBIS_ORB.get(), CharydbisOrbRenderer::new);
 
         event.registerEntityRenderer(BMEntityTypes.SHOCKWAVE.get(), EmptyRenderer::new);
     }

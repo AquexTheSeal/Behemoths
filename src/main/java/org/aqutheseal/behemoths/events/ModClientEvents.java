@@ -41,9 +41,9 @@ public class ModClientEvents {
         RandomSource random = Minecraft.getInstance().level.random;
         if (!Minecraft.getInstance().isPaused()) {
             if (Minecraft.getInstance().player instanceof IScreenShaker shaker) {
-//                event.setRoll((float) (event.getRoll() + random.nextGaussian() * shaker.behemoths$getShakeIntensity()));
-//                event.setPitch((float) (event.getPitch() + random.nextGaussian() * shaker.behemoths$getShakeIntensity()));
-//                event.setYaw((float) (event.getYaw() + random.nextGaussian() * shaker.behemoths$getShakeIntensity()));
+                event.setRoll((float) (event.getRoll() + random.nextGaussian() * shaker.behemoths$getShakeIntensity()));
+                event.setPitch((float) (event.getPitch() + random.nextGaussian() * shaker.behemoths$getShakeIntensity()));
+                event.setYaw((float) (event.getYaw() + random.nextGaussian() * shaker.behemoths$getShakeIntensity()));
             }
         }
     }

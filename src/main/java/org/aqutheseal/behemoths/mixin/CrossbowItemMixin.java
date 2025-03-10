@@ -12,7 +12,9 @@ import net.minecraft.world.level.Level;
 import org.aqutheseal.behemoths.item.BallistaItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
@@ -35,6 +37,14 @@ public abstract class CrossbowItemMixin {
                 ballistaItem.modifyArrowProperties(arrow);
             }
         }
+    }
+
+    @ModifyConstant(method = "onUseTick", constant = @Constant(floatValue = 0.2F))
+    private float changePullingSound(float constant) {
+        if ((CrossbowItem) (Object) this instanceof BallistaItem) {
+            return 0.03F;
+        }
+        return constant;
     }
 
     @Inject(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/player/Player;DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"), cancellable = true)

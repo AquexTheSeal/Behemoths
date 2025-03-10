@@ -1,13 +1,11 @@
 package org.aqutheseal.behemoths.entity.ai.movecontrol;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.level.pathfinder.NodeEvaluator;
 import net.minecraft.world.phys.Vec3;
 
 public class BMFlyingControl extends MoveControl {
@@ -29,30 +27,40 @@ public class BMFlyingControl extends MoveControl {
         } else {
             Vec3 targetPos = new Vec3(wantedX, wantedY, wantedZ);
             if (!mob.isDeadOrDying()) {
-                this.lookAt(targetPos, 2, 2);
                 Vec3 movement = mob.getDeltaMovement().add(mob.getLookAngle()).scale(speedFactor);
                 if (mob.horizontalCollision) {
-                    movement = movement.add(0, 0.1, 0);
+                    mob.setXRot(Mth.clamp(mob.getXRot() + calculateOptimalYAdjustment() * 10, -80, 80));
+                    mob.yHeadRot = Mth.wrapDegrees(mob.yHeadRot - 15);
+                } else {
+                    this.lookAt(targetPos, 5, 3);
                 }
-                Vec3 checkFront = mob.getLookAngle().scale(6);
-//                if (this.isWalkable(checkFront.x(), checkFront.z())) {
-//
-//                }
+                if (mob.verticalCollision && !mob.onGround()) {
+                    mob.setXRot(Mth.clamp(mob.getXRot() + calculateOptimalYAdjustment() * 15, -80, 80));
+                } else if (mob.onGround()) {
+                    mob.setXRot(Mth.clamp(mob.getXRot() - 15, -80, 80));
+                } else {
+                    this.lookAt(targetPos, 5, 3);
+                }
                 mob.setDeltaMovement(movement);
             }
         }
     }
 
-    public void lookAt(Vec3 position, float pMaxYRotIncrease, float pMaxXRotIncrease) {
-        mob.getLookControl().setLookAt(position.x, position.y, position.z, pMaxYRotIncrease, pMaxXRotIncrease);
+    public float calculateOptimalYAdjustment() {
+        BlockPos pos = mob.blockPosition();
+        int loopLimit = 64;
+        int aboveCount = 0;
+        while (aboveCount <= loopLimit && mob.level().isEmptyBlock(pos.above(aboveCount))) {
+            aboveCount++;
+        }
+        int belowCount = 0;
+        while (belowCount <= loopLimit && mob.level().isEmptyBlock(pos.below(belowCount))) {
+            belowCount++;
+        }
+        return aboveCount >= belowCount ? -1.0F : 1.0F;
     }
 
-    private boolean isWalkable(double pRelativeX, double pRelativeZ) {
-        PathNavigation pathnavigation = this.mob.getNavigation();
-        NodeEvaluator nodeevaluator = pathnavigation.getNodeEvaluator();
-        if (nodeevaluator.getBlockPathType(this.mob.level(), Mth.floor(this.mob.getX() + pRelativeX), this.mob.getBlockY(), Mth.floor(this.mob.getZ() + pRelativeZ)) != BlockPathTypes.WALKABLE) {
-            return false;
-        }
-        return true;
+    public void lookAt(Vec3 position, float pMaxYRotIncrease, float pMaxXRotIncrease) {
+        mob.getLookControl().setLookAt(position.x, position.y, position.z, pMaxYRotIncrease, pMaxXRotIncrease);
     }
 }

@@ -9,6 +9,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.aqutheseal.behemoths.Behemoths;
 import org.aqutheseal.behemoths.entity.SkyCharydbis;
 import org.aqutheseal.behemoths.entity.misc.ShockwaveEntity;
+import org.aqutheseal.behemoths.entity.projectile.CharydbisOrb;
 import org.aqutheseal.behemoths.entity.variants.SkyCharydbisVariants;
 
 public class BMEntityTypes {
@@ -38,6 +39,8 @@ public class BMEntityTypes {
     public static final RegistryObject<EntityType<SkyCharydbis>> VOID_SKY_CHARYDBIS = ENTITIES.register("void_sky_charydbis",
             () -> EntityType.Builder.<SkyCharydbis>of((a, b) -> new SkyCharydbis(a, b, SkyCharydbisVariants.VOID), MobCategory.MONSTER).sized(6.0f, 5.0f).fireImmune().clientTrackingRange(128).build(Behemoths.location("void_sky_charydbis").toString())
     );
+
+    public static final RegistryObject<EntityType<CharydbisOrb>> CHARYDBIS_ORB = registerLifelessEntity("charydbis_orb", CharydbisOrb::new, 2.0F, 2.0F);
 
     public static final RegistryObject<EntityType<ShockwaveEntity>> SHOCKWAVE = registerLifelessEntity("shockwave", ShockwaveEntity::new, 4.0F, 4.0F);
 
