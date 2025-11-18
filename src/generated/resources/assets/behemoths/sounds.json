@@ -1,0 +1,63 @@
+{
+  "stampede_ambient": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "behemoths:stampede_ambient_0"
+      },
+      {
+        "attenuation_distance": 32,
+        "name": "behemoths:stampede_ambient_1"
+      },
+      {
+        "attenuation_distance": 32,
+        "name": "behemoths:stampede_ambient_2"
+      }
+    ],
+    "subtitle": "behemoths.subtitle.stampede_ambient"
+  },
+  "stampede_charge_roar": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "behemoths:stampede_charge_roar"
+      }
+    ],
+    "subtitle": "behemoths.subtitle.stampede_charge_roar"
+  },
+  "stampede_charge_step": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "behemoths:stampede_charge_step"
+      }
+    ],
+    "subtitle": "behemoths.subtitle.stampede_charge_step"
+  },
+  "stampede_death": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "behemoths:stampede_death"
+      }
+    ],
+    "subtitle": "behemoths.subtitle.stampede_death"
+  },
+  "stampede_hurt": {
+    "sounds": [
+      {
+        "attenuation_distance": 32,
+        "name": "behemoths:stampede_hurt_0"
+      },
+      {
+        "attenuation_distance": 32,
+        "name": "behemoths:stampede_hurt_1"
+      },
+      {
+        "attenuation_distance": 32,
+        "name": "behemoths:stampede_hurt_2"
+      }
+    ],
+    "subtitle": "behemoths.subtitle.stampede_hurt"
+  }
+}
