@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.celestialworkshop.behemoths.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "behemoths.refmap.json",
+  "mixins": [
+    "MobMixin"
+  ],
+  "client": [
+    "LocalPlayerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
