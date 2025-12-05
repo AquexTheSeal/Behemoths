@@ -5,7 +5,6 @@ import net.minecraft.world.entity.ai.goal.RunAroundLikeCrazyGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.celestialworkshop.behemoths.entities.BanishingStampede;
-import org.celestialworkshop.behemoths.utils.EntityAnimationUtils;
 
 public class StampedeRunAroundGoal extends RunAroundLikeCrazyGoal {
     
@@ -17,7 +16,13 @@ public class StampedeRunAroundGoal extends RunAroundLikeCrazyGoal {
     }
 
     public void tick() {
+
+        if (stampede.getPassengers().isEmpty()) {
+            return;
+        }
+
         if (!stampede.isTamed() && stampede.getRandom().nextInt(this.adjustedTickDelay(50)) == 0) {
+
             Entity entity = stampede.getPassengers().get(0);
             if (entity == null) {
                 return;
@@ -33,13 +38,17 @@ public class StampedeRunAroundGoal extends RunAroundLikeCrazyGoal {
                 stampede.modifyTemper(5);
             }
 
-            stampede.getPassengers().forEach(rider -> {
-                rider.setDeltaMovement(stampede.getLookAngle().multiply(2, 0, 2).add(0, 1, 0));
-                rider.hurtMarked = true;
-            });
-            stampede.ejectPassengers();
             stampede.makeMad();
-            EntityAnimationUtils.playAnimationS2C(stampede, BanishingStampede.THROW_RIDER_ANIMATION);
+            stampede.getAnimationManager().forceStartAnimation(BanishingStampede.THROW_RIDER_ANIMATION);
+
+            for(int i = stampede.getPassengers().size() - 1; i >= 0; --i) {
+                Entity rider = stampede.getPassengers().get(i);
+                rider.stopRiding();
+                rider.setDeltaMovement(stampede.getLookAngle().multiply(2, 0, 2).add(0, 1.2, 0));
+                rider.hurtMarked = true;
+                rider.hasImpulse = true;
+            }
+
             stampede.level().broadcastEntityEvent(stampede, (byte)6);
         }
 

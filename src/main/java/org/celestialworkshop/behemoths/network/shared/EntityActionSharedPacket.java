@@ -9,7 +9,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 import org.celestialworkshop.behemoths.entities.BanishingStampede;
-import org.celestialworkshop.behemoths.entities.ai.BMEntity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -102,12 +101,6 @@ public record EntityActionSharedPacket(int entityId, Action action, Map<String, 
         if (entity == null) return;
 
         switch (packet.action()) {
-            case PLAY_ENTITY_ANIMATION -> {
-                if (entity instanceof BMEntity bm) {
-                    String id = (String) packet.parameters.get("id");
-                    bm.getAnimationStateMap().get(id).start(entity.tickCount);
-                }
-            }
             case FORCE_JUMP_STAMPEDE -> {
                 if (entity instanceof BanishingStampede bm) {
                     if (packet.parameters.containsKey("strength")) {
@@ -135,7 +128,6 @@ public record EntityActionSharedPacket(int entityId, Action action, Map<String, 
     }
 
     public enum Action {
-        PLAY_ENTITY_ANIMATION,
         START_STAMPEDE_RAMMING,
         FORCE_JUMP_STAMPEDE
     }

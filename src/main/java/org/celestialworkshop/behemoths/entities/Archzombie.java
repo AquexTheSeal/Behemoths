@@ -1,8 +1,11 @@
 package org.celestialworkshop.behemoths.entities;
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -12,31 +15,37 @@ import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import org.celestialworkshop.behemoths.api.ActionManager;
+import org.celestialworkshop.behemoths.api.client.animation.EntityAnimationManager;
+import org.celestialworkshop.behemoths.api.entity.ActionManager;
+import org.celestialworkshop.behemoths.client.animations.ArchzombieAnimations;
 import org.celestialworkshop.behemoths.entities.ai.BMEntity;
+import org.celestialworkshop.behemoths.entities.ai.action.ArchzombieRidingSweepAttackAction;
+import org.celestialworkshop.behemoths.entities.ai.action.ArchzombieRightSweep0Action;
+import org.celestialworkshop.behemoths.entities.ai.action.ArchzombieRightSweep1Action;
 import org.celestialworkshop.behemoths.entities.ai.goals.ArchzombieMovementGoal;
 import org.celestialworkshop.behemoths.entities.ai.movecontrols.BMMoveControl;
-import org.celestialworkshop.behemoths.entities.ai.action.ArchzombieRidingSweepAttackAction;
-import org.celestialworkshop.behemoths.entities.ai.action.ArchzombieRightSweepAction;
-
-import java.util.Map;
+import org.celestialworkshop.behemoths.registries.BMEntityTypes;
+import org.celestialworkshop.behemoths.registries.BMItems;
+import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
+import org.celestialworkshop.behemoths.utils.WorldUtils;
+import org.jetbrains.annotations.Nullable;
 
 public class Archzombie extends Monster implements BMEntity {
 
+    public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(Archzombie.class, EntityDataSerializers.BOOLEAN);
+
     public static final String IDLE_ANIMATION = "idle";
-    public static final String RIDING_ANIMATION = "riding";
+//    public static final String RIDING_ANIMATION = "riding";
     public static final String RIDING_SWEEP_ANIMATION = "ridingSweep";
-    public static final String SWEEP_0_ANIMATION = "sweep_0";
+    public static final String SWEEP_0_ANIMATION = "sweep_right_0";
+    public static final String SWEEP_1_ANIMATION = "sweep_right_1";
 
-    public final Map<String, AnimationState> animationStateMap = new Object2ObjectArrayMap<>();
-
-    public final AnimationState idleAnimationState = this.createAnimationState(IDLE_ANIMATION);
-    public final AnimationState ridingAnimationState = this.createAnimationState(RIDING_ANIMATION);
-    public final AnimationState ridingSweepAnimationState = this.createAnimationState(RIDING_SWEEP_ANIMATION);
-    public final AnimationState sweep0AnimationState = this.createAnimationState(SWEEP_0_ANIMATION);
-
+    public final EntityAnimationManager animationManager = new EntityAnimationManager(this);
     public final ActionManager<Archzombie> attackManager = new ActionManager<>(this);
 
     public Archzombie(EntityType<? extends Monster> pEntityType, Level pLevel) {
@@ -46,23 +55,29 @@ public class Archzombie extends Monster implements BMEntity {
         this.setPathfindingMalus(BlockPathTypes.WATER, 16.0F);
         this.moveControl = new BMMoveControl<>(this);
 
+        this.animationManager.registerAnimation(IDLE_ANIMATION, () -> ArchzombieAnimations.IDLE);
+        this.animationManager.registerAnimation(RIDING_SWEEP_ANIMATION, () -> ArchzombieAnimations.RIDING_SWEEP);
+        this.animationManager.registerAnimation(SWEEP_0_ANIMATION, () -> ArchzombieAnimations.SWEEP_RIGHT_0);
+        this.animationManager.registerAnimation(SWEEP_1_ANIMATION, () -> ArchzombieAnimations.SWEEP_RIGHT_1);
+
         this.attackManager.addAction(
-                new ArchzombieRightSweepAction(this),
+                new ArchzombieRightSweep0Action(this),
+                new ArchzombieRightSweep1Action(this),
                 new ArchzombieRidingSweepAttackAction(this)
         );
     }
 
     @Override
-    public Map<String, AnimationState> getAnimationStateMap() {
-        return animationStateMap;
+    public EntityAnimationManager getAnimationManager() {
+        return animationManager;
     }
 
     public static AttributeSupplier createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 80.0D)
+                .add(Attributes.MAX_HEALTH, 60.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
-                .add(Attributes.ATTACK_DAMAGE, 10.0D)
-                .add(Attributes.ARMOR, 10.0D)
+                .add(Attributes.ATTACK_DAMAGE, 8.0D)
+                .add(Attributes.ARMOR, 8.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
                 .add(Attributes.FOLLOW_RANGE, 80.0D)
                 .build();
@@ -81,24 +96,24 @@ public class Archzombie extends Monster implements BMEntity {
     @Override
     public void aiStep() {
         super.aiStep();
-        this.manageIdleAnimations();
 
         if (!this.level().isClientSide) {
             this.attackManager.tick();
+            if (this.getVehicle() != null) {
+                this.setYRot(this.getVehicle().getYRot());
+                this.yBodyRot = this.getVehicle().getYRot();
+            }
+        } else {
+            this.manageIdleAnimations();
         }
     }
 
     public void manageIdleAnimations() {
+        AnimationState idle = this.getAnimationManager().getAnimationState(IDLE_ANIMATION);
         if (this.shouldSit()) {
-            if (this.idleAnimationState.isStarted()) {
-                this.idleAnimationState.stop();
-            }
-            this.ridingAnimationState.startIfStopped(this.tickCount);
+            if (idle.isStarted()) idle.stop();
         } else {
-            if (this.ridingAnimationState.isStarted()) {
-                this.ridingAnimationState.stop();
-            }
-            this.idleAnimationState.startIfStopped(this.tickCount);
+            idle.startIfStopped(this.tickCount);
         }
     }
 
@@ -109,5 +124,95 @@ public class Archzombie extends Monster implements BMEntity {
     @Override
     public float getRotationFreedom() {
         return shouldSit() ? 0.15F : 0.5F;
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IS_LEADER, false);
+    }
+
+    @Override
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
+        float leaderChance = 0.15F;
+        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.SHIELD));
+        if (reason != MobSpawnType.REINFORCEMENT && random.nextFloat() < leaderChance) {
+            setupAsLeader(level, difficulty, reason);
+        } else {
+            ItemStack weapon = random.nextFloat() < 0.7F ? new ItemStack(Items.IRON_SWORD) : new ItemStack(Items.IRON_AXE);
+            this.setItemSlot(EquipmentSlot.MAINHAND, weapon);
+
+            float mountChance = WorldUtils.hasPandemoniumCurse(level(), BMPandemoniumCurses.ARCHZOMBIE_STAMPEDE_CHANCE.get()) ? 0.25F : 0.05F;
+            if (random.nextFloat() < mountChance) {
+                spawnStampedeAndRideOnIt(level, difficulty);
+            }
+        }
+
+        return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
+    }
+
+
+    public void setupAsLeader(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason) {
+        this.setLeader(true);
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(BMItems.ROTTEN_OATHKEEPER.get()));
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0D);
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.0D);
+        this.getAttribute(Attributes.ARMOR).setBaseValue(10.0D);
+
+        this.spawnStampedeAndRideOnIt(pLevel, pDifficulty);
+        this.spawnReinforcementArchzombiesAround(pLevel, pDifficulty);
+    }
+
+    private void spawnReinforcementArchzombiesAround(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty) {
+        if (!this.level().isClientSide) {
+            for (int i = 0; i < (2 + random.nextInt(3)); i++) {
+                Archzombie archzombie = BMEntityTypes.ARCHZOMBIE.get().create(this.level());
+                archzombie.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+                archzombie.finalizeSpawn(pLevel, pDifficulty, MobSpawnType.REINFORCEMENT, null, null);
+                this.level().addFreshEntity(archzombie);
+            }
+        }
+    }
+
+    private void spawnStampedeAndRideOnIt(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty) {
+        if (!this.level().isClientSide) {
+            BanishingStampede stampede = BMEntityTypes.BANISHING_STAMPEDE.get().create(this.level());
+
+            if (stampede != null) {
+                stampede.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+                stampede.finalizeSpawn(pLevel, pDifficulty, MobSpawnType.JOCKEY, null, null);
+                this.level().addFreshEntity(stampede);
+                this.startRiding(stampede);
+            }
+        }
+    }
+
+    @Override
+    public boolean isLeftHanded() {
+        return false;
+    }
+
+    @Override
+    public void setLeftHanded(boolean pLeftHanded) {
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putBoolean("IsLeader", this.isLeader());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        this.setLeader(pCompound.getBoolean("IsLeader"));
+    }
+
+    public boolean isLeader() {
+        return this.entityData.get(IS_LEADER);
+    }
+
+    public void setLeader(boolean value) {
+        this.entityData.set(IS_LEADER, value);
     }
 }

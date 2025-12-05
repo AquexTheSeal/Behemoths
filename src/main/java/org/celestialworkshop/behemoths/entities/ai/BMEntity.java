@@ -1,41 +1,21 @@
 package org.celestialworkshop.behemoths.entities.ai;
 
 import it.unimi.dsi.fastutil.Pair;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
-import org.celestialworkshop.behemoths.network.BMNetwork;
-import org.celestialworkshop.behemoths.network.s2c.ManageAnimationStatePacket;
+import org.celestialworkshop.behemoths.api.client.animation.EntityAnimationManager;
 import org.celestialworkshop.behemoths.utils.mixinhelpers.MobMixinHelper;
-
-import java.util.Map;
 
 public interface BMEntity {
 
-    // ANIMATION
-
-    Map<String, AnimationState> getAnimationStateMap();
-
-    default AnimationState createAnimationState(String name) {
-        AnimationState state = new AnimationState();
-        this.getAnimationStateMap().put(name, state);
-        return state;
-    }
-
-    default void manageAnimationState(String animationId, ManageAnimationStatePacket.Action action) {
-        BMNetwork.sendToAll(new ManageAnimationStatePacket(this.bmSelf().getId(), animationId, action));
-    }
-
-    default void startAnimation(String animationId) {
-        this.manageAnimationState(animationId, ManageAnimationStatePacket.Action.START);
-    }
-
-    default void stopAnimation(String animationId) {
-        this.manageAnimationState(animationId, ManageAnimationStatePacket.Action.STOP);
-    }
-
     default float getRotationFreedom() {
         return 1.0F;
+    }
+
+    // ANIMATION
+
+    default EntityAnimationManager getAnimationManager() {
+        return null;
     }
 
     // ATTACKING

@@ -9,6 +9,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.celestialworkshop.behemoths.Behemoths;
 
 import java.util.Set;
@@ -28,8 +29,14 @@ public class BMDataGenerators {
         generator.addProvider(event.includeClient(), new BMLanguageProvider(packOutput, "en_us"));
         generator.addProvider(event.includeClient(), new BMItemModelProvider(packOutput, existingFileHelper));
 
+        BMTagsProvider.Blocks blockTagsProvider = new BMTagsProvider.Blocks(packOutput, lookupProvider, existingFileHelper);
+        generator.addProvider(event.includeServer(), blockTagsProvider);
+        generator.addProvider(event.includeServer(), new BMTagsProvider.Items(packOutput, lookupProvider, blockTagsProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new BMTagsProvider.EntityTypes(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new BMTagsProvider.Biomes(packOutput, lookupProvider, existingFileHelper));
+
         generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, new RegistrySetBuilder()
-                /* Entry */,
+                .add(ForgeRegistries.Keys.BIOME_MODIFIERS, BMMobSpawnsProvider::bootstrapBiome),
                 Set.of(Behemoths.MODID)
         ));
     }

@@ -1,7 +1,6 @@
 package org.celestialworkshop.behemoths.entities;
 
 import it.unimi.dsi.fastutil.Pair;
-import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -9,9 +8,9 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -26,8 +25,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.ForgeMod;
 import org.celestialworkshop.behemoths.Behemoths;
-import org.celestialworkshop.behemoths.api.ActionManager;
+import org.celestialworkshop.behemoths.api.client.animation.EntityAnimationManager;
+import org.celestialworkshop.behemoths.api.entity.ActionManager;
+import org.celestialworkshop.behemoths.client.animations.BanishingStampedeAnimations;
 import org.celestialworkshop.behemoths.entities.ai.BMCustomJumpableEntity;
 import org.celestialworkshop.behemoths.entities.ai.BMEntity;
 import org.celestialworkshop.behemoths.entities.ai.action.StampedeRamAction;
@@ -42,8 +44,6 @@ import org.celestialworkshop.behemoths.particles.VFXTypes;
 import org.celestialworkshop.behemoths.registries.BMSoundEvents;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-
 public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCustomJumpableEntity {
 
     private static final EntityDataAccessor<Boolean> DATA_IS_RAMMING = SynchedEntityData.defineId(BanishingStampede.class, EntityDataSerializers.BOOLEAN);
@@ -52,11 +52,7 @@ public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCusto
     public static final String RAMMING_ANIMATION = "ram";
     public static final String THROW_RIDER_ANIMATION = "throw_rider";
 
-    public final Map<String, AnimationState> animationStateMap = new Object2ObjectArrayMap<>();
-    public final AnimationState idleAnimationState = this.createAnimationState(IDLE_ANIMATION);
-    public final AnimationState rammingAnimationState = this.createAnimationState(RAMMING_ANIMATION);
-    public final AnimationState throwRiderAnimationState = this.createAnimationState(THROW_RIDER_ANIMATION);
-
+    public final EntityAnimationManager animationManager = new EntityAnimationManager(this);
     public final ActionManager<BanishingStampede> attackManager = new ActionManager<>(this);
 
     public int jumpTime = 0;
@@ -68,14 +64,18 @@ public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCusto
         this.setPathfindingMalus(BlockPathTypes.WATER, 16.0F);
         this.moveControl = new BMMoveControl<>(this);
 
+        this.animationManager.registerAnimation(IDLE_ANIMATION, () -> BanishingStampedeAnimations.IDLE);
+        this.animationManager.registerAnimation(RAMMING_ANIMATION, () -> BanishingStampedeAnimations.RAM);
+        this.animationManager.registerAnimation(THROW_RIDER_ANIMATION, () -> BanishingStampedeAnimations.THROW_RIDER);
+
         this.attackManager.addAction(
                 new StampedeRamAction(this)
         );
     }
 
     @Override
-    public Map<String, AnimationState> getAnimationStateMap() {
-        return animationStateMap;
+    public EntityAnimationManager getAnimationManager() {
+        return this.animationManager;
     }
 
     public static AttributeSupplier createAttributes() {
@@ -86,6 +86,7 @@ public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCusto
                 .add(Attributes.ARMOR, 4.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
                 .add(Attributes.JUMP_STRENGTH, 0.8D)
+                .add(ForgeMod.STEP_HEIGHT_ADDITION.get(), 1.5D)
                 .build();
     }
 
@@ -93,23 +94,21 @@ public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCusto
     public void aiStep() {
         super.aiStep();
         if (level().isClientSide) {
+            this.manageIdleAnimations();
             this.emitAura();
         } else {
             this.attackManager.tick();
         }
-
-        this.manageIdleAnimations();
     }
 
     public void manageIdleAnimations() {
-        this.idleAnimationState.startIfStopped(this.tickCount + random.nextInt(100));
+        this.getAnimationManager().getAnimationState(IDLE_ANIMATION).startIfStopped(this.tickCount + random.nextInt(100));
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new StampedeRunAroundGoal(this, 1.2D));
         this.goalSelector.addGoal(2, new StampedeArchzombieRamGoal(this));
-//        this.goalSelector.addGoal(2, new RandomStandGoal(this));
         this.goalSelector.addGoal(3, new StampedeMovementGoal(this));
     }
 
@@ -207,6 +206,10 @@ public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCusto
     }
 
     @Override
+    protected void randomizeAttributes(RandomSource pRandom) {
+    }
+
+    @Override
     public boolean isFood(ItemStack pStack) {
         return pStack.getItem() == Items.BONE || pStack.getItem() == Items.BONE_BLOCK || pStack.getItem() == Items.BONE_MEAL;
     }
@@ -252,6 +255,6 @@ public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCusto
 
     @Override
     public float getRotationFreedom() {
-        return 0.1F;
+        return 0.075F;
     }
 }

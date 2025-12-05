@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.client.models.ArchzombieModel;
+import org.celestialworkshop.behemoths.client.renderlayers.ArchzombieBannerLayer;
 import org.celestialworkshop.behemoths.entities.Archzombie;
 
 public class ArchzombieRenderer extends MobRenderer<Archzombie, ArchzombieModel<Archzombie>> {
@@ -13,6 +14,7 @@ public class ArchzombieRenderer extends MobRenderer<Archzombie, ArchzombieModel<
     public ArchzombieRenderer(EntityRendererProvider.Context pContext) {
         super(pContext, new ArchzombieModel<>(pContext.bakeLayer(ArchzombieModel.LAYER_LOCATION)), 0.5F);
         this.addLayer(new ItemInHandLayer<>(this, pContext.getItemInHandRenderer()));
+        this.addLayer(new ArchzombieBannerLayer(this));
     }
 
     @Override

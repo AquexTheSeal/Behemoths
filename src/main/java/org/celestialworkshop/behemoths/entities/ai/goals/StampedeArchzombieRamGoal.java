@@ -3,6 +3,8 @@ package org.celestialworkshop.behemoths.entities.ai.goals;
 import net.minecraft.world.entity.ai.goal.Goal;
 import org.celestialworkshop.behemoths.entities.Archzombie;
 import org.celestialworkshop.behemoths.entities.BanishingStampede;
+import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
+import org.celestialworkshop.behemoths.utils.WorldUtils;
 
 public class StampedeArchzombieRamGoal extends Goal {
     private final BanishingStampede stampede;
@@ -15,7 +17,14 @@ public class StampedeArchzombieRamGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return stampede.getControllingPassenger() instanceof Archzombie arc && arc.getTarget() != null;
+        if (stampede.getControllingPassenger() instanceof Archzombie arc && arc.getTarget() != null) {
+            if (WorldUtils.hasPandemoniumCurse(stampede.level(), BMPandemoniumCurses.ARCHZOMBIE_SPEED.get())) {
+                return true;
+            } else {
+                return arc.isLeader();
+            }
+        }
+        return false;
     }
 
     @Override

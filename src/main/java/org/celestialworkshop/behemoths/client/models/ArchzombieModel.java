@@ -22,8 +22,8 @@ import java.util.List;
 public class ArchzombieModel<T extends Archzombie> extends BMHierarchicalModel<T> implements ArmedModel {
 
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Behemoths.prefix("archzombiemodel"), "main");
-    private final ModelPart root;
-    private final ModelPart body;
+    public final ModelPart root;
+    public final ModelPart body;
     private final ModelPart right_arm;
     private final ModelPart right_hand;
     private final ModelPart left_arm;
@@ -77,7 +77,7 @@ public class ArchzombieModel<T extends Archzombie> extends BMHierarchicalModel<T
     }
 
 	@Override
-	public void setupAnim(Archzombie entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.parts().forEach(ModelPart::resetPose);
 
         if (entity.shouldSit()) {
@@ -88,11 +88,10 @@ public class ArchzombieModel<T extends Archzombie> extends BMHierarchicalModel<T
             this.head.xRot = headPitch * Mth.DEG_TO_RAD;
         }
 
-        this.animate(entity.idleAnimationState, ArchzombieAnimations.IDLE, ageInTicks);
-        this.animate(entity.ridingAnimationState, ArchzombieAnimations.RIDING, ageInTicks);
-        this.animate(entity.ridingSweepAnimationState, ArchzombieAnimations.RIDING_SWEEP, ageInTicks);
-        this.animate(entity.sweep0AnimationState, ArchzombieAnimations.SWEEP_0, ageInTicks);
-
+        this.animateManager(entity, ageInTicks);
+        if (entity.isPassenger()) {
+            this.animateScaled(ArchzombieAnimations.RIDING, ageInTicks, 0.2F, 1.0F);
+        }
         this.animateWalk(ArchzombieAnimations.WALK, limbSwing, limbSwingAmount, 2.0F, 1.0F);
 	}
 
@@ -108,13 +107,13 @@ public class ArchzombieModel<T extends Archzombie> extends BMHierarchicalModel<T
             this.body.translateAndRotate(pPoseStack);
             this.left_arm.translateAndRotate(pPoseStack);
             this.left_hand.translateAndRotate(pPoseStack);
-            pPoseStack.translate(0, -0.5, 0.15);
+            pPoseStack.translate(0, -0.5, 0);
         } else {
             this.root.translateAndRotate(pPoseStack);
             this.body.translateAndRotate(pPoseStack);
             this.right_arm.translateAndRotate(pPoseStack);
             this.right_hand.translateAndRotate(pPoseStack);
-            pPoseStack.translate(0, -0.5, 0.15);
+            pPoseStack.translate(0, -0.5, 0);
         }
     }
 

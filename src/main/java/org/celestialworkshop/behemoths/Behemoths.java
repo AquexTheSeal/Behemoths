@@ -29,6 +29,7 @@ public class Behemoths {
         BMItems.ITEMS.register(modBus);
         BMParticleTypes.PARTICLE_TYPES.register(modBus);
         BMSoundEvents.SOUND_EVENTS.register(modBus);
+        BMPandemoniumCurses.PANDEMONIUM_CURSES.register(modBus);
     }
 
     public static ResourceLocation prefix(String path) {

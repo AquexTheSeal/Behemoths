@@ -6,7 +6,6 @@ package org.celestialworkshop.behemoths.client.models;// Made with Blockbench 4.
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -18,7 +17,7 @@ import org.celestialworkshop.behemoths.entities.BanishingStampede;
 
 import java.util.List;
 
-public class BanishingStampedeModel<T extends BanishingStampede> extends HierarchicalModel<T> {
+public class BanishingStampedeModel<T extends BanishingStampede> extends BMHierarchicalModel<T> {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Behemoths.prefix("banishingstampedemodel"), "main");
 	private final ModelPart object;
 	private final ModelPart body;
@@ -114,16 +113,15 @@ public class BanishingStampedeModel<T extends BanishingStampede> extends Hierarc
 	}
 
     @Override
-	public void setupAnim(BanishingStampede entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.parts().forEach(ModelPart::resetPose);
+
+        this.object.xRot = (float) Mth.clamp(-entity.getDeltaMovement().y() * 45, -90, 90) * Mth.DEG_TO_RAD;
 
         this.neck.xRot = headPitch * Mth.DEG_TO_RAD;
         this.neck.yRot = netHeadYaw * Mth.DEG_TO_RAD;
 
-        this.animate(entity.idleAnimationState, BanishingStampedeAnimations.IDLE, ageInTicks);
-        this.animate(entity.rammingAnimationState, BanishingStampedeAnimations.RAM, ageInTicks);
-        this.animate(entity.throwRiderAnimationState, BanishingStampedeAnimations.THROW_RIDER, ageInTicks);
-
+        this.animateManager(entity, ageInTicks);
         this.animateWalk(BanishingStampedeAnimations.RUN, limbSwing, limbSwingAmount, 1.0F, 2F);
 	}
 

@@ -17,6 +17,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
+import org.celestialworkshop.behemoths.api.client.animation.InterpolationTypes;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -167,11 +168,11 @@ public class VFXParticle extends TextureSheetParticle {
         float progress = Math.min((this.age + pPartialTicks) / (float) this.lifetime, 1.0f);
 
         VFXParticleData.VFXInterpolationData scaleData = data.scaleData();
-        float scaleDelta = VFXInterpolation.apply(scaleData.interpolationType(), progress);
+        float scaleDelta = InterpolationTypes.apply(scaleData.interpolationType(), progress);
         this.quadSize = Mth.lerp(scaleDelta, scaleData.startValue(), scaleData.endValue());
 
         VFXParticleData.VFXInterpolationData alphaData = data.alphaData();
-        float alphaDelta = VFXInterpolation.apply(alphaData.interpolationType(), progress);
+        float alphaDelta = InterpolationTypes.apply(alphaData.interpolationType(), progress);
         this.alpha = Mth.lerp(alphaDelta, alphaData.startValue(), alphaData.endValue());
 
         float x = (float)(Mth.lerp(pPartialTicks, this.xo, this.x) - vec3.x());
@@ -191,12 +192,12 @@ public class VFXParticle extends TextureSheetParticle {
             case FLAT_LOOK -> {
                 pose.mulPose(renderInfo.rotation());
                 pose.mulPose(Axis.ZP.rotationDegrees(data.zRot()));
-                this.renderQuadWithBackface(pose, bufferSource, size);
+                this.renderQuadWithBackface(pose, bufferSource, size, RenderType.entityTranslucent(this.getCurrentTexture()));
             }
             case FLAT -> {
                 this.applyDataRotations(pose);
                 pose.mulPose(Axis.XP.rotationDegrees(90));
-                this.renderQuadWithBackface(pose, bufferSource, size);
+                this.renderQuadWithBackface(pose, bufferSource, size, RenderType.entityTranslucent(this.getCurrentTexture()));
             }
             case WALLS, WALLS_INTERSECTED -> {
                 this.applyDataRotations(pose);
@@ -211,15 +212,15 @@ public class VFXParticle extends TextureSheetParticle {
                     pose.pushPose();
                     pose.translate(pair.getSecond().x, pair.getSecond().y, pair.getSecond().z);
                     pose.mulPose(Axis.YP.rotationDegrees(pair.getFirst()));
-                    this.renderQuadWithBackface(pose, bufferSource, size);
+                    this.renderQuadWithBackface(pose, bufferSource, size, RenderType.entityTranslucent(this.getCurrentTexture()));
                     pose.popPose();
                 }
             }
             case CROSS -> {
                 this.applyDataRotations(pose);
-                this.renderQuadWithBackface(pose, bufferSource, size);
+                this.renderQuadWithBackface(pose, bufferSource, size, RenderType.entityTranslucent(this.getCurrentTexture()));
                 pose.mulPose(Axis.YP.rotationDegrees(90));
-                this.renderQuadWithBackface(pose, bufferSource, size);
+                this.renderQuadWithBackface(pose, bufferSource, size, RenderType.entityTranslucent(this.getCurrentTexture()));
             }
         }
     }
@@ -230,8 +231,7 @@ public class VFXParticle extends TextureSheetParticle {
         return values[Math.min(Math.max(ordinal, 0), values.length - 1)];
     }
 
-    private void renderQuadWithBackface(PoseStack pose, MultiBufferSource.BufferSource bufferSource, float size) {
-        RenderType texture = RenderType.entityTranslucent(this.getCurrentTexture());
+    private void renderQuadWithBackface(PoseStack pose, MultiBufferSource.BufferSource bufferSource, float size, RenderType renderType) {
         pose.pushPose();
         pose.translate(0, size * 1.5F, 0);
         pose.scale(-size, -size, size);
@@ -241,22 +241,20 @@ public class VFXParticle extends TextureSheetParticle {
             pose.translate(0.0F, -1.5F, 0.0F);
             Matrix4f poseMatrix = pose.last().pose();
             Matrix3f normalMatrix = pose.last().normal();
-            VertexConsumer vertexConsumer = bufferSource.getBuffer(texture);
+            VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
             int overlay = OverlayTexture.NO_OVERLAY;
             int light = LightTexture.FULL_BRIGHT;
 
             float currentAlpha = this.alpha;
 
-            vertexConsumer.vertex(poseMatrix, -1.0F, -1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(0.0F, 1.0F).overlayCoords(overlay).uv2(light).normal(normalMatrix, 0.0F, 0.0F, 1.0F).endVertex();
-            vertexConsumer.vertex(poseMatrix, 1.0F, -1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(1.0F, 1.0F).overlayCoords(overlay).uv2(light).normal(normalMatrix, 0.0F, 0.0F, 1.0F).endVertex();
-            vertexConsumer.vertex(poseMatrix, 1.0F, 1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(1.0F, 0.0F).overlayCoords(overlay).uv2(light).normal(normalMatrix, 0.0F, 0.0F, 1.0F).endVertex();
-            vertexConsumer.vertex(poseMatrix, -1.0F, 1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(0.0F, 0.0F).overlayCoords(overlay).uv2(light).normal(normalMatrix, 0.0F, 0.0F, 1.0F).endVertex();
+            vertexConsumer.vertex(poseMatrix, -1.0F, -1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(0.0F, 1.0F).overlayCoords(overlay).uv2(light).normal(0F, 1.0F, 0F).endVertex();
+            vertexConsumer.vertex(poseMatrix, 1.0F, -1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(1.0F, 1.0F).overlayCoords(overlay).uv2(light).normal(0F, 1.0F, 0F).endVertex();
+            vertexConsumer.vertex(poseMatrix, 1.0F, 1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(1.0F, 0.0F).overlayCoords(overlay).uv2(light).normal(0F, 1.0F, 0F).endVertex();
+            vertexConsumer.vertex(poseMatrix, -1.0F, 1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(0.0F, 0.0F).overlayCoords(overlay).uv2(light).normal(0F, 1.0F, 0F).endVertex();
 
-            vertexConsumer.vertex(poseMatrix, -1.0F, 1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(0.0F, 0.0F).overlayCoords(overlay).uv2(light).normal(normalMatrix, 0.0F, 0.0F, -1.0F).endVertex();
-            vertexConsumer.vertex(poseMatrix, 1.0F, 1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(1.0F, 0.0F).overlayCoords(overlay).uv2(light).normal(normalMatrix, 0.0F, 0.0F, -1.0F).endVertex();
-            vertexConsumer.vertex(poseMatrix, 1.0F, -1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(1.0F, 1.0F).overlayCoords(overlay).uv2(light).normal(normalMatrix, 0.0F, 0.0F, -1.0F).endVertex();
-            vertexConsumer.vertex(poseMatrix, -1.0F, -1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(0.0F, 1.0F).overlayCoords(overlay).uv2(light).normal(normalMatrix, 0.0F, 0.0F, -1.0F).endVertex();
+
+
             pose.popPose();
         }
         pose.popPose();

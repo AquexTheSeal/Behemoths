@@ -41,7 +41,7 @@ public class StampedeMovementGoal extends Goal {
         if (target == null) {
             if (recheckTimer-- <= 0) {
                 target = findNearestArchzombie();
-                recheckTimer = 20 + stampede.getRandom().nextInt(20);
+                recheckTimer = 10 + stampede.getRandom().nextInt(10);
             }
         }
 
@@ -73,6 +73,9 @@ public class StampedeMovementGoal extends Goal {
     private @Nullable Archzombie findNearestArchzombie() {
         List<Archzombie> list = stampede.level().getEntitiesOfClass(Archzombie.class, stampede.getBoundingBox().inflate(32.0D), z -> z.isAlive() && !z.isPassenger());
         if (list.isEmpty()) return null;
-        return list.stream().min(Comparator.comparingDouble(stampede::distanceToSqr)).orElse(null);
+        return list.stream().min(Comparator
+                .comparing((Archzombie arch) -> !arch.isLeader())
+                .thenComparingDouble(stampede::distanceToSqr))
+                .orElse(null);
     }
 }

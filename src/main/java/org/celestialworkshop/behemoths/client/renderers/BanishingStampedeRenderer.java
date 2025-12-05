@@ -2,6 +2,7 @@ package org.celestialworkshop.behemoths.client.renderers;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.layers.SaddleLayer;
 import net.minecraft.resources.ResourceLocation;
 import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.client.models.BanishingStampedeModel;
@@ -11,6 +12,9 @@ public class BanishingStampedeRenderer extends MobRenderer<BanishingStampede, Ba
 
     public BanishingStampedeRenderer(EntityRendererProvider.Context pContext) {
         super(pContext, new BanishingStampedeModel<>(pContext.bakeLayer(BanishingStampedeModel.LAYER_LOCATION)), 0.9F);
+        this.addLayer(new SaddleLayer<>(this, new BanishingStampedeModel<>(pContext.bakeLayer(BanishingStampedeModel.LAYER_LOCATION)),
+                Behemoths.prefix("textures/entity/banishing_stampede_saddle.png"))
+        );
     }
 
     @Override

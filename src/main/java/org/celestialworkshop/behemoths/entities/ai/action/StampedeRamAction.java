@@ -7,12 +7,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.phys.Vec3;
 import org.celestialworkshop.behemoths.Behemoths;
-import org.celestialworkshop.behemoths.api.ManagedAction;
+import org.celestialworkshop.behemoths.api.entity.ManagedAction;
 import org.celestialworkshop.behemoths.entities.BanishingStampede;
-import org.celestialworkshop.behemoths.particles.VFXInterpolation;
+import org.celestialworkshop.behemoths.api.client.animation.InterpolationTypes;
 import org.celestialworkshop.behemoths.particles.VFXParticleData;
 import org.celestialworkshop.behemoths.particles.VFXTypes;
+import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
 import org.celestialworkshop.behemoths.registries.BMSoundEvents;
+import org.celestialworkshop.behemoths.utils.WorldUtils;
 
 public class StampedeRamAction extends ManagedAction<BanishingStampede> {
     public Vec3 lockedDirection = null;
@@ -29,7 +31,7 @@ public class StampedeRamAction extends ManagedAction<BanishingStampede> {
     @Override
     public void onStart() {
         timer = 0;
-        entity.startAnimation(BanishingStampede.RAMMING_ANIMATION);
+        entity.getAnimationManager().startAnimation(BanishingStampede.RAMMING_ANIMATION);
         entity.playSound(BMSoundEvents.STAMPEDE_CHARGE_ROAR.get());
     }
 
@@ -37,7 +39,7 @@ public class StampedeRamAction extends ManagedAction<BanishingStampede> {
     public void onStop() {
         timer = 0;
         entity.setRamming(false);
-        entity.stopAnimation(BanishingStampede.RAMMING_ANIMATION);
+        entity.getAnimationManager().stopAnimation(BanishingStampede.RAMMING_ANIMATION);
     }
 
     @Override
@@ -76,7 +78,7 @@ public class StampedeRamAction extends ManagedAction<BanishingStampede> {
                         .type(VFXTypes.FLAT)
                         .fadeOut()
                         .lifetime(10)
-                        .scale(0.0F, 3.5F, VFXInterpolation.EASE_OUT_QUAD)
+                        .scale(0.0F, 3.5F, InterpolationTypes.EASE_OUT_QUAD)
                         .xRot(entity.getRandom().nextFloat() * 360)
                         .xRot(90)
                         .zRot(entity.getYRot());
@@ -92,7 +94,7 @@ public class StampedeRamAction extends ManagedAction<BanishingStampede> {
 
             for (LivingEntity target : entity.level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(2.5D))) {
                 if ((!entity.getPassengers().isEmpty() && !entity.getPassengers().contains(target)) && target != entity) {
-                    entity.multiplyAndAttackTarget(target, 1.0F);
+                    entity.multiplyAndAttackTarget(target, WorldUtils.hasPandemoniumCurse(entity.level(), BMPandemoniumCurses.ARCHZOMBIE_SPEED.get()) ? 1.0F : 0.5F);
                     target.push(0, 0.2F, 0);
                     target.hurtMarked = true;
                 }

@@ -23,11 +23,13 @@ public record ManageAnimationStatePacket(int entityId, String animationId, Actio
     public static void handle(ManageAnimationStatePacket packet, Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
             Entity entity = Minecraft.getInstance().level.getEntity(packet.entityId);
-            if (entity instanceof BMEntity bm) {
+            if (entity instanceof BMEntity bm && bm.getAnimationManager() != null) {
                 if (packet.action == Action.START) {
-                    bm.getAnimationStateMap().get(packet.animationId).startIfStopped(entity.tickCount);
+                    bm.getAnimationManager().getAnimationState(packet.animationId).startIfStopped(entity.tickCount);
+                } else if (packet.action == Action.FORCE_sTART) {
+                    bm.getAnimationManager().getAnimationState(packet.animationId).start(entity.tickCount);
                 } else if (packet.action == Action.STOP) {
-                    bm.getAnimationStateMap().get(packet.animationId).stop();
+                    bm.getAnimationManager().getAnimationState(packet.animationId).stop();
                 }
             }
         });
@@ -36,6 +38,7 @@ public record ManageAnimationStatePacket(int entityId, String animationId, Actio
 
     public enum Action {
         START,
+        FORCE_sTART,
         STOP
     }
 }

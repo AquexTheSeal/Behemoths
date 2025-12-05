@@ -10,6 +10,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.celestialworkshop.behemoths.api.client.animation.InterpolationTypes;
 import org.celestialworkshop.behemoths.registries.BMParticleTypes;
 import org.jetbrains.annotations.NotNull;
 
@@ -169,11 +170,11 @@ public record VFXParticleData(
 
         private float startScale = 1.0F;
         private float endScale = 1.0F;
-        private VFXInterpolation scaleInterpolation = VFXInterpolation.LINEAR;
+        private InterpolationTypes scaleInterpolation = InterpolationTypes.LINEAR;
 
         private float startAlpha = 1.0F;
         private float endAlpha = 1.0F;
-        private VFXInterpolation alphaInterpolation = VFXInterpolation.LINEAR;
+        private InterpolationTypes alphaInterpolation = InterpolationTypes.LINEAR;
 
         private float xRot;
         private float yRot;
@@ -201,7 +202,7 @@ public record VFXParticleData(
         public Builder scale(float scale) {
             this.startScale = scale;
             this.endScale = scale;
-            this.scaleInterpolation = VFXInterpolation.LINEAR;
+            this.scaleInterpolation = InterpolationTypes.LINEAR;
             return this;
         }
 
@@ -211,14 +212,14 @@ public record VFXParticleData(
             return this;
         }
 
-        public Builder scale(float startScale, float endScale, VFXInterpolation interpolation) {
+        public Builder scale(float startScale, float endScale, InterpolationTypes interpolation) {
             this.startScale = startScale;
             this.endScale = endScale;
             this.scaleInterpolation = interpolation;
             return this;
         }
 
-        public Builder scaleInterpolation(VFXInterpolation interpolation) {
+        public Builder scaleInterpolation(InterpolationTypes interpolation) {
             this.scaleInterpolation = interpolation;
             return this;
         }
@@ -226,7 +227,7 @@ public record VFXParticleData(
         public Builder alpha(float alpha) {
             this.startAlpha = alpha;
             this.endAlpha = alpha;
-            this.alphaInterpolation = VFXInterpolation.LINEAR;
+            this.alphaInterpolation = InterpolationTypes.LINEAR;
             return this;
         }
 
@@ -236,14 +237,14 @@ public record VFXParticleData(
             return this;
         }
 
-        public Builder alpha(float startAlpha, float endAlpha, VFXInterpolation interpolation) {
+        public Builder alpha(float startAlpha, float endAlpha, InterpolationTypes interpolation) {
             this.startAlpha = startAlpha;
             this.endAlpha = endAlpha;
             this.alphaInterpolation = interpolation;
             return this;
         }
 
-        public Builder alphaInterpolation(VFXInterpolation interpolation) {
+        public Builder alphaInterpolation(InterpolationTypes interpolation) {
             this.alphaInterpolation = interpolation;
             return this;
         }

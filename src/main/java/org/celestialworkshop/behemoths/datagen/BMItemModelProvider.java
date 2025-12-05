@@ -18,6 +18,7 @@ public class BMItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        handheld(BMItems.BEHEBUGGER.get());
         behemothSpawnEgg(BMItems.BANISHING_STAMPEDE_SPAWN_EGG.get());
         behemothSpawnEgg(BMItems.ARCHZOMBIE_SPAWN_EGG.get());
     }

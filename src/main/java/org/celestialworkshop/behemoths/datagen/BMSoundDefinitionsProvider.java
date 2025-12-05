@@ -17,6 +17,8 @@ public class BMSoundDefinitionsProvider extends SoundDefinitionsProvider {
 
     @Override
     public void registerSounds() {
+        this.variantSound(BMSoundEvents.ARCHZOMBIE_SWING, 2);
+
         this.variantSound(BMSoundEvents.STAMPEDE_HURT, 3);
         this.basicSound(BMSoundEvents.STAMPEDE_CHARGE_ROAR);
         this.basicSound(BMSoundEvents.STAMPEDE_DEATH);
