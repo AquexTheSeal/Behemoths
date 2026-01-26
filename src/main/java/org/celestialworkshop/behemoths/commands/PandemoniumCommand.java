@@ -1,0 +1,159 @@
+package org.celestialworkshop.behemoths.commands;
+
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.arguments.ResourceLocationArgument;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import org.celestialworkshop.behemoths.api.PandemoniumCurse;
+import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
+import org.celestialworkshop.behemoths.utils.WorldUtils;
+import org.celestialworkshop.behemoths.world.savedata.WorldPandemoniumData;
+
+public class PandemoniumCommand {
+
+    private static final SuggestionProvider<CommandSourceStack> CURSE_SUGGESTIONS = (context, builder) ->
+            SharedSuggestionProvider.suggestResource(
+            BMPandemoniumCurses.REGISTRY.get().getKeys(),
+            builder
+    );
+
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+
+        dispatcher.register(
+                Commands.literal("pandemonium")
+                        .then(Commands.literal("curse")
+                                .then(Commands.literal("list")
+                                        .executes(PandemoniumCommand::listCurses))
+
+                                .then(Commands.literal("add")
+                                        .requires(source -> source.hasPermission(2))
+                                        .then(Commands.argument("curse", ResourceLocationArgument.id())
+                                                .suggests(CURSE_SUGGESTIONS)
+                                                .executes(PandemoniumCommand::addCurse)))
+
+                                .then(Commands.literal("remove")
+                                        .requires(source -> source.hasPermission(2))
+                                        .then(Commands.argument("curse", ResourceLocationArgument.id())
+                                                .suggests(CURSE_SUGGESTIONS)
+                                                .executes(PandemoniumCommand::removeCurse)))
+
+                                .then(Commands.literal("clear")
+                                        .requires(source -> source.hasPermission(2))
+                                        .executes(PandemoniumCommand::clearCurses))
+                        )
+
+                        .then(Commands.literal("voting")
+                                .requires(source -> source.hasPermission(2))
+                                .then(Commands.literal("start")
+                                        .executes(PandemoniumCommand::startVoting))
+                                .then(Commands.literal("stop")
+                                        .executes(PandemoniumCommand::stopVoting))
+                        )
+        );
+    }
+
+    private static int startVoting(CommandContext<CommandSourceStack> context) {
+        ServerLevel level = context.getSource().getLevel();
+
+        if (WorldPandemoniumData.get(level).isVotingActive()) {
+            context.getSource().sendFailure(Component.literal("Voting has already started!"));
+            return 0;
+        }
+
+        WorldUtils.openPandemoniumSelection(level);
+        context.getSource().sendSuccess(() -> Component.literal("Started voting"), true);
+        return 1;
+    }
+
+    private static int stopVoting(CommandContext<CommandSourceStack> context) {
+        ServerLevel level = context.getSource().getLevel();
+
+        if (!WorldPandemoniumData.get(level).isVotingActive()) {
+            context.getSource().sendFailure(Component.literal("There is no current voting process!"));
+            return 0;
+        }
+
+        WorldUtils.endPandemoniumSelection(level, true);
+        context.getSource().sendSuccess(() -> Component.literal("Stopped voting"), true);
+        return 1;
+    }
+
+    private static int addCurse(CommandContext<CommandSourceStack> context) {
+        ResourceLocation id = ResourceLocationArgument.getId(context, "curse");
+        PandemoniumCurse curse = BMPandemoniumCurses.REGISTRY.get().getValue(id);
+
+        if (curse == null) {
+            context.getSource().sendFailure(Component.literal("Unknown curse - " + id));
+            return 0;
+        }
+
+        ServerLevel level = context.getSource().getLevel();
+        WorldPandemoniumData data = WorldPandemoniumData.get(level);
+
+        if (data.getActivePandemoniumCurses().contains(curse)) {
+            context.getSource().sendFailure(Component.literal("Curse '" + curse.getDisplayName().getString() + "' is already active!"));
+            return 0;
+        }
+
+        data.addActivePandemoniumCurse(curse);
+        context.getSource().sendSuccess(() -> Component.literal("Added curse: " + curse.getDisplayName().getString()), true);
+        return 1;
+    }
+
+    private static int removeCurse(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ResourceLocation id = ResourceLocationArgument.getId(context, "curse");
+        PandemoniumCurse curse = BMPandemoniumCurses.REGISTRY.get().getValue(id);
+
+        if (curse == null) {
+            context.getSource().sendFailure(Component.literal("Unknown curse - " + id));
+            return 0;
+        }
+
+        ServerLevel level = context.getSource().getLevel();
+        WorldPandemoniumData data = WorldPandemoniumData.get(level);
+
+        if (!data.getActivePandemoniumCurses().contains(curse)) {
+            context.getSource().sendFailure(Component.literal("Curse '" + curse.getDisplayName().getString() + "' is not active!"));
+            return 0;
+        }
+
+        data.removeActivePandemoniumCurse(curse);
+        context.getSource().sendSuccess(() -> Component.literal("Removed curse: " + curse.getDisplayName().getString()), true);
+        return 1;
+    }
+
+    private static int clearCurses(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerLevel level = context.getSource().getLevel();
+        WorldPandemoniumData data = WorldPandemoniumData.get(level);
+
+        int count = data.getActivePandemoniumCurses().size();
+        data.clearActivePandemoniumCurses();
+        context.getSource().sendSuccess(() -> Component.literal("Cleared " + count + " active curse(s)"), true);
+        return count;
+    }
+
+    private static int listCurses(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerLevel level = context.getSource().getLevel();
+        WorldPandemoniumData data = WorldPandemoniumData.get(level);
+
+        if (data.getActivePandemoniumCurses().isEmpty()) {
+            context.getSource().sendSuccess(() -> Component.literal("No active curses"), false);
+            return 0;
+        }
+
+        context.getSource().sendSuccess(() -> Component.literal("Active Pandemonium Curses:"), false);
+        for (PandemoniumCurse curse : data.getActivePandemoniumCurses()) {
+            ResourceLocation curseId = curse.getId();
+            context.getSource().sendSuccess(() -> Component.literal("  - " + curse.getDisplayName().getString() + " (" + curseId + ")"), false);
+        }
+
+        return data.getActivePandemoniumCurses().size();
+    }
+}

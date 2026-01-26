@@ -1,7 +1,6 @@
 package org.celestialworkshop.behemoths.registries;
 
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.*;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -24,4 +23,13 @@ public class BMItems {
     // MISC
     public static final RegistryObject<Item> BEHEBUGGER = ITEMS.register("behebugger", () -> new BehebuggerItem(new Item.Properties().stacksTo(1)));
 
+    // MAGNALYTH
+    public static final RegistryObject<Item> MAGNALYTH_INGOT = ITEMS.register("magnalyth_ingot", () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> MAGNALYTH_NUGGET = ITEMS.register("magnalyth_nugget", () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> MAGNALYTH_SWORD = ITEMS.register("magnalyth_sword", () -> new SwordItem(BMItemTiers.MAGNALYTH, 3, -2.4F, new Item.Properties()));
+    public static final RegistryObject<Item> MAGNALYTH_AXE = ITEMS.register("magnalyth_axe", () -> new AxeItem(BMItemTiers.MAGNALYTH, 6.0F, -3.0F, new Item.Properties()));
+    public static final RegistryObject<Item> MAGNALYTH_PICKAXE = ITEMS.register("magnalyth_pickaxe", () -> new PickaxeItem(BMItemTiers.MAGNALYTH, 1, -2.8F, new Item.Properties()));
+    public static final RegistryObject<Item> MAGNALYTH_SHOVEL = ITEMS.register("magnalyth_shovel", () -> new ShovelItem(BMItemTiers.MAGNALYTH, 1.5F, -3.0F, new Item.Properties()));
+    public static final RegistryObject<Item> MAGNALYTH_HOE = ITEMS.register("magnalyth_hoe", () -> new HoeItem(BMItemTiers.MAGNALYTH, -3, 0.0F, new Item.Properties()));
 }

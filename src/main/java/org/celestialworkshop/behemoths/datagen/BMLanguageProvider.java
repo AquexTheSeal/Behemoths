@@ -23,6 +23,9 @@ public class BMLanguageProvider extends LanguageProvider {
         this.add("item_group.behemoths.behemoths", "Behemoths");
 
         this.add("key.categories.behemoths", "Behemoths");
+
+        // PANDEMONIUM
+
         this.add("key.behemoths.open_voting_progress", "Open Voting Progress");
 
         this.add("screen.behemoths.colossangrim", "The Colosssangrim");
@@ -38,7 +41,7 @@ public class BMLanguageProvider extends LanguageProvider {
         this.addPandemoniumCurse(BMPandemoniumCurses.ZOMBIE_BABY_CHANCE.get(), "Hoarding");
         this.addPandemoniumCurse(BMPandemoniumCurses.ZOMBIE_REVIVAL.get(), "Reanimation");
 
-        this.addPandemoniumCurse(BMPandemoniumCurses.ARCHZOMBIE_SHIELDS.get(), "Formidable Fortress");
+        this.addPandemoniumCurse(BMPandemoniumCurses.ARCHZOMBIE_LEADER.get(), "Formidable Fortress");
         this.addPandemoniumCurse(BMPandemoniumCurses.ARCHZOMBIE_SPEED.get(), "Phantom Steed");
         this.addPandemoniumCurse(BMPandemoniumCurses.ARCHZOMBIE_STAMPEDE_CHANCE.get(), "Knighthood Reinforcement");
 
@@ -47,9 +50,15 @@ public class BMLanguageProvider extends LanguageProvider {
         this.addPandemoniumCurseDescription(BMPandemoniumCurses.ZOMBIE_BABY_CHANCE.get(), "Baby zombie spawn chance will now significantly increase.");
         this.addPandemoniumCurseDescription(BMPandemoniumCurses.ZOMBIE_REVIVAL.get(), "Normal zombies will now gain a small chance to revive to full health upon death.");
 
-        this.addPandemoniumCurseDescription(BMPandemoniumCurses.ARCHZOMBIE_SHIELDS.get(), "Archzombies now sometimes spawn with shields. Shielded Archzombies block a player when there is a nearby leader riding a Banishing Stampede.");
+        this.addPandemoniumCurseDescription(BMPandemoniumCurses.ARCHZOMBIE_LEADER.get(), "Archzombie leaders will now spawn with .");
         this.addPandemoniumCurseDescription(BMPandemoniumCurses.ARCHZOMBIE_SPEED.get(), "Banishing Stampede chasing speed: x1.3. Normal Archzombies riding Banishing Stampedes can now also ram.");
         this.addPandemoniumCurseDescription(BMPandemoniumCurses.ARCHZOMBIE_STAMPEDE_CHANCE.get(), "Chance for Banishing Stampede to spawn along a non-leader Archzombie: 5% -> 25%. Stampede ram damage: x2.");
+
+        // TOOLTIP
+
+        this.add("tooltip.behemoths.specialty", "Behemoth Weapon Specialties");
+
+        // REGISTRIES
 
         for (RegistryObject<Item> item : BMItems.ITEMS.getEntries()) {
             this.addItem(item, WordUtils.capitalize(item.getId().getPath().replace("_", " ")));

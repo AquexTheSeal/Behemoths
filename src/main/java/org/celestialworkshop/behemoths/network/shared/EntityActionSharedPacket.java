@@ -108,6 +108,14 @@ public record EntityActionSharedPacket(int entityId, Action action, Map<String, 
                     }
                 }
             }
+            case SET_Y_ROTATION -> {
+                if (entity instanceof BanishingStampede bm) {
+                    if (packet.parameters.containsKey("val")) {
+                        bm.setYRot((Float) packet.parameters.get("val"));
+                        bm.yRotO = bm.getYRot();
+                    }
+                }
+            }
             default -> throw new IllegalArgumentException("Packet action is invalid for Server -> Client: " + packet.action());
         }
     }
@@ -128,7 +136,11 @@ public record EntityActionSharedPacket(int entityId, Action action, Map<String, 
     }
 
     public enum Action {
+        // C2S
         START_STAMPEDE_RAMMING,
-        FORCE_JUMP_STAMPEDE
+
+        // S2C
+        FORCE_JUMP_STAMPEDE,
+        SET_Y_ROTATION;
     }
 }

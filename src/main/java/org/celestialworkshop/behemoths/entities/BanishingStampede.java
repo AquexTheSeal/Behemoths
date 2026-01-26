@@ -11,6 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -203,6 +204,16 @@ public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCusto
                 .scale(0.3F + random.nextFloat() * 0.3F)
                 .zRot(random.nextInt(180));
         this.level().addParticle(data.build(), xx, yy, zz, xr, yr, zr);
+    }
+
+    @Override
+    protected void positionRider(Entity pPassenger, MoveFunction pCallback) {
+        if (this.hasPassenger(pPassenger)) {
+            float f = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F));
+            float f1 = -Mth.cos(this.yBodyRot * ((float)Math.PI / 180F));
+            double d0 = this.getY() + this.getPassengersRidingOffset() + pPassenger.getMyRidingOffset();
+            pCallback.accept(pPassenger, this.getX() + f * 0.5F, d0, this.getZ() + f1 * 0.5F);
+        }
     }
 
     @Override

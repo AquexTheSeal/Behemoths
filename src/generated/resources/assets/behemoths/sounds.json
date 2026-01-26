@@ -1,75 +1,62 @@
 {
+  "archzombie_ambient": {
+    "sounds": [
+      "behemoths:archzombie_ambient_0",
+      "behemoths:archzombie_ambient_1"
+    ],
+    "subtitle": "behemoths.subtitle.archzombie_ambient"
+  },
+  "archzombie_death": {
+    "sounds": [
+      "behemoths:archzombie_death"
+    ],
+    "subtitle": "behemoths.subtitle.archzombie_death"
+  },
+  "archzombie_hurt": {
+    "sounds": [
+      "behemoths:archzombie_hurt_0",
+      "behemoths:archzombie_hurt_1"
+    ],
+    "subtitle": "behemoths.subtitle.archzombie_hurt"
+  },
   "archzombie_swing": {
     "sounds": [
-      {
-        "attenuation_distance": 32,
-        "name": "behemoths:archzombie_swing_0"
-      },
-      {
-        "attenuation_distance": 32,
-        "name": "behemoths:archzombie_swing_1"
-      }
+      "behemoths:archzombie_swing_0",
+      "behemoths:archzombie_swing_1"
     ],
     "subtitle": "behemoths.subtitle.archzombie_swing"
   },
   "stampede_ambient": {
     "sounds": [
-      {
-        "attenuation_distance": 32,
-        "name": "behemoths:stampede_ambient_0"
-      },
-      {
-        "attenuation_distance": 32,
-        "name": "behemoths:stampede_ambient_1"
-      },
-      {
-        "attenuation_distance": 32,
-        "name": "behemoths:stampede_ambient_2"
-      }
+      "behemoths:stampede_ambient_0",
+      "behemoths:stampede_ambient_1",
+      "behemoths:stampede_ambient_2"
     ],
     "subtitle": "behemoths.subtitle.stampede_ambient"
   },
   "stampede_charge_roar": {
     "sounds": [
-      {
-        "attenuation_distance": 32,
-        "name": "behemoths:stampede_charge_roar"
-      }
+      "behemoths:stampede_charge_roar"
     ],
     "subtitle": "behemoths.subtitle.stampede_charge_roar"
   },
   "stampede_charge_step": {
     "sounds": [
-      {
-        "attenuation_distance": 32,
-        "name": "behemoths:stampede_charge_step"
-      }
+      "behemoths:stampede_charge_step"
     ],
     "subtitle": "behemoths.subtitle.stampede_charge_step"
   },
   "stampede_death": {
     "sounds": [
-      {
-        "attenuation_distance": 32,
-        "name": "behemoths:stampede_death"
-      }
+      "behemoths:stampede_death"
     ],
     "subtitle": "behemoths.subtitle.stampede_death"
   },
   "stampede_hurt": {
     "sounds": [
-      {
-        "attenuation_distance": 32,
-        "name": "behemoths:stampede_hurt_0"
-      },
-      {
-        "attenuation_distance": 32,
-        "name": "behemoths:stampede_hurt_1"
-      },
-      {
-        "attenuation_distance": 32,
-        "name": "behemoths:stampede_hurt_2"
-      }
+      "behemoths:stampede_hurt_0",
+      "behemoths:stampede_hurt_1",
+      "behemoths:stampede_hurt_2"
     ],
     "subtitle": "behemoths.subtitle.stampede_hurt"
   }

@@ -4,8 +4,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -27,21 +30,25 @@ import org.celestialworkshop.behemoths.entities.ai.BMEntity;
 import org.celestialworkshop.behemoths.entities.ai.action.ArchzombieRidingSweepAttackAction;
 import org.celestialworkshop.behemoths.entities.ai.action.ArchzombieRightSweep0Action;
 import org.celestialworkshop.behemoths.entities.ai.action.ArchzombieRightSweep1Action;
-import org.celestialworkshop.behemoths.entities.ai.goals.ArchzombieMovementGoal;
+import org.celestialworkshop.behemoths.entities.ai.goals.ArchzombieJumpGoal;
+import org.celestialworkshop.behemoths.entities.ai.goals.ArchzombieOrbitGoal;
+import org.celestialworkshop.behemoths.entities.ai.goals.SimpleChaseGoal;
+import org.celestialworkshop.behemoths.entities.ai.goals.WanderGoal;
 import org.celestialworkshop.behemoths.entities.ai.movecontrols.BMMoveControl;
 import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 import org.celestialworkshop.behemoths.registries.BMItems;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
+import org.celestialworkshop.behemoths.registries.BMSoundEvents;
 import org.celestialworkshop.behemoths.utils.WorldUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class Archzombie extends Monster implements BMEntity {
 
     public static final EntityDataAccessor<Boolean> IS_LEADER = SynchedEntityData.defineId(Archzombie.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> IS_BLOCKING = SynchedEntityData.defineId(Archzombie.class, EntityDataSerializers.BOOLEAN);
 
     public static final String IDLE_ANIMATION = "idle";
-//    public static final String RIDING_ANIMATION = "riding";
-    public static final String RIDING_SWEEP_ANIMATION = "ridingSweep";
+    public static final String RIDING_SWEEP_ANIMATION = "riding_sweep";
     public static final String SWEEP_0_ANIMATION = "sweep_right_0";
     public static final String SWEEP_1_ANIMATION = "sweep_right_1";
 
@@ -74,10 +81,10 @@ public class Archzombie extends Monster implements BMEntity {
 
     public static AttributeSupplier createAttributes() {
         return Monster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 60.0D)
+                .add(Attributes.MAX_HEALTH, 50.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.ATTACK_DAMAGE, 8.0D)
-                .add(Attributes.ARMOR, 8.0D)
+                .add(Attributes.ARMOR, 6.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
                 .add(Attributes.FOLLOW_RANGE, 80.0D)
                 .build();
@@ -85,12 +92,15 @@ public class Archzombie extends Monster implements BMEntity {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new ArchzombieMovementGoal(this));
-        this.goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 16.0F));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Villager.class, true));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
-        this.targetSelector.addGoal(4, new HurtByTargetGoal(this));
+        this.goalSelector.addGoal(1, new ArchzombieJumpGoal(this));
+        this.goalSelector.addGoal(1, new ArchzombieOrbitGoal(this));
+        this.goalSelector.addGoal(2, new SimpleChaseGoal(this, 1.25D));
+        this.goalSelector.addGoal(3, new WanderGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 16.0F));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(Archzombie.class, BanishingStampede.class));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Villager.class, true));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
     }
 
     @Override
@@ -130,19 +140,24 @@ public class Archzombie extends Monster implements BMEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(IS_LEADER, false);
+        this.entityData.define(IS_BLOCKING, false);
+
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
+
+        boolean leaderEnabled = WorldUtils.hasPandemoniumCurse(level(), BMPandemoniumCurses.ARCHZOMBIE_LEADER.get());
         float leaderChance = 0.15F;
-        this.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.SHIELD));
-        if (reason != MobSpawnType.REINFORCEMENT && random.nextFloat() < leaderChance) {
+
+        if (reason != MobSpawnType.REINFORCEMENT && random.nextFloat() < leaderChance && leaderEnabled) {
             setupAsLeader(level, difficulty, reason);
         } else {
             ItemStack weapon = random.nextFloat() < 0.7F ? new ItemStack(Items.IRON_SWORD) : new ItemStack(Items.IRON_AXE);
             this.setItemSlot(EquipmentSlot.MAINHAND, weapon);
 
-            float mountChance = WorldUtils.hasPandemoniumCurse(level(), BMPandemoniumCurses.ARCHZOMBIE_STAMPEDE_CHANCE.get()) ? 0.25F : 0.05F;
+            float mountChance = WorldUtils.hasPandemoniumCurse(level(), BMPandemoniumCurses.ARCHZOMBIE_STAMPEDE_CHANCE.get()) ? 0.25F : 0.1F;
             if (random.nextFloat() < mountChance) {
                 spawnStampedeAndRideOnIt(level, difficulty);
             }
@@ -151,16 +166,19 @@ public class Archzombie extends Monster implements BMEntity {
         return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
     }
 
-
     public void setupAsLeader(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason) {
         this.setLeader(true);
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(BMItems.ROTTEN_OATHKEEPER.get()));
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100.0D);
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(10.0D);
-        this.getAttribute(Attributes.ARMOR).setBaseValue(10.0D);
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(BMItems.MAGNALYTH_AXE.get()));
+        this.multiplyAttribute(Attributes.MAX_HEALTH, 2.0F);
+        this.multiplyAttribute(Attributes.ATTACK_DAMAGE, 1.2F);
+        this.multiplyAttribute(Attributes.ARMOR, 1.4F);
 
         this.spawnStampedeAndRideOnIt(pLevel, pDifficulty);
         this.spawnReinforcementArchzombiesAround(pLevel, pDifficulty);
+    }
+
+    public void multiplyAttribute(Attribute attribute, float multiplier) {
+        this.getAttribute(attribute).setBaseValue(this.getAttribute(attribute).getValue() * multiplier);
     }
 
     private void spawnReinforcementArchzombiesAround(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty) {
@@ -188,6 +206,21 @@ public class Archzombie extends Monster implements BMEntity {
     }
 
     @Override
+    protected @Nullable SoundEvent getAmbientSound() {
+        return BMSoundEvents.ARCHZOMBIE_AMBIENT.get();
+    }
+
+    @Override
+    protected @Nullable SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return BMSoundEvents.ARCHZOMBIE_HURT.get();
+    }
+
+    @Override
+    protected @Nullable SoundEvent getDeathSound() {
+        return BMSoundEvents.ARCHZOMBIE_DEATH.get();
+    }
+
+    @Override
     public boolean isLeftHanded() {
         return false;
     }
@@ -206,6 +239,14 @@ public class Archzombie extends Monster implements BMEntity {
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.setLeader(pCompound.getBoolean("IsLeader"));
+    }
+
+    public boolean isBlocking() {
+        return this.entityData.get(IS_BLOCKING);
+    }
+
+    public void setBlocking(boolean value) {
+        this.entityData.set(IS_BLOCKING, value);
     }
 
     public boolean isLeader() {

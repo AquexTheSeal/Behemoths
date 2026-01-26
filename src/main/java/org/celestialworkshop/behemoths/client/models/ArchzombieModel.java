@@ -81,8 +81,8 @@ public class ArchzombieModel<T extends Archzombie> extends BMHierarchicalModel<T
         this.parts().forEach(ModelPart::resetPose);
 
         if (entity.shouldSit()) {
-            this.root.y += 12;
-            this.root.z += 8;
+            this.root.y += 8;
+            this.root.z += 4;
         } else {
             this.head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
             this.head.xRot = headPitch * Mth.DEG_TO_RAD;

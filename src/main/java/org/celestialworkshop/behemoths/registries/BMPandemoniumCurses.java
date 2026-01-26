@@ -22,7 +22,7 @@ public class BMPandemoniumCurses {
     public static final RegistryObject<PandemoniumCurse> ZOMBIE_BABY_CHANCE = PANDEMONIUM_CURSES.register("zombie_baby_chance", () -> new PandemoniumCurse(EntityType.ZOMBIE));
     public static final RegistryObject<PandemoniumCurse> ZOMBIE_REVIVAL = PANDEMONIUM_CURSES.register("zombie_revival", () -> new PandemoniumCurse(EntityType.ZOMBIE));
 
-    public static final RegistryObject<PandemoniumCurse> ARCHZOMBIE_SHIELDS = PANDEMONIUM_CURSES.register("archzombie_shields", () -> new PandemoniumCurse(BMEntityTypes.ARCHZOMBIE.get()));
+    public static final RegistryObject<PandemoniumCurse> ARCHZOMBIE_LEADER = PANDEMONIUM_CURSES.register("archzombie_leader", () -> new PandemoniumCurse(BMEntityTypes.ARCHZOMBIE.get()));
     public static final RegistryObject<PandemoniumCurse> ARCHZOMBIE_STAMPEDE_CHANCE = PANDEMONIUM_CURSES.register("archzombie_stampede_chance", () -> new PandemoniumCurse(BMEntityTypes.ARCHZOMBIE.get()));
     public static final RegistryObject<PandemoniumCurse> ARCHZOMBIE_SPEED = PANDEMONIUM_CURSES.register("archzombie_speed", () -> new PandemoniumCurse(BMEntityTypes.ARCHZOMBIE.get()));
 }

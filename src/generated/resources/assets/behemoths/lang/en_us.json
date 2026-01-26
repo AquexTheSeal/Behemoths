@@ -4,6 +4,13 @@
   "item.behemoths.archzombie_spawn_egg": "Archzombie Spawn Egg",
   "item.behemoths.banishing_stampede_spawn_egg": "Banishing Stampede Spawn Egg",
   "item.behemoths.behebugger": "Behebugger",
+  "item.behemoths.magnalyth_axe": "Magnalyth Axe",
+  "item.behemoths.magnalyth_hoe": "Magnalyth Hoe",
+  "item.behemoths.magnalyth_ingot": "Magnalyth Ingot",
+  "item.behemoths.magnalyth_nugget": "Magnalyth Nugget",
+  "item.behemoths.magnalyth_pickaxe": "Magnalyth Pickaxe",
+  "item.behemoths.magnalyth_shovel": "Magnalyth Shovel",
+  "item.behemoths.magnalyth_sword": "Magnalyth Sword",
   "item.behemoths.rotten_oathkeeper": "Rotten Oathkeeper",
   "item_group.behemoths.behemoths": "Behemoths",
   "key.behemoths.open_voting_progress": "Open Voting Progress",
@@ -25,5 +32,6 @@
   "screen.behemoths.curse_selection.hover_button": "Vote for this modifier.",
   "screen.behemoths.curse_selection.title": "SELECT YOUR CURSE.",
   "screen.behemoths.voting_results.votes": "%s Votes",
-  "screen.behemoths.voting_results.winner": "Winner: %s"
+  "screen.behemoths.voting_results.winner": "Winner: %s",
+  "tooltip.behemoths.specialty": "Behemoth Weapon Specialties"
 }

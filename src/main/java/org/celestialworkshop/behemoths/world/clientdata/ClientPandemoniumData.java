@@ -19,6 +19,12 @@ public class ClientPandemoniumData {
 
     // Management
 
+    public static void stopVoting() {
+        localSelectedIndex = -1;
+        localRemainingTime = -1;
+        localMaxTime = 0;
+    }
+
     public static void openPandemoniumSelection(List<PandemoniumCurse> curses, boolean clearSelection) {
         if (clearSelection) localSelectedIndex = -1;
         Minecraft.getInstance().setScreen(new PandemoniumCurseSelectionScreen(curses));

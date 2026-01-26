@@ -1,10 +1,7 @@
 package org.celestialworkshop.behemoths;
 
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -14,6 +11,7 @@ import org.celestialworkshop.behemoths.client.models.ArchzombieModel;
 import org.celestialworkshop.behemoths.client.models.BanishingStampedeModel;
 import org.celestialworkshop.behemoths.client.renderers.ArchzombieRenderer;
 import org.celestialworkshop.behemoths.client.renderers.BanishingStampedeRenderer;
+import org.celestialworkshop.behemoths.client.tooltips.SpecialtyTooltip;
 import org.celestialworkshop.behemoths.particles.VFXParticle;
 import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 import org.celestialworkshop.behemoths.registries.BMParticleTypes;
@@ -51,5 +49,10 @@ public class BMClientSetup {
         event.registerReloadListener((stage, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor) ->
                 CompletableFuture.runAsync(VFXParticle::clearCaches, backgroundExecutor).thenCompose(stage::wait)
         );
+    }
+
+    @SubscribeEvent
+    public static void registerTooltipComponents(RegisterClientTooltipComponentFactoriesEvent event) {
+        event.register(SpecialtyTooltip.class, component -> component);
     }
 }

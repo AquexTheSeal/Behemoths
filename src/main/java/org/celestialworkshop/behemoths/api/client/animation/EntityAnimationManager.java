@@ -36,7 +36,7 @@ public class EntityAnimationManager {
 
     public void forceStartAnimation(String name) {
         if (!entity.level().isClientSide) {
-            BMNetwork.sendToAll(new ManageAnimationStatePacket(entity.getId(), name, ManageAnimationStatePacket.Action.FORCE_sTART));
+            BMNetwork.sendToAll(new ManageAnimationStatePacket(entity.getId(), name, ManageAnimationStatePacket.Action.FORCE_START));
         } else {
             this.getAnimationState(name).start(entity.tickCount);
         }

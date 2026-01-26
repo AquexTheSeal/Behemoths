@@ -41,7 +41,7 @@ public class CurseSelectionEntryElement extends AnimatedUIElement<PandemoniumCur
     @Override
     public void postInit() {
         button = new CurseSelectionButtonElement(screen, slotIndex);
-        button.setPos(getRenderX() + 110 - button.getWidth() / 2, getRenderY() + 10 - button.getHeight() / 2);
+        button.setPos(getRenderX() + 100 - button.getWidth() / 2, getRenderY() - button.getHeight() / 2);
         screen.uiElements.add(button);
 
         button.animation = this.animation;
@@ -71,7 +71,7 @@ public class CurseSelectionEntryElement extends AnimatedUIElement<PandemoniumCur
         Font font = minecraft.font;
         font.drawInBatch8xOutline(
                 curse.getDisplayName().getVisualOrderText(),
-                getRenderX() - 115,
+                getRenderX() - 105,
                 getRenderY() - 32,
                 0xffffff,
                 0x000000,
@@ -80,8 +80,8 @@ public class CurseSelectionEntryElement extends AnimatedUIElement<PandemoniumCur
                 LightTexture.FULL_BRIGHT
         );
 
-        guiGraphics.hLine(getRenderX() - 120, getRenderX() + 120, getRenderY() - 22, -1);
+        guiGraphics.hLine(getRenderX() - 105, getRenderX() + 105, getRenderY() - 22, -1);
 
-        this.drawShadowedWordWrap(guiGraphics, font, curse.getDescription(), getRenderX() - 72, getRenderY() - 16, 160, -1);
+        this.drawShadowedWordWrap(guiGraphics, font, curse.getDescription(), getRenderX() - 72, getRenderY() - 18, 160, -1);
     }
 }

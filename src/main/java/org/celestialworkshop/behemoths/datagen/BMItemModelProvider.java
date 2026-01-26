@@ -21,6 +21,15 @@ public class BMItemModelProvider extends ItemModelProvider {
         handheld(BMItems.BEHEBUGGER.get());
         behemothSpawnEgg(BMItems.BANISHING_STAMPEDE_SPAWN_EGG.get());
         behemothSpawnEgg(BMItems.ARCHZOMBIE_SPAWN_EGG.get());
+
+        basicItem(BMItems.MAGNALYTH_INGOT.get());
+        basicItem(BMItems.MAGNALYTH_NUGGET.get());
+
+        handheld(BMItems.MAGNALYTH_SWORD.get());
+        handheld(BMItems.MAGNALYTH_AXE.get());
+        handheld(BMItems.MAGNALYTH_PICKAXE.get());
+        handheld(BMItems.MAGNALYTH_SHOVEL.get());
+        handheld(BMItems.MAGNALYTH_HOE.get());
     }
 
     public void handheld(Item item) {

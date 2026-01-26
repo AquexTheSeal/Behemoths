@@ -23,9 +23,15 @@ public class WorldUtils {
     public static void openPandemoniumSelection(Level level) {
         if (!level.isClientSide) {
             WorldPandemoniumData data = WorldPandemoniumData.get((ServerLevel) level);
+
+            if (data.isVotingActive()) {
+                Behemoths.LOGGER.warn("Tried to open Pandemonium Selection, but Voting is active.");
+                return;
+            }
+
             if (data.getSelectableCurses().isEmpty()) {
 
-                data.setRemainingTime(100);
+                data.setRemainingTime(1000);
 
                 List<PandemoniumCurse> curseLookup = new ArrayList<>(BMPandemoniumCurses.REGISTRY.get().getEntries().stream()
                         .map(Map.Entry::getValue)
@@ -38,6 +44,7 @@ public class WorldUtils {
                     Behemoths.LOGGER.warn("No available curses to select.");
                     return;
                 }
+
                 List<PandemoniumCurse> sublist = curseLookup.subList(0, sublistEnd);
                 data.clearSelectableCurses();
                 for (int i = 0; i < sublistEnd; i++) {
@@ -52,7 +59,7 @@ public class WorldUtils {
         }
     }
 
-    public static void endPandemoniumSelection(Level level) {
+    public static void endPandemoniumSelection(Level level, boolean forceStopClients) {
         if (level instanceof ServerLevel server) {
             WorldPandemoniumData data = WorldPandemoniumData.get(server);
 
@@ -61,7 +68,7 @@ public class WorldUtils {
                 Behemoths.LOGGER.debug("\t-\tPlayer " + level.getPlayerByUUID(entry.getKey()).getDisplayName().getString() + " voted for " + data.getSelectableCurses().get(entry.getIntValue()).getDisplayName().getString());
             }
 
-            data.finishVotingCalculations();
+            data.finishVotingCalculations(forceStopClients);
             data.clearVoteData();
             data.clearSelectableCurses();
         }
@@ -93,10 +100,7 @@ public class WorldUtils {
         Random rand = new Random();
 
         if (max == 0) {
-            return new int[]{
-                    counts[0], counts[1], counts[2],
-                    rand.nextInt(selectableSize)
-            };
+            return new int[]{counts[0], counts[1], counts[2], rand.nextInt(selectableSize)};
         }
 
         int[] tieIndices = new int[selectableSize];

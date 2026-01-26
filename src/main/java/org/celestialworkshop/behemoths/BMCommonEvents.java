@@ -1,10 +1,12 @@
 package org.celestialworkshop.behemoths;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+import org.celestialworkshop.behemoths.commands.PandemoniumCommand;
 import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
 import org.celestialworkshop.behemoths.world.savedata.WorldPandemoniumData;
 
@@ -20,5 +22,10 @@ public class BMCommonEvents {
                 ClientPandemoniumData.tickPandemoniumClient();
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onCommandRegistry(RegisterCommandsEvent event) {
+        PandemoniumCommand.register(event.getDispatcher());
     }
 }

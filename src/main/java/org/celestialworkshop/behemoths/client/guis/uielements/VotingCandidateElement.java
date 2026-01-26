@@ -18,6 +18,7 @@ public class VotingCandidateElement extends AnimatedUIElement<VotingResultsScree
     public final int index;
     public PandemoniumCurse curse;
     public @Nullable LivingEntity entity;
+    public int pulse = 0;
 
     public VotingCandidateElement(VotingResultsScreen screen, int index) {
         super(screen);
@@ -38,7 +39,10 @@ public class VotingCandidateElement extends AnimatedUIElement<VotingResultsScree
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        int uOff = ClientPandemoniumData.localSelectedIndex == index ? getWidth() : 0;
+        int uOff = 0;
+        if (ClientPandemoniumData.localSelectedIndex == index && pulse >= 5) {
+            uOff = getWidth();
+        }
         guiGraphics.blit(VotingResultsScreen.MAIN_TEXTURE, this.getRenderX() - this.getWidth() / 2, this.getRenderY() - this.getHeight() / 2, uOff, 0, this.getWidth(), this.getHeight());
 
         entity.tick();
@@ -61,5 +65,7 @@ public class VotingCandidateElement extends AnimatedUIElement<VotingResultsScree
             entity.tickCount++;
             entity.tick();
         }
+        if (pulse++ > 10) pulse = 0;
+
     }
 }

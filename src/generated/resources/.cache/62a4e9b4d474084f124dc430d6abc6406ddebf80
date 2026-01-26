@@ -1,4 +1,11 @@
-// 1.20.1	2025-11-21T14:03:20.7567859	Item Models: behemoths
+// 1.20.1	2026-01-24T03:22:19.6546478	Item Models: behemoths
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/behemoths/models/item/archzombie_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/behemoths/models/item/banishing_stampede_spawn_egg.json
 a786baa9052b8d56887563e1e6b3743497b671ee assets/behemoths/models/item/behebugger.json
+6fac0ab9323798dac0e1208f106c4e97cafca240 assets/behemoths/models/item/magnalyth_axe.json
+ec04128322e595ea2c422f35c0eff51febaacd68 assets/behemoths/models/item/magnalyth_hoe.json
+f25554d9bd91d6188d685fb4c200436bce8d3eeb assets/behemoths/models/item/magnalyth_ingot.json
+68944f5e49611b5c70ad1638b1dc1d00dde9e2c2 assets/behemoths/models/item/magnalyth_nugget.json
+634428d589d6c6600352c62b75dc08fcb98103bc assets/behemoths/models/item/magnalyth_pickaxe.json
+d0b81486c0ae2e6da0e5f6c10cbefcd0256cebad assets/behemoths/models/item/magnalyth_shovel.json
+168e781ed44493f34ed3da9fc606ff553282f1ab assets/behemoths/models/item/magnalyth_sword.json

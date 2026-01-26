@@ -17,6 +17,9 @@ public class BMSoundDefinitionsProvider extends SoundDefinitionsProvider {
 
     @Override
     public void registerSounds() {
+        this.variantSound(BMSoundEvents.ARCHZOMBIE_AMBIENT, 2);
+        this.basicSound(BMSoundEvents.ARCHZOMBIE_DEATH);
+        this.variantSound(BMSoundEvents.ARCHZOMBIE_HURT, 2);
         this.variantSound(BMSoundEvents.ARCHZOMBIE_SWING, 2);
 
         this.variantSound(BMSoundEvents.STAMPEDE_HURT, 3);
@@ -28,7 +31,7 @@ public class BMSoundDefinitionsProvider extends SoundDefinitionsProvider {
 
     private void basicSound(RegistryObject<SoundEvent> sound) {
         this.add(sound.get(), subtitledSound(sound.getId().getPath())
-                .with(sound(Behemoths.prefix(sound.getId().getPath())).attenuationDistance(32))
+                .with(sound(Behemoths.prefix(sound.getId().getPath())))
         );
     }
 
@@ -36,7 +39,7 @@ public class BMSoundDefinitionsProvider extends SoundDefinitionsProvider {
         SoundDefinition soundDefinition = subtitledSound(sound.getId().getPath());
 
         for (int i = 0; i < variants; i++) {
-            soundDefinition.with(sound(Behemoths.prefix(sound.getId().getPath() + "_" + i)).attenuationDistance(32));
+            soundDefinition.with(sound(Behemoths.prefix(sound.getId().getPath() + "_" + i)));
         }
 
         this.add(sound.get(), soundDefinition);

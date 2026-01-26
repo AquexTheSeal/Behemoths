@@ -34,7 +34,7 @@ public class ArchzombieRidingSweepAttackAction extends ManagedAction<Archzombie>
             if (timer == 10 || timer == 15) {
                 if (entity.getTarget().distanceTo(entity) <= 4.5) {
                     entity.getTarget().invulnerableTime = 0;
-                    entity.multiplyAndAttackTarget(entity.getTarget(), 0.2F);
+                    entity.multiplyAndAttackTarget(entity.getTarget(), 0.3F);
                 }
 
                 entity.playSound(BMSoundEvents.ARCHZOMBIE_SWING.get(), 1.0f, 0.8f + entity.getRandom().nextFloat() * 0.4f);

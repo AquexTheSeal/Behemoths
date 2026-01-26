@@ -45,7 +45,7 @@ public class BMTagsProvider {
 
         @Override
         protected void addTags(HolderLookup.Provider pProvider) {
-            this.tag(BMTags.Entities.BEHEMOTHS).add(BMEntityTypes.ARCHZOMBIE.get());
+            this.tag(BMTags.Entities.BEHEMOTH).add(BMEntityTypes.ARCHZOMBIE.get());
         }
     }
 

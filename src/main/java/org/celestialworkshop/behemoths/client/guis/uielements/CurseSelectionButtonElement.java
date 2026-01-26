@@ -42,7 +42,7 @@ public class CurseSelectionButtonElement extends AnimatedUIElement<PandemoniumCu
         if (isHovered(mouseX, mouseY)) {
             uOff = 32;
         }
-        if (clickedTicks > 0) {
+        if (ClientPandemoniumData.localSelectedIndex == index) {
             uOff = 64;
         }
         guiGraphics.blit(PandemoniumCurseSelectionScreen.MAIN_TEXTURE, getRenderX(), getRenderY(), uOff, 160, getWidth(), getHeight());

@@ -1,0 +1,20 @@
+package org.celestialworkshop.behemoths.registries;
+
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryBuilder;
+import net.minecraftforge.registries.RegistryObject;
+import org.celestialworkshop.behemoths.Behemoths;
+import org.celestialworkshop.behemoths.api.ItemSpecialty;
+
+import java.util.function.Supplier;
+
+public class BMItemSpecialties {
+    public static final ResourceKey<Registry<ItemSpecialty>> ITEM_SPECIALTY_KEY = ResourceKey.createRegistryKey(Behemoths.prefix("pandemonium_curses"));
+    public static final DeferredRegister<ItemSpecialty> ITEM_SPECIALTIES = DeferredRegister.create(ITEM_SPECIALTY_KEY, Behemoths.MODID);
+    public static final Supplier<IForgeRegistry<ItemSpecialty>> REGISTRY = ITEM_SPECIALTIES.makeRegistry(() -> new RegistryBuilder<ItemSpecialty>().disableSaving().disableOverrides());
+
+    public static final RegistryObject<ItemSpecialty> BEHEMOTH_DAMAGE_BONUS = ITEM_SPECIALTIES.register("behemoth_damage_bonus", ItemSpecialty::new);
+}

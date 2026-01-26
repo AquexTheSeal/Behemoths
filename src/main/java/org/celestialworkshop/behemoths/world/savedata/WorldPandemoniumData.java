@@ -33,6 +33,10 @@ public class WorldPandemoniumData extends SavedData {
     public WorldPandemoniumData() {
     }
 
+    public boolean isVotingActive() {
+        return !selectableCurses.isEmpty();
+    }
+
     public static WorldPandemoniumData load(CompoundTag tag) {
         WorldPandemoniumData data = new WorldPandemoniumData();
 
@@ -100,7 +104,7 @@ public class WorldPandemoniumData extends SavedData {
         } else {
             remainingTime++;
             if (remainingTime == -1 && !selectableCurses.isEmpty()) {
-                WorldUtils.endPandemoniumSelection(level);
+                WorldUtils.endPandemoniumSelection(level, false);
             }
         }
 
@@ -110,9 +114,9 @@ public class WorldPandemoniumData extends SavedData {
         }
     }
 
-    public void finishVotingCalculations() {
+    public void finishVotingCalculations(boolean forceStopClients) {
         int[] voteResults = WorldUtils.getVoteResultsFromData(voteData, selectableCurses.size());
-        BMNetwork.sendToAll(new SendVoteDataPacket(voteResults));
+        BMNetwork.sendToAll(new SendVoteDataPacket(voteResults, forceStopClients));
 
         int highestVoteIndex = voteResults[3];
         Behemoths.LOGGER.debug("\tSelected Curse: " + selectableCurses.get(highestVoteIndex).getDisplayName().getString());

@@ -10,6 +10,9 @@ public class BMSoundEvents {
 
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Behemoths.MODID);
 
+    public static final RegistryObject<SoundEvent> ARCHZOMBIE_AMBIENT = registerSoundEvent("archzombie_ambient");
+    public static final RegistryObject<SoundEvent> ARCHZOMBIE_DEATH = registerSoundEvent("archzombie_death");
+    public static final RegistryObject<SoundEvent> ARCHZOMBIE_HURT = registerSoundEvent("archzombie_hurt");
     public static final RegistryObject<SoundEvent> ARCHZOMBIE_SWING = registerSoundEvent("archzombie_swing");
 
     public static final RegistryObject<SoundEvent> STAMPEDE_HURT = registerSoundEvent("stampede_hurt");

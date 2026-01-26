@@ -26,7 +26,7 @@ public record ManageAnimationStatePacket(int entityId, String animationId, Actio
             if (entity instanceof BMEntity bm && bm.getAnimationManager() != null) {
                 if (packet.action == Action.START) {
                     bm.getAnimationManager().getAnimationState(packet.animationId).startIfStopped(entity.tickCount);
-                } else if (packet.action == Action.FORCE_sTART) {
+                } else if (packet.action == Action.FORCE_START) {
                     bm.getAnimationManager().getAnimationState(packet.animationId).start(entity.tickCount);
                 } else if (packet.action == Action.STOP) {
                     bm.getAnimationManager().getAnimationState(packet.animationId).stop();
@@ -38,7 +38,7 @@ public record ManageAnimationStatePacket(int entityId, String animationId, Actio
 
     public enum Action {
         START,
-        FORCE_sTART,
+        FORCE_START,
         STOP
     }
 }

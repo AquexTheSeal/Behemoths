@@ -20,7 +20,8 @@ import java.util.List;
 public class BanishingStampedeModel<T extends BanishingStampede> extends BMHierarchicalModel<T> {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Behemoths.prefix("banishingstampedemodel"), "main");
 	private final ModelPart object;
-	private final ModelPart body;
+	public final ModelPart body;
+    public final ModelPart rider;
 	private final ModelPart tail;
 	private final ModelPart neck;
 	private final ModelPart mouth;
@@ -39,9 +40,12 @@ public class BanishingStampedeModel<T extends BanishingStampede> extends BMHiera
 	private final ModelPart back_right_leg;
 	private final ModelPart wingleg4;
 
+    private float smoothedXRot = 0F;
+
 	public BanishingStampedeModel(ModelPart root) {
 		this.object = root.getChild("object");
 		this.body = this.object.getChild("body");
+        this.rider = this.body.getChild("rider");
 		this.tail = this.body.getChild("tail");
 		this.neck = this.body.getChild("neck");
 		this.mouth = this.neck.getChild("mouth");
@@ -70,7 +74,9 @@ public class BanishingStampedeModel<T extends BanishingStampede> extends BMHiera
 		PartDefinition body = object.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 40).addBox(-5.0F, -8.0F, -17.0F, 10.0F, 10.0F, 22.0F, new CubeDeformation(0.05F))
 		.texOffs(0, 0).addBox(-6.0F, -8.5F, -18.0F, 12.0F, 16.0F, 24.0F, new CubeDeformation(0.05F)), PartPose.offset(0.0F, -13.0F, 6.0F));
 
-		PartDefinition tail = body.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(42, 72).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -8.0F, 5.0F));
+        PartDefinition rider = body.addOrReplaceChild("rider", CubeListBuilder.create(), PartPose.offset(0.0F, -8.0F, 0.0F));
+
+        PartDefinition tail = body.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(42, 72).addBox(-1.5F, 0.0F, 0.0F, 3.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -8.0F, 5.0F));
 
 		PartDefinition neck = body.addOrReplaceChild("neck", CubeListBuilder.create().texOffs(72, 0).addBox(-2.05F, -11.0F, -4.0F, 4.0F, 12.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -4.0F, -13.0F));
 
@@ -116,7 +122,13 @@ public class BanishingStampedeModel<T extends BanishingStampede> extends BMHiera
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.parts().forEach(ModelPart::resetPose);
 
-        this.object.xRot = (float) Mth.clamp(-entity.getDeltaMovement().y() * 45, -90, 90) * Mth.DEG_TO_RAD;
+
+        float targetXRot = (float) Mth.clamp(-entity.getDeltaMovement().y() * 45, -90, 90) * Mth.DEG_TO_RAD;
+
+        float lerpSpeed = 0.2F;
+        this.smoothedXRot = Mth.lerp(lerpSpeed, this.smoothedXRot, targetXRot);
+        this.object.xRot = this.smoothedXRot;
+
 
         this.neck.xRot = headPitch * Mth.DEG_TO_RAD;
         this.neck.yRot = netHeadYaw * Mth.DEG_TO_RAD;
