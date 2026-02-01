@@ -3,7 +3,7 @@ package org.celestialworkshop.behemoths.client.guis.screens;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.celestialworkshop.behemoths.Behemoths;
-import org.celestialworkshop.behemoths.api.PandemoniumCurse;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.api.client.animation.InterpolationTypes;
 import org.celestialworkshop.behemoths.api.client.gui.AnimatedUIElement;
 import org.celestialworkshop.behemoths.api.client.gui.SimpleUIScreen;

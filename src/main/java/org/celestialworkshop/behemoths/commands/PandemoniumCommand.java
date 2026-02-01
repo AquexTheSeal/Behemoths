@@ -11,7 +11,7 @@ import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import org.celestialworkshop.behemoths.api.PandemoniumCurse;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
 import org.celestialworkshop.behemoths.utils.WorldUtils;
 import org.celestialworkshop.behemoths.world.savedata.WorldPandemoniumData;

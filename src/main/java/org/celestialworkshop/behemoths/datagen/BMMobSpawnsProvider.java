@@ -20,7 +20,7 @@ public class BMMobSpawnsProvider {
         ctx.register(BMMobSpawns.ARCHZOMBIE_SPAWNS, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
                 biomeRegistry.getOrThrow(BiomeTags.IS_OVERWORLD),
                 List.of(
-                new MobSpawnSettings.SpawnerData(BMEntityTypes.ARCHZOMBIE.get(), 40, 1, 1)
+                new MobSpawnSettings.SpawnerData(BMEntityTypes.ARCHZOMBIE.get(), 30, 1, 1)
                 ))
         );
     }

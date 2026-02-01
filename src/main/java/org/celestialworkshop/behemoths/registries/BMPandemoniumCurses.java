@@ -8,7 +8,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
 import org.celestialworkshop.behemoths.Behemoths;
-import org.celestialworkshop.behemoths.api.PandemoniumCurse;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 
 import java.util.function.Supplier;
 

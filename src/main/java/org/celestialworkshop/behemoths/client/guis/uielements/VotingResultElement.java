@@ -6,7 +6,7 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
-import org.celestialworkshop.behemoths.api.PandemoniumCurse;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.api.client.gui.AnimatedUIElement;
 import org.celestialworkshop.behemoths.client.guis.screens.VotingResultsScreen;
 import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;

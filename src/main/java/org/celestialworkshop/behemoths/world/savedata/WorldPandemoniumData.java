@@ -13,7 +13,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.celestialworkshop.behemoths.Behemoths;
-import org.celestialworkshop.behemoths.api.PandemoniumCurse;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.network.BMNetwork;
 import org.celestialworkshop.behemoths.network.s2c.SendVoteDataPacket;
 import org.celestialworkshop.behemoths.network.s2c.ShortenVoteTimerPacket;

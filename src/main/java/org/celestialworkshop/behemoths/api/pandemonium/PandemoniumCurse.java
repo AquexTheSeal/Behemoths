@@ -1,7 +1,5 @@
-package org.celestialworkshop.behemoths.api;
+package org.celestialworkshop.behemoths.api.pandemonium;
 
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -9,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
+import org.celestialworkshop.behemoths.utils.ClientUtils;
 
 import javax.annotation.Nullable;
 
@@ -21,11 +20,7 @@ public class PandemoniumCurse {
     }
 
     public PandemoniumCurse() {
-        this.entityType = null;
-    }
-
-    public @Nullable EntityType<?> getEntityType() {
-        return this.entityType;
+        this(null);
     }
 
     public ResourceLocation getTexture() {
@@ -45,22 +40,9 @@ public class PandemoniumCurse {
     }
 
     public LivingEntity tryCreateDisplayEntity(Level level, Player player) {
-        if (level.isClientSide) {
-            LivingEntity entity;
-            EntityType<?> entityType = this.getEntityType();
-            if (entityType != null && entityType.create(level) instanceof LivingEntity living) {
-                entity = living;
-            } else {
-                entity = new RemotePlayer((ClientLevel) level, player.getGameProfile()) {
-                    @Override
-                    public Component getDisplayName() {
-                        return Component.empty();
-                    }
-                };
-            }
-            return entity;
-        } else {
-            throw new UnsupportedOperationException("Cannot create display entity on server");
+        if (level.isClientSide && this.entityType != null) {
+            return ClientUtils.tryCreateDisplayEntity(level, player, this.entityType);
         }
+        return null;
     }
 }

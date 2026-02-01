@@ -11,6 +11,7 @@ import org.celestialworkshop.behemoths.client.models.ArchzombieModel;
 import org.celestialworkshop.behemoths.client.models.BanishingStampedeModel;
 import org.celestialworkshop.behemoths.client.renderers.ArchzombieRenderer;
 import org.celestialworkshop.behemoths.client.renderers.BanishingStampedeRenderer;
+import org.celestialworkshop.behemoths.client.tooltips.HeartTooltip;
 import org.celestialworkshop.behemoths.client.tooltips.SpecialtyTooltip;
 import org.celestialworkshop.behemoths.particles.VFXParticle;
 import org.celestialworkshop.behemoths.registries.BMEntityTypes;
@@ -54,5 +55,6 @@ public class BMClientSetup {
     @SubscribeEvent
     public static void registerTooltipComponents(RegisterClientTooltipComponentFactoriesEvent event) {
         event.register(SpecialtyTooltip.class, component -> component);
+        event.register(HeartTooltip.class, component -> component);
     }
 }

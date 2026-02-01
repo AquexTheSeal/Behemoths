@@ -1,7 +1,7 @@
 package org.celestialworkshop.behemoths.world.clientdata;
 
 import net.minecraft.client.Minecraft;
-import org.celestialworkshop.behemoths.api.PandemoniumCurse;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.client.guis.screens.PandemoniumCurseSelectionScreen;
 import org.celestialworkshop.behemoths.client.guis.screens.VotingResultsScreen;
 import org.celestialworkshop.behemoths.network.BMNetwork;

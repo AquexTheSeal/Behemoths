@@ -7,10 +7,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.network.c2s.CurseSelectionIndexPacket;
-import org.celestialworkshop.behemoths.network.s2c.ManageAnimationStatePacket;
-import org.celestialworkshop.behemoths.network.s2c.OpenPandemoniumSelectionPacket;
-import org.celestialworkshop.behemoths.network.s2c.SendVoteDataPacket;
-import org.celestialworkshop.behemoths.network.s2c.ShortenVoteTimerPacket;
+import org.celestialworkshop.behemoths.network.s2c.*;
 import org.celestialworkshop.behemoths.network.shared.EntityActionSharedPacket;
 
 public class BMNetwork {
@@ -30,6 +27,7 @@ public class BMNetwork {
         INSTANCE.registerMessage(id++, OpenPandemoniumSelectionPacket.class, OpenPandemoniumSelectionPacket::encode, OpenPandemoniumSelectionPacket::decode, OpenPandemoniumSelectionPacket::handle);
         INSTANCE.registerMessage(id++, SendVoteDataPacket.class, SendVoteDataPacket::encode, SendVoteDataPacket::decode, SendVoteDataPacket::handle);
         INSTANCE.registerMessage(id++, ShortenVoteTimerPacket.class, ShortenVoteTimerPacket::encode, ShortenVoteTimerPacket::decode, ShortenVoteTimerPacket::handle);
+        INSTANCE.registerMessage(id++, SyncSpecialtiesDataPacket.class, SyncSpecialtiesDataPacket::encode, SyncSpecialtiesDataPacket::decode, SyncSpecialtiesDataPacket::handle);
 
         INSTANCE.registerMessage(id++, CurseSelectionIndexPacket.class, CurseSelectionIndexPacket::encode, CurseSelectionIndexPacket::decode, CurseSelectionIndexPacket::handle);
 

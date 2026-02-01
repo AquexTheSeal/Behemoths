@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import org.celestialworkshop.behemoths.Behemoths;
-import org.celestialworkshop.behemoths.api.PandemoniumCurse;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.network.BMNetwork;
 import org.celestialworkshop.behemoths.network.s2c.OpenPandemoniumSelectionPacket;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;

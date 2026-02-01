@@ -34,6 +34,9 @@ public class BMDataGenerators {
         generator.addProvider(event.includeServer(), new BMTagsProvider.Items(packOutput, lookupProvider, blockTagsProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new BMTagsProvider.EntityTypes(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new BMTagsProvider.Biomes(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new BMItemSpecialtyProvider(packOutput));
+        generator.addProvider(event.includeServer(), new BMRecipeProvider(packOutput));
+        generator.addProvider(event.includeServer(), new BMHeartEnergyProvider(packOutput));
 
         generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, new RegistrySetBuilder()
                 .add(ForgeRegistries.Keys.BIOME_MODIFIERS, BMMobSpawnsProvider::bootstrapBiome),

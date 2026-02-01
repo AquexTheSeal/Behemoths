@@ -20,7 +20,6 @@ public class BMTags {
     }
 
     public static final class Entities {
-        public static final TagKey<EntityType<?>> BEHEMOTH = BMTags.behemothsTag(Registries.ENTITY_TYPE, "behemoth");
     }
 
     public static final class Biomes {

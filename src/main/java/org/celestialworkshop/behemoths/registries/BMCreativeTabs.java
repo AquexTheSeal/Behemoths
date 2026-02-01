@@ -14,7 +14,7 @@ public class BMCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> BEHEMOTHS = CREATIVE_TABS.register("behemoths", () -> CreativeModeTab.builder()
             .title(Component.translatable("item_group." + Behemoths.MODID + ".behemoths"))
-            .icon(() -> new ItemStack(BMItems.ROTTEN_OATHKEEPER.get()))
+            .icon(() -> new ItemStack(BMItems.MAGNALYTH_SWORD.get()))
             .displayItems((params, output) -> {
                 BMItems.ITEMS.getEntries().stream().map(RegistryObject::get).forEach(output::accept);
             })

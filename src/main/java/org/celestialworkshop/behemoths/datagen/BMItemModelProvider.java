@@ -22,6 +22,8 @@ public class BMItemModelProvider extends ItemModelProvider {
         behemothSpawnEgg(BMItems.BANISHING_STAMPEDE_SPAWN_EGG.get());
         behemothSpawnEgg(BMItems.ARCHZOMBIE_SPAWN_EGG.get());
 
+        basicItem(BMItems.BEHEMOTH_HEART.get());
+
         basicItem(BMItems.MAGNALYTH_INGOT.get());
         basicItem(BMItems.MAGNALYTH_NUGGET.get());
 

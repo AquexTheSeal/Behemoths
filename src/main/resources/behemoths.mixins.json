@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "behemoths.refmap.json",
   "mixins": [
-    "MobMixin"
+    "MobMixin",
+    "PlayerMixin",
+    "ShapelessRecipeMixin"
   ],
   "client": [
     "LocalPlayerMixin"

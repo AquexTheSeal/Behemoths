@@ -77,6 +77,31 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinextras_version}"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:${mixinextras_version}")) {
+        jarJar.ranged(it, "[${mixinextras_version},)")
+    }
+
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+
+    implementation fg.deobf("curse.maven:blessfulled-1182590:${blessfulled_version}")
+}
+
+repositories {
+    mavenCentral()
+
+    maven {
+        name = "CurseMaven"
+        url = "https://www.cursemaven.com"
+    }
+
+    maven {
+        name = "BlameJared maven"
+        url = "https://maven.blamejared.com/"
+    }
 }
 
 tasks.named('processResources', ProcessResources).configure {

@@ -10,7 +10,7 @@ import org.celestialworkshop.behemoths.entities.BanishingStampede;
 
 public class BanishingStampedeJumpMeterOverlay {
 
-    protected static final ResourceLocation BARS_LOCATION = Behemoths.prefix("textures/gui/bars.png");
+    protected static final ResourceLocation BARS_LOCATION = Behemoths.prefix("textures/gui/hud_misc.png");
 
     public static void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         Entity mount = gui.getMinecraft().player.getVehicle();

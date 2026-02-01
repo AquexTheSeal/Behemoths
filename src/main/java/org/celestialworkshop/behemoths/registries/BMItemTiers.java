@@ -12,7 +12,7 @@ import java.util.List;
 public class BMItemTiers {
 
     public static final Tier MAGNALYTH = TierSortingRegistry.registerTier(
-            new ForgeTier(3, 1800, 8.0F, 3.0F, 10, BMTags.Blocks.NEEDS_MAGNALYTH_TOOL, Ingredient::of),
+            new ForgeTier(3, 1800, 8.5F, 3.5F, 8, BMTags.Blocks.NEEDS_MAGNALYTH_TOOL, () -> Ingredient.of(BMItems.MAGNALYTH_INGOT.get())),
             Behemoths.prefix("magnalyth"), List.of(Tiers.DIAMOND), List.of(Tiers.NETHERITE)
     );
 }

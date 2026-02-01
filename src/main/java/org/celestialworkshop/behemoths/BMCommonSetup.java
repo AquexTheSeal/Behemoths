@@ -24,5 +24,4 @@ public class BMCommonSetup {
     public static void onSpawnPlacementRegistry(SpawnPlacementRegisterEvent event) {
         event.register(BMEntityTypes.ARCHZOMBIE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Archzombie::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
     }
-
 }

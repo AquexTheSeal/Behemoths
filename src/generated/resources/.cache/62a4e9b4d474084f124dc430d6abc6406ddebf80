@@ -1,7 +1,8 @@
-// 1.20.1	2026-01-24T03:22:19.6546478	Item Models: behemoths
+// 1.20.1	2026-01-31T01:22:51.9895672	Item Models: behemoths
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/behemoths/models/item/archzombie_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/behemoths/models/item/banishing_stampede_spawn_egg.json
 a786baa9052b8d56887563e1e6b3743497b671ee assets/behemoths/models/item/behebugger.json
+abff789f6864ac8a65ced4590883b8aefca430ca assets/behemoths/models/item/behemoth_heart.json
 6fac0ab9323798dac0e1208f106c4e97cafca240 assets/behemoths/models/item/magnalyth_axe.json
 ec04128322e595ea2c422f35c0eff51febaacd68 assets/behemoths/models/item/magnalyth_hoe.json
 f25554d9bd91d6188d685fb4c200436bce8d3eeb assets/behemoths/models/item/magnalyth_ingot.json
