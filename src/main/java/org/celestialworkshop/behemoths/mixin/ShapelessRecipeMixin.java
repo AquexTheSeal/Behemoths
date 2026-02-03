@@ -9,9 +9,6 @@ import org.celestialworkshop.behemoths.items.BehemothHeartItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Mixin(ShapelessRecipe.class)
 public class ShapelessRecipeMixin {
 
@@ -19,18 +16,18 @@ public class ShapelessRecipeMixin {
             method = "matches(Lnet/minecraft/world/inventory/CraftingContainer;Lnet/minecraft/world/level/Level;)Z",
             at = @At("RETURN")
     )
-    public boolean matches(boolean original, @Local(argsOnly = true) CraftingContainer pContainer) {
-        List<ItemStack> hearts = new ArrayList<>();
-        List<ItemStack> fullHearts = new ArrayList<>();
+    public boolean behemoths$validateHeartEnergy(boolean original, @Local(argsOnly = true) CraftingContainer pContainer) {
+        if (!original) return false;
+
         for (int i = 0; i < pContainer.getContainerSize(); i++) {
             ItemStack stack = pContainer.getItem(i);
+
             if (!stack.isEmpty() && stack.getItem() instanceof BehemothHeartItem) {
-                hearts.add(stack);
-                if (BehemothHeartItem.hasMaxHeartEnergy(stack)) {
-                    fullHearts.add(stack);
+                if (!BehemothHeartItem.hasMaxHeartEnergy(stack)) {
+                    return false;
                 }
             }
         }
-        return original && (!fullHearts.isEmpty() && hearts.size() == fullHearts.size());
+        return true;
     }
 }

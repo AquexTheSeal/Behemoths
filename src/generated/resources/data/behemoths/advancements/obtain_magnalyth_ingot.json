@@ -1,0 +1,38 @@
+{
+  "parent": "behemoths:obtain_behemoth_heart",
+  "criteria": {
+    "obtained_magnalyth_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "behemoths:magnalyth_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.behemoths.obtain_magnalyth_ingot.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "behemoths:magnalyth_ingot"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.behemoths.obtain_magnalyth_ingot.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtained_magnalyth_ingot"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

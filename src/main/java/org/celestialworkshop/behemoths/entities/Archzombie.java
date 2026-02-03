@@ -149,7 +149,7 @@ public class Archzombie extends Monster implements BMEntity {
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
 
-        boolean leaderEnabled = WorldUtils.hasPandemoniumCurse(level(), BMPandemoniumCurses.ARCHZOMBIE_LEADER.get());
+        boolean leaderEnabled = WorldUtils.hasPandemoniumCurse(level(), BMPandemoniumCurses.ARCHZOMBIE_DOMINION);
         float leaderChance = 0.15F;
 
         if (reason != MobSpawnType.REINFORCEMENT && random.nextFloat() < leaderChance && leaderEnabled) {
@@ -158,7 +158,7 @@ public class Archzombie extends Monster implements BMEntity {
             ItemStack weapon = random.nextFloat() < 0.7F ? new ItemStack(Items.IRON_SWORD) : new ItemStack(Items.IRON_AXE);
             this.setItemSlot(EquipmentSlot.MAINHAND, weapon);
 
-            float mountChance = WorldUtils.hasPandemoniumCurse(level(), BMPandemoniumCurses.ARCHZOMBIE_STAMPEDE_CHANCE.get()) ? 0.25F : 0.05F;
+            float mountChance = WorldUtils.hasPandemoniumCurse(level(), BMPandemoniumCurses.PHANTOM_STEED) ? 0.25F : 0.05F;
             if (random.nextFloat() < mountChance) {
                 spawnStampedeAndRideOnIt(level, difficulty);
             }

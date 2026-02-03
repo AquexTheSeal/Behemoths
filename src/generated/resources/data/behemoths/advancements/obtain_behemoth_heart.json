@@ -1,0 +1,38 @@
+{
+  "parent": "behemoths:killed_behemoth",
+  "criteria": {
+    "obtained_behemoth_heart": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "behemoths:behemoth_heart"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.behemoths.obtain_behemoth_heart.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "behemoths:behemoth_heart"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.behemoths.obtain_behemoth_heart.title"
+    }
+  },
+  "requirements": [
+    [
+      "obtained_behemoth_heart"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

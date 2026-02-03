@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.FormattedCharSequence;
 
@@ -79,6 +80,13 @@ public abstract class BMUIElement<T extends Screen> {
     public void drawShadowedWordWrap(GuiGraphics guiGraphics, Font pFont, FormattedText pText, int pX, int pY, int pLineWidth, int pColor) {
         for (FormattedCharSequence formattedcharsequence : pFont.split(pText, pLineWidth)) {
             guiGraphics.drawString(pFont, formattedcharsequence, pX, pY, pColor, true);
+            pY += 9;
+        }
+    }
+
+    public void drawCenteredOutlinedWordWrap(GuiGraphics guiGraphics, Font pFont, FormattedText pText, int pX, int pY, int pLineWidth, int pColor, int pOutlineColor) {
+        for (FormattedCharSequence formattedcharsequence : pFont.split(pText, pLineWidth)) {
+            pFont.drawInBatch8xOutline(formattedcharsequence, pX - ((float) pFont.width(formattedcharsequence) / 2), pY, pColor, pOutlineColor, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), LightTexture.FULL_BRIGHT);
             pY += 9;
         }
     }

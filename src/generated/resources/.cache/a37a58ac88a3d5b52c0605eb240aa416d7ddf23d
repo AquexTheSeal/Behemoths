@@ -1,1 +1,6 @@
-// 1.20.1	2025-11-21T18:46:18.4377682	Tags for minecraft:item mod id behemoths
+// 1.20.1	2026-02-02T00:56:55.9160849	Tags for minecraft:item mod id behemoths
+17382329bded98eff6152cc6770fa3d31e56e3d2 data/minecraft/tags/items/axes.json
+afa52d8e1e73465936cb0a0b896ffe3d09131975 data/minecraft/tags/items/hoes.json
+1eae8aa461a26272ee5a465159cefe252b62f2fe data/minecraft/tags/items/pickaxes.json
+9dccd39e52309a8e3254c1339b3f63c7eeb814e2 data/minecraft/tags/items/shovels.json
+713b8fdb14f928d9615cd187fc79a07d5d0c65b3 data/minecraft/tags/items/swords.json

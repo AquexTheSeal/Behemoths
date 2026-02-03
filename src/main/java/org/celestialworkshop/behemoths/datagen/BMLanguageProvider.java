@@ -2,17 +2,16 @@ package org.celestialworkshop.behemoths.datagen;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.text.WordUtils;
 import org.celestialworkshop.behemoths.Behemoths;
-import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.api.item.specialty.ItemSpecialty;
-import org.celestialworkshop.behemoths.registries.BMEntityTypes;
-import org.celestialworkshop.behemoths.registries.BMItemSpecialties;
-import org.celestialworkshop.behemoths.registries.BMItems;
-import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
+import org.celestialworkshop.behemoths.registries.*;
 
 public class BMLanguageProvider extends LanguageProvider {
 
@@ -39,23 +38,16 @@ public class BMLanguageProvider extends LanguageProvider {
 
         this.add("overlay.behemoths.voting_progress", "Voting in progress. Press [%s] to open voting screen.");
 
-        this.addPandemoniumCurse(BMPandemoniumCurses.PLAYER_DAMAGE_NERF.get(), "Weakening");
+        // PANDEMONIUM CURSE
 
-        this.addPandemoniumCurse(BMPandemoniumCurses.ZOMBIE_BABY_CHANCE.get(), "Hoarding");
-        this.addPandemoniumCurse(BMPandemoniumCurses.ZOMBIE_REVIVAL.get(), "Reanimation");
+        this.addPandemoniumCurse(BMPandemoniumCurses.FRAGILITY.get(), "Mortal Frailty", "Natural regeneration is slower and hunger depletes more quickly.");
 
-        this.addPandemoniumCurse(BMPandemoniumCurses.ARCHZOMBIE_LEADER.get(), "Archzombie Dominion");
-        this.addPandemoniumCurse(BMPandemoniumCurses.ARCHZOMBIE_SPEED.get(), "Gravebreaker Momentum");
-        this.addPandemoniumCurse(BMPandemoniumCurses.ARCHZOMBIE_STAMPEDE_CHANCE.get(), "Phantom Steed");
+        this.addPandemoniumCurse(BMPandemoniumCurses.RELENTLESS.get(), "Relentless Dead", "Zombies move faster at night and can detect players from a much greater distance.");
+        this.addPandemoniumCurse(BMPandemoniumCurses.FERAL_HORDE.get(), "Feral Horde", "Zombies spawn in larger packs and gain increased attack power when near other zombies.");
 
-        this.addPandemoniumCurseDescription(BMPandemoniumCurses.PLAYER_DAMAGE_NERF.get(), "Player damage is now decreased by 20% against all entities.");
-
-        this.addPandemoniumCurseDescription(BMPandemoniumCurses.ZOMBIE_BABY_CHANCE.get(), "Baby zombie spawn chance will now significantly increase.");
-        this.addPandemoniumCurseDescription(BMPandemoniumCurses.ZOMBIE_REVIVAL.get(), "Normal zombies will now gain a small chance to revive to full health upon death.");
-
-        this.addPandemoniumCurseDescription(BMPandemoniumCurses.ARCHZOMBIE_LEADER.get(), "Archzombie leaders can now spawn along with 2-4 Archzombies surrounding them.");
-        this.addPandemoniumCurseDescription(BMPandemoniumCurses.ARCHZOMBIE_SPEED.get(), "Banishing Stampede chasing speed: x1.3. Banishing Stampedes ridden by Archzombies can now also ram.");
-        this.addPandemoniumCurseDescription(BMPandemoniumCurses.ARCHZOMBIE_STAMPEDE_CHANCE.get(), "Chance for an Archzombie to spawn with a Banishing Stampede: 5% -> 25%.");
+        this.addPandemoniumCurse(BMPandemoniumCurses.ARCHZOMBIE_DOMINION.get(), "Archzombie Dominion", "Archzombie leaders can now spawn along with 2-4 Archzombies surrounding them.");
+        this.addPandemoniumCurse(BMPandemoniumCurses.GRAVEBREAKER_MOMENTUM.get(), "Gravebreaker Momentum", "Banishing Stampede chasing speed: x1.3. Banishing Stampedes ridden by Archzombies can now also ram.");
+        this.addPandemoniumCurse(BMPandemoniumCurses.PHANTOM_STEED.get(), "Phantom Steed", "Chance for an Archzombie to spawn with a Banishing Stampede: 5% -> 25%.");
 
         // TOOLTIP
 
@@ -67,16 +59,27 @@ public class BMLanguageProvider extends LanguageProvider {
         this.addSpecialty(BMItemSpecialties.BEHEMOTH_DAMAGE_BONUS.get(), "Behemoth Damage Bonus");
         this.addSpecialtyDescription(BMItemSpecialties.BEHEMOTH_DAMAGE_BONUS.get(), "Deals %s damage against all behemoth entities.");
 
+        // ADVANCEMENTS
+
+        this.addAdvancement("kill_behemoth", "Bane of the Colossus", "Slay a Behemoth.");
+        this.addAdvancement("obtain_behemoth_heart", "Essence of the Colossus", "Obtain a Behemoth's heart by slaying it.");
+        this.addAdvancement("obtain_magnalyth_ingot", "An Abnormal Material", "Fill a Behemoth Heart's energy and use it to craft a Magnalyth ingot.");
+
         // REGISTRIES
 
         for (RegistryObject<Item> item : BMItems.ITEMS.getEntries()) {
-            this.addItem(item, WordUtils.capitalize(item.getId().getPath().replace("_", " ")));
+            if (!(item.get() instanceof BlockItem)) {
+                this.addItem(item, WordUtils.capitalize(item.getId().getPath().replace("_", " ")));
+            }
+        }
+
+        for (RegistryObject<Block> block : BMBlocks.BLOCKS.getEntries()) {
+            this.addBlock(block, WordUtils.capitalize(block.getId().getPath().replace("_", " ")));
         }
 
         for (RegistryObject<EntityType<?>> en : BMEntityTypes.ENTITY_TYPES.getEntries()) {
             this.addEntityType(en, WordUtils.capitalize(en.getId().getPath().replace("_", " ")));
         }
-
     }
 
     private void addSpecialty(ItemSpecialty specialty, String value) {
@@ -87,11 +90,13 @@ public class BMLanguageProvider extends LanguageProvider {
         this.add(specialty.getDisplayDescriptionKey(), value);
     }
 
-    private void addPandemoniumCurse(PandemoniumCurse curse, String value) {
+    private void addPandemoniumCurse(PandemoniumCurse curse, String value, String desc) {
         this.add(curse.getDisplayName().getString(), value);
+        this.add(curse.getDescription().getString(), desc);
     }
 
-    private void addPandemoniumCurseDescription(PandemoniumCurse curse, String value) {
-        this.add(curse.getDescription().getString(), value);
+    private void addAdvancement(String name, String title, String desc) {
+        this.add("advancement.behemoths." + name + ".title", title);
+        this.add("advancement.behemoths." + name + ".description", desc);
     }
 }

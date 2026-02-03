@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "magnalyth_pickaxe",
+  "key": {
+    "#": {
+      "item": "behemoths:magnalyth_ingot"
+    },
+    "I": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "###",
+    " I ",
+    " I "
+  ],
+  "result": {
+    "item": "behemoths:magnalyth_pickaxe"
+  },
+  "show_notification": true
+}

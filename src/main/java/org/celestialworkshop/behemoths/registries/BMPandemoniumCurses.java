@@ -17,12 +17,13 @@ public class BMPandemoniumCurses {
     public static final DeferredRegister<PandemoniumCurse> PANDEMONIUM_CURSES = DeferredRegister.create(PANDEMONIUM_CURSES_KEY, Behemoths.MODID);
     public static final Supplier<IForgeRegistry<PandemoniumCurse>> REGISTRY = PANDEMONIUM_CURSES.makeRegistry(() -> new RegistryBuilder<PandemoniumCurse>().disableSaving().disableOverrides());
 
-    public static final RegistryObject<PandemoniumCurse> PLAYER_DAMAGE_NERF = PANDEMONIUM_CURSES.register("player_damage_nerf", PandemoniumCurse::new);
+    public static final RegistryObject<PandemoniumCurse> FRAGILITY = PANDEMONIUM_CURSES.register("fragility", () -> new PandemoniumCurse(EntityType.PLAYER));
 
-    public static final RegistryObject<PandemoniumCurse> ZOMBIE_BABY_CHANCE = PANDEMONIUM_CURSES.register("zombie_baby_chance", () -> new PandemoniumCurse(EntityType.ZOMBIE));
-    public static final RegistryObject<PandemoniumCurse> ZOMBIE_REVIVAL = PANDEMONIUM_CURSES.register("zombie_revival", () -> new PandemoniumCurse(EntityType.ZOMBIE));
+    public static final RegistryObject<PandemoniumCurse> RELENTLESS = PANDEMONIUM_CURSES.register("relentless", () -> new PandemoniumCurse(EntityType.ZOMBIE));
+    public static final RegistryObject<PandemoniumCurse> FERAL_HORDE = PANDEMONIUM_CURSES.register("feral_horde", () -> new PandemoniumCurse(EntityType.ZOMBIE));
 
-    public static final RegistryObject<PandemoniumCurse> ARCHZOMBIE_LEADER = PANDEMONIUM_CURSES.register("archzombie_leader", () -> new PandemoniumCurse(BMEntityTypes.ARCHZOMBIE.get()));
-    public static final RegistryObject<PandemoniumCurse> ARCHZOMBIE_STAMPEDE_CHANCE = PANDEMONIUM_CURSES.register("archzombie_stampede_chance", () -> new PandemoniumCurse(BMEntityTypes.ARCHZOMBIE.get()));
-    public static final RegistryObject<PandemoniumCurse> ARCHZOMBIE_SPEED = PANDEMONIUM_CURSES.register("archzombie_speed", () -> new PandemoniumCurse(BMEntityTypes.ARCHZOMBIE.get()));
+    public static final RegistryObject<PandemoniumCurse> ARCHZOMBIE_DOMINION = PANDEMONIUM_CURSES.register("archzombie_dominion", () -> new PandemoniumCurse(BMEntityTypes.ARCHZOMBIE.get()));
+    public static final RegistryObject<PandemoniumCurse> GRAVEBREAKER_MOMENTUM = PANDEMONIUM_CURSES.register("gravebreaker_momentum", () -> new PandemoniumCurse(BMEntityTypes.ARCHZOMBIE.get()));
+    public static final RegistryObject<PandemoniumCurse> PHANTOM_STEED = PANDEMONIUM_CURSES.register("phantom_steed", () -> new PandemoniumCurse(BMEntityTypes.ARCHZOMBIE.get()));
+
 }

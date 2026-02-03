@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "magnalyth_sword",
+  "key": {
+    "#": {
+      "item": "minecraft:bedrock"
+    },
+    "O": {
+      "item": "behemoths:behemoth_heart"
+    }
+  },
+  "pattern": [
+    "###",
+    "#O#",
+    "###"
+  ],
+  "result": {
+    "item": "behemoths:behebugger"
+  },
+  "show_notification": true
+}

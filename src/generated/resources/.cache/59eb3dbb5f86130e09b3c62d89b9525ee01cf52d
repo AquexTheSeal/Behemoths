@@ -1,0 +1,4 @@
+// 1.20.1	2026-02-02T02:03:58.8316926	Loot Tables
+bb3ea02a8eb63dc54778b0096a247ed591deb318 data/behemoths/loot_tables/blocks/magnalyth_block.json
+49aceb43f6afa2cd730ed894777b58d3b60df770 data/behemoths/loot_tables/entities/archzombie.json
+c017801a5f2e398ca1ff9a7e0465d81928c2ea52 data/behemoths/loot_tables/entities/banishing_stampede.json

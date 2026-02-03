@@ -20,7 +20,9 @@ import org.celestialworkshop.behemoths.network.s2c.ShortenVoteTimerPacket;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
 import org.celestialworkshop.behemoths.utils.WorldUtils;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class WorldPandemoniumData extends SavedData {
@@ -29,6 +31,9 @@ public class WorldPandemoniumData extends SavedData {
     private final ObjectArrayList<PandemoniumCurse> selectableCurses = new ObjectArrayList<>();
     private int remainingTime = 0;
     private final Object2IntMap<UUID> voteData = new Object2IntArrayMap<>();
+
+    private final Set<ResourceLocation> votingTriggeredEntities = new HashSet<>();
+    private final Set<ResourceLocation> votingTriggeredAdvancements = new HashSet<>();
 
     public WorldPandemoniumData() {
     }
@@ -41,9 +46,9 @@ public class WorldPandemoniumData extends SavedData {
         WorldPandemoniumData data = new WorldPandemoniumData();
 
         data.activePandemoniumCurses.clear();
-        ListTag list = tag.getList("ActiveCurses", Tag.TAG_STRING);
-        for (int i = 0; i < list.size(); i++) {
-            String idString = list.getString(i);
+        ListTag modifiersList = tag.getList("ActiveCurses", Tag.TAG_STRING);
+        for (int i = 0; i < modifiersList.size(); i++) {
+            String idString = modifiersList.getString(i);
             ResourceLocation id = ResourceLocation.parse(idString);
             PandemoniumCurse modifier = BMPandemoniumCurses.REGISTRY.get().getValue(id);
             if (modifier != null) {
@@ -53,9 +58,9 @@ public class WorldPandemoniumData extends SavedData {
 
         data.selectableCurses.clear();
         List<PandemoniumCurse> selectableCursesFromFile = new ObjectArrayList<>();
-        list = tag.getList("SelectableCurses", Tag.TAG_STRING);
-        for (int i = 0; i < list.size(); i++) {
-            String idString = list.getString(i);
+        modifiersList = tag.getList("SelectableCurses", Tag.TAG_STRING);
+        for (int i = 0; i < modifiersList.size(); i++) {
+            String idString = modifiersList.getString(i);
             ResourceLocation id = ResourceLocation.parse(idString);
             PandemoniumCurse modifier = BMPandemoniumCurses.REGISTRY.get().getValue(id);
             if (modifier != null) {
@@ -69,31 +74,71 @@ public class WorldPandemoniumData extends SavedData {
             data.setDirty();
         }
 
+        ListTag entityTriggerList = tag.getList("VotingTriggeredEntities", Tag.TAG_STRING);
+        for (Tag t : entityTriggerList) {
+            data.votingTriggeredEntities.add(ResourceLocation.parse(t.getAsString()));
+        }
+
+        ListTag advancementTriggerList = tag.getList("VotingTriggeredAdvancements", Tag.TAG_STRING);
+        for (Tag t : advancementTriggerList) {
+            data.votingTriggeredAdvancements.add(ResourceLocation.parse(t.getAsString()));
+        }
+
         return data;
     }
 
     @Override
     public CompoundTag save(CompoundTag tag) {
 
-        ListTag list = new ListTag();
+        ListTag modifierList = new ListTag();
         for (PandemoniumCurse modifier : activePandemoniumCurses) {
             ResourceLocation id = BMPandemoniumCurses.REGISTRY.get().getKey(modifier);
             if (id != null) {
-                list.add(StringTag.valueOf(id.toString()));
+                modifierList.add(StringTag.valueOf(id.toString()));
             }
         }
-        tag.put("ActiveCurses", list);
+        tag.put("ActiveCurses", modifierList);
 
-        list = new ListTag();
+        modifierList = new ListTag();
         for (PandemoniumCurse modifier : selectableCurses) {
             ResourceLocation id = BMPandemoniumCurses.REGISTRY.get().getKey(modifier);
             if (id != null) {
-                list.add(StringTag.valueOf(id.toString()));
+                modifierList.add(StringTag.valueOf(id.toString()));
             }
         }
-        tag.put("SelectableCurses", list);
+        tag.put("SelectableCurses", modifierList);
+
+        ListTag entityTriggerList = new ListTag();
+        for (ResourceLocation id : votingTriggeredEntities) {
+            entityTriggerList.add(StringTag.valueOf(id.toString()));
+        }
+        tag.put("VotingTriggeredEntities", entityTriggerList);
+
+        ListTag advancementTriggerList = new ListTag();
+        for (ResourceLocation id : votingTriggeredAdvancements) {
+            advancementTriggerList.add(StringTag.valueOf(id.toString()));
+        }
+        tag.put("VotingTriggeredAdvancements", advancementTriggerList);
 
         return tag;
+    }
+
+    public boolean hasEntityTriggeredVoting(ResourceLocation id) {
+        return votingTriggeredEntities.contains(id);
+    }
+
+    public void markEntityTriggeredVoting(ResourceLocation id) {
+        votingTriggeredEntities.add(id);
+        setDirty();
+    }
+
+    public boolean hasAdvancementTriggeredVoting(ResourceLocation id) {
+        return votingTriggeredAdvancements.contains(id);
+    }
+
+    public void markAdvancementTriggeredVoting(ResourceLocation id) {
+        votingTriggeredAdvancements.add(id);
+        setDirty();
     }
 
     public void tickPandemoniumWorld(Level level) {

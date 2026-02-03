@@ -19,7 +19,7 @@ public class ArchzombieShieldGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return archzombie.getOffhandItem().getItem() instanceof ShieldItem && WorldUtils.hasPandemoniumCurse(archzombie.level(), BMPandemoniumCurses.ARCHZOMBIE_LEADER.get());
+        return archzombie.getOffhandItem().getItem() instanceof ShieldItem && WorldUtils.hasPandemoniumCurse(archzombie.level(), BMPandemoniumCurses.ARCHZOMBIE_DOMINION);
     }
 
     @Override

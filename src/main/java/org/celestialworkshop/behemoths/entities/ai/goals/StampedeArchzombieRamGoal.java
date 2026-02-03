@@ -18,7 +18,7 @@ public class StampedeArchzombieRamGoal extends Goal {
     @Override
     public boolean canUse() {
         if (stampede.getControllingPassenger() instanceof Archzombie arc && arc.getTarget() != null) {
-            if (WorldUtils.hasPandemoniumCurse(stampede.level(), BMPandemoniumCurses.ARCHZOMBIE_SPEED.get())) {
+            if (WorldUtils.hasPandemoniumCurse(stampede.level(), BMPandemoniumCurses.GRAVEBREAKER_MOMENTUM.get())) {
                 return true;
             } else {
                 return arc.isLeader();

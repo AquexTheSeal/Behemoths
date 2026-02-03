@@ -45,17 +45,19 @@ public class VotingCandidateElement extends AnimatedUIElement<VotingResultsScree
         }
         guiGraphics.blit(VotingResultsScreen.MAIN_TEXTURE, this.getRenderX() - this.getWidth() / 2, this.getRenderY() - this.getHeight() / 2, uOff, 0, this.getWidth(), this.getHeight());
 
-        entity.tick();
-        float delta = entity.tickCount + partialTick;
-        Quaternionf quaternionf = new Quaternionf().rotationXYZ(0.5F, 90.0F + delta * 0.025F, (float) Math.PI);
-        InventoryScreen.renderEntityInInventory(guiGraphics, getRenderX(), getRenderY() + 15, 25, quaternionf, null, entity);
+        if (this.entity != null) {
+            entity.tick();
+            float delta = entity.tickCount + partialTick;
+            Quaternionf quaternionf = new Quaternionf().rotationXYZ(0.5F, 90.0F + delta * 0.025F, (float) Math.PI);
+            InventoryScreen.renderEntityInInventory(guiGraphics, getRenderX(), getRenderY() + 15, 25, quaternionf, null, entity);
+        }
 
         Font font = minecraft.font;
-        int maxLineWidth = 100;
+        int maxLineWidth = 75;
         int titleHeight = this.getRenderY() - (this.getHeight() / 2) - 10 - (font.lineHeight * (font.split(this.curse.getDisplayName(), maxLineWidth).size() - 1));
-        this.drawCenteredWordWrap(guiGraphics, font, this.curse.getDisplayName(), this.getRenderX(), titleHeight, maxLineWidth, -1, true);
+        this.drawCenteredOutlinedWordWrap(guiGraphics, font, this.curse.getDisplayName(), this.getRenderX(), titleHeight, maxLineWidth, 0xffd6a1, 0x4f1714);
 
-        guiGraphics.drawCenteredString(font, Component.translatable("screen.behemoths.voting_results.votes", screen.voteResults[index]), this.getRenderX(), this.getRenderY() + (this.getHeight() / 2) + 4, -1);
+        guiGraphics.drawCenteredString(font, Component.translatable("screen.behemoths.voting_results.votes", screen.voteResults[index]), this.getRenderX(), this.getRenderY() + (this.getHeight() / 2) + 4, 0xffd6a1);
     }
 
     @Override

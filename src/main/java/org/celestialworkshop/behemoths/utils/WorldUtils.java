@@ -3,6 +3,7 @@ package org.celestialworkshop.behemoths.utils;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.RegistryObject;
 import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.network.BMNetwork;
@@ -20,6 +21,10 @@ public class WorldUtils {
         return WorldPandemoniumData.get((ServerLevel) level).getActivePandemoniumCurses().contains(curse);
     }
 
+    public static boolean hasPandemoniumCurse(Level level, RegistryObject<PandemoniumCurse> curse) {
+        return hasPandemoniumCurse(level, curse.get());
+    }
+
     public static void openPandemoniumSelection(Level level) {
         if (!level.isClientSide) {
             WorldPandemoniumData data = WorldPandemoniumData.get((ServerLevel) level);
@@ -31,7 +36,7 @@ public class WorldUtils {
 
             if (data.getSelectableCurses().isEmpty()) {
 
-                data.setRemainingTime(1000);
+                data.setRemainingTime(5000);
 
                 List<PandemoniumCurse> curseLookup = new ArrayList<>(BMPandemoniumCurses.REGISTRY.get().getEntries().stream()
                         .map(Map.Entry::getValue)

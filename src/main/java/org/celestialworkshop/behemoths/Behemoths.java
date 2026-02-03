@@ -6,6 +6,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.celestialworkshop.behemoths.config.BMConfigManager;
 import org.celestialworkshop.behemoths.network.BMNetwork;
 import org.celestialworkshop.behemoths.registries.*;
 import org.slf4j.Logger;
@@ -24,9 +25,12 @@ public class Behemoths {
 
         BMNetwork.register();
 
+        BMConfigManager.registerConfigs();
+
         BMEntityTypes.ENTITY_TYPES.register(modBus);
         BMCreativeTabs.CREATIVE_TABS.register(modBus);
         BMItems.ITEMS.register(modBus);
+        BMBlocks.BLOCKS.register(modBus);
         BMParticleTypes.PARTICLE_TYPES.register(modBus);
         BMSoundEvents.SOUND_EVENTS.register(modBus);
         BMPandemoniumCurses.PANDEMONIUM_CURSES.register(modBus);

@@ -2,7 +2,7 @@ package org.celestialworkshop.behemoths.world.clientdata;
 
 import net.minecraft.client.Minecraft;
 import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
-import org.celestialworkshop.behemoths.client.guis.screens.PandemoniumCurseSelectionScreen;
+import org.celestialworkshop.behemoths.client.guis.screens.VotingSelectionScreen;
 import org.celestialworkshop.behemoths.client.guis.screens.VotingResultsScreen;
 import org.celestialworkshop.behemoths.network.BMNetwork;
 import org.celestialworkshop.behemoths.network.c2s.CurseSelectionIndexPacket;
@@ -27,7 +27,7 @@ public class ClientPandemoniumData {
 
     public static void openPandemoniumSelection(List<PandemoniumCurse> curses, boolean clearSelection) {
         if (clearSelection) localSelectedIndex = -1;
-        Minecraft.getInstance().setScreen(new PandemoniumCurseSelectionScreen(curses));
+        Minecraft.getInstance().setScreen(new VotingSelectionScreen(curses));
     }
 
     public static void tickPandemoniumClient() {

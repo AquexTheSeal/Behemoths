@@ -5,15 +5,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.celestialworkshop.behemoths.api.item.specialty.SpecialtyInstance;
-import org.celestialworkshop.behemoths.api.item.specialty.SpecialtyInstancesHolder;
 
 import java.util.List;
 
-public abstract class ItemSpecialtyProvider extends CodecBasedProvider<SpecialtyInstancesHolder> {
-
+public abstract class ItemSpecialtyProvider extends CodecBasedProvider<SpecialtyInstance.Wrapper> {
 
     protected ItemSpecialtyProvider(PackOutput output, String modid) {
-        super(output, modid, "item_specialties", PackOutput.Target.DATA_PACK, SpecialtyInstancesHolder.CODEC);
+        super(output, modid, "behemoths/item_specialties", PackOutput.Target.DATA_PACK, SpecialtyInstance.Wrapper.CODEC);
     }
 
     @Override
@@ -34,7 +32,7 @@ public abstract class ItemSpecialtyProvider extends CodecBasedProvider<Specialty
     }
 
     public void add(ResourceLocation itemId, List<SpecialtyInstance> specialties) {
-        if (data.put(itemId, new SpecialtyInstancesHolder(specialties)) != null)
+        if (data.put(itemId, new SpecialtyInstance.Wrapper(specialties)) != null)
             throw new IllegalStateException("Duplicate specialty data for " + itemId);
     }
 }

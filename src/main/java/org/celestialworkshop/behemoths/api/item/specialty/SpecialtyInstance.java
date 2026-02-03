@@ -6,12 +6,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.celestialworkshop.behemoths.registries.BMItemSpecialties;
 
+import java.util.List;
+
 public record SpecialtyInstance(ItemSpecialty specialty, int level) {
 
     public static final Codec<SpecialtyInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ResourceLocation.CODEC.fieldOf("id").xmap(
-                    g -> BMItemSpecialties.REGISTRY.get().getValue(g), ItemSpecialty::id).forGetter(SpecialtyInstance::specialty),
-            Codec.INT.fieldOf("level").forGetter(SpecialtyInstance::level)
+            ResourceLocation.CODEC.fieldOf("id")
+                    .xmap(g -> BMItemSpecialties.REGISTRY.get().getValue(g), ItemSpecialty::id)
+                    .forGetter(SpecialtyInstance::specialty),
+            Codec.INT.fieldOf("level")
+                    .forGetter(SpecialtyInstance::level)
     ).apply(instance, SpecialtyInstance::new));
 
    public ResourceLocation getTextureLocation() {
@@ -28,5 +32,12 @@ public record SpecialtyInstance(ItemSpecialty specialty, int level) {
 
     public Component getDisplayDescription() {
         return specialty.getDisplayDescription(level);
+    }
+
+    public record Wrapper(List<SpecialtyInstance> specialties) {
+
+        public static final Codec<Wrapper> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                SpecialtyInstance.CODEC.listOf().fieldOf("specialties").forGetter(Wrapper::specialties)
+        ).apply(instance, Wrapper::new));
     }
 }

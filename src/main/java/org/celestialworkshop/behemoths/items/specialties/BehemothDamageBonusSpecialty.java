@@ -4,7 +4,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.celestialworkshop.behemoths.api.entity.BehemothProperties;
 import org.celestialworkshop.behemoths.api.item.specialty.ItemSpecialty;
-import org.celestialworkshop.behemoths.registries.BMTags;
 
 public class BehemothDamageBonusSpecialty extends ItemSpecialty {
 
@@ -28,6 +27,6 @@ public class BehemothDamageBonusSpecialty extends ItemSpecialty {
     }
 
     private static float calculatePower(int specialityLevel) {
-        return 1.0F + ((specialityLevel + 1) * 0.5F);
+        return 1.0F + ((specialityLevel + 1) * 0.2F);
     }
 }

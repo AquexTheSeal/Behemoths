@@ -2,8 +2,6 @@ package org.celestialworkshop.behemoths.items;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -56,12 +54,6 @@ public class BehemothHeartItem extends Item {
         ItemStack copy = itemStack.copy();
         resetHeartEnergy(copy);
         return copy;
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        setHeartEnergy(pPlayer.getItemInHand(pUsedHand), this.getMaxHeartEnergy());
-        return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
     }
 
     public int getMaxHeartEnergy() {

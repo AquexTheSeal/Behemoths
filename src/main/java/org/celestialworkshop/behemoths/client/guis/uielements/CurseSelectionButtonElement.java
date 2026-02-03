@@ -6,17 +6,17 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import org.celestialworkshop.behemoths.api.client.gui.AnimatedUIElement;
-import org.celestialworkshop.behemoths.client.guis.screens.PandemoniumCurseSelectionScreen;
+import org.celestialworkshop.behemoths.client.guis.screens.VotingSelectionScreen;
 import org.celestialworkshop.behemoths.network.BMNetwork;
 import org.celestialworkshop.behemoths.network.c2s.CurseSelectionIndexPacket;
 import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
 
-public class CurseSelectionButtonElement extends AnimatedUIElement<PandemoniumCurseSelectionScreen> {
+public class CurseSelectionButtonElement extends AnimatedUIElement<VotingSelectionScreen> {
 
     public final int index;
     public int clickedTicks;
 
-    public CurseSelectionButtonElement(PandemoniumCurseSelectionScreen screen, int index) {
+    public CurseSelectionButtonElement(VotingSelectionScreen screen, int index) {
         super(screen);
         this.index = index;
     }
@@ -45,7 +45,7 @@ public class CurseSelectionButtonElement extends AnimatedUIElement<PandemoniumCu
         if (ClientPandemoniumData.localSelectedIndex == index) {
             uOff = 64;
         }
-        guiGraphics.blit(PandemoniumCurseSelectionScreen.MAIN_TEXTURE, getRenderX(), getRenderY(), uOff, 160, getWidth(), getHeight());
+        guiGraphics.blit(VotingSelectionScreen.MAIN_TEXTURE, getRenderX(), getRenderY(), uOff, 160, getWidth(), getHeight());
 
         if (isHovered(mouseX, mouseY)) {
             Component votingComponent = Component.translatable("screen.behemoths.curse_selection.hover_button");

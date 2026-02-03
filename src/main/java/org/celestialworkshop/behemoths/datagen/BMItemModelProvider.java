@@ -3,11 +3,13 @@ package org.celestialworkshop.behemoths.datagen;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.celestialworkshop.behemoths.Behemoths;
+import org.celestialworkshop.behemoths.registries.BMBlocks;
 import org.celestialworkshop.behemoths.registries.BMItems;
 
 public class BMItemModelProvider extends ItemModelProvider {
@@ -32,6 +34,8 @@ public class BMItemModelProvider extends ItemModelProvider {
         handheld(BMItems.MAGNALYTH_PICKAXE.get());
         handheld(BMItems.MAGNALYTH_SHOVEL.get());
         handheld(BMItems.MAGNALYTH_HOE.get());
+
+        block(BMBlocks.MAGNALYTH_BLOCK.get());
     }
 
     public void handheld(Item item) {
@@ -44,6 +48,10 @@ public class BMItemModelProvider extends ItemModelProvider {
         this.getBuilder(loc.toString()).parent(this.existingModel("item/template_spawn_egg"));
     }
 
+    public void block(Block block) {
+        ResourceLocation loc = ForgeRegistries.BLOCKS.getKey(block);
+        this.getBuilder(loc.toString()).parent(new ModelFile.UncheckedModelFile(Behemoths.prefix("block/" + loc.getPath())));
+    }
 
 //    public ItemModelBuilder ballistaItem(Item item) {
 //        ResourceLocation loc = ForgeRegistries.ITEMS.getKey(item);

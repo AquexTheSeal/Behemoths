@@ -1,0 +1,30 @@
+{
+  "criteria": {
+    "killed_behemoth": {
+      "conditions": {},
+      "trigger": "behemoths:kill_behemoth"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "behemoths:textures/block/magnalyth_block.png",
+    "description": {
+      "translate": "advancement.behemoths.kill_behemoth.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "behemoths:behemoth_heart"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.behemoths.kill_behemoth.title"
+    }
+  },
+  "requirements": [
+    [
+      "killed_behemoth"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

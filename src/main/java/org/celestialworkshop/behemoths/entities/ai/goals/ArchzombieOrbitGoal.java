@@ -57,7 +57,7 @@ public class ArchzombieOrbitGoal extends Goal {
         if (target == null) return;
 
         if (--pandemoniumCacheTicks <= 0) {
-            cachedPandemoniumSpeed = WorldUtils.hasPandemoniumCurse(archzombie.level(), BMPandemoniumCurses.ARCHZOMBIE_SPEED.get()) ? 1.2 : 1.0;
+            cachedPandemoniumSpeed = WorldUtils.hasPandemoniumCurse(archzombie.level(), BMPandemoniumCurses.GRAVEBREAKER_MOMENTUM.get()) ? 1.2 : 1.0;
             pandemoniumCacheTicks = 80;
         }
 

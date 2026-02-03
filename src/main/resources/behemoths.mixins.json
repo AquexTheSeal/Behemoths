@@ -5,8 +5,10 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "behemoths.refmap.json",
   "mixins": [
+    "ItemStackRendererMixin",
     "MobMixin",
     "PlayerMixin",
+    "ShapedRecipeMixin",
     "ShapelessRecipeMixin"
   ],
   "client": [

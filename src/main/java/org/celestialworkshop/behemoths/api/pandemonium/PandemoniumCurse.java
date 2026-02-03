@@ -40,7 +40,7 @@ public class PandemoniumCurse {
     }
 
     public LivingEntity tryCreateDisplayEntity(Level level, Player player) {
-        if (level.isClientSide && this.entityType != null) {
+        if (level.isClientSide) {
             return ClientUtils.tryCreateDisplayEntity(level, player, this.entityType);
         }
         return null;

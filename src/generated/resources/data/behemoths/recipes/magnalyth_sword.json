@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "magnalyth_sword",
+  "key": {
+    "#": {
+      "item": "behemoths:magnalyth_ingot"
+    },
+    "I": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " # ",
+    " # ",
+    " I "
+  ],
+  "result": {
+    "item": "behemoths:magnalyth_sword"
+  },
+  "show_notification": true
+}

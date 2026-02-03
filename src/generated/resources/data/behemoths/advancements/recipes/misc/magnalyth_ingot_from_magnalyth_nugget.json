@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_magnalyth_nugget": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "behemoths:magnalyth_nugget"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "behemoths:magnalyth_ingot_from_magnalyth_nugget"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_magnalyth_nugget",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "behemoths:magnalyth_ingot_from_magnalyth_nugget"
+    ]
+  },
+  "sends_telemetry_event": false
+}
