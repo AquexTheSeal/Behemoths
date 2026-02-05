@@ -59,7 +59,14 @@ public class BMCommonConfig {
                         .comment("Format example: [\"minecraft:story/mine_diamond\", \"minecraft:story/enter_the_nether\"]")
                         .defineListAllowEmpty(
                                 "Pandemonium Voting: Once Advancements",
-                                List.of(),
+                                List.of(
+                                        "minecraft:story/mine_diamond",
+                                        "minecraft:story/enter_the_nether",
+                                        "minecraft:story/enter_the_end",
+                                        "minecraft:nether/netherite_armor",
+                                        "minecraft:adventure/voluntary_exile",
+                                        "minecraft:end/elytra"
+                                ),
                                 o -> o instanceof String && ResourceLocation.isValidResourceLocation((String) o)
                         );
 
@@ -68,7 +75,9 @@ public class BMCommonConfig {
                         .comment("Format example: [\"minecraft:story/mine_diamond\", \"minecraft:story/enter_the_nether\"]")
                         .defineListAllowEmpty(
                                 "Pandemonium Voting: Repeat Advancements",
-                                List.of(),
+                                List.of(
+                                        "minecraft:end/kill_dragon"
+                                ),
                                 o -> o instanceof String && ResourceLocation.isValidResourceLocation((String) o)
                         );
 
