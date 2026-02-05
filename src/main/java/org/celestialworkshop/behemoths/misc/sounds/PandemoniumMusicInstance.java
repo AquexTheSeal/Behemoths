@@ -41,6 +41,8 @@ public class PandemoniumMusicInstance extends AbstractTickableSoundInstance {
         } else {
             this.volume = maxVolume;
         }
+
+        Minecraft.getInstance().getMusicManager().stopPlaying();
     }
 
     public void forceStop() {
