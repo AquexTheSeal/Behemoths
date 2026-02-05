@@ -9,8 +9,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.ModList;
 import org.celestialworkshop.behemoths.api.item.specialty.ItemSpecialtyCapability;
 import org.celestialworkshop.behemoths.api.item.specialty.SpecialtyInstance;
+import org.celestialworkshop.behemoths.compat.BMBetterCombat;
 import org.celestialworkshop.behemoths.registries.BMCapabilities;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -92,6 +94,10 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @Unique
     private ItemStack bm$getAttackingItem() {
-        return this.getMainHandItem();
+        if (ModList.get().isLoaded("bettercombat")) {
+            return BMBetterCombat.getSwingingStack((Player) (Object) this);
+        } else {
+            return this.getMainHandItem();
+        }
     }
 }

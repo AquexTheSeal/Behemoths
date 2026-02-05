@@ -1,8 +1,11 @@
 package org.celestialworkshop.behemoths.client.guis.screens;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import org.celestialworkshop.behemoths.api.client.animation.InterpolationTypes;
 import org.celestialworkshop.behemoths.api.client.gui.SimpleUIScreen;
@@ -44,6 +47,10 @@ public abstract class BMVotingScreen extends SimpleUIScreen {
         }
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
+    }
+
+    public void playSound(SoundEvent sound) {
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(sound, 1.0F, 2.0F));
     }
 
     protected static class Dot {

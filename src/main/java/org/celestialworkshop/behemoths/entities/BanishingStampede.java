@@ -13,6 +13,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
@@ -218,6 +219,11 @@ public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCusto
 
     @Override
     protected void randomizeAttributes(RandomSource pRandom) {
+    }
+
+    @Override
+    public MobType getMobType() {
+        return MobType.UNDEAD;
     }
 
     @Override

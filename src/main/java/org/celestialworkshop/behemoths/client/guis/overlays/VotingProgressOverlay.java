@@ -23,7 +23,6 @@ public class VotingProgressOverlay {
             float ratio = current / (float) max;
             int delta = (int) (ratio * barW);
             guiGraphics.blit(VotingSelectionScreen.MAIN_TEXTURE, (screenWidth/2) - (barW/2), 22, 0, 230, delta, barH);
-
         }
     }
 }

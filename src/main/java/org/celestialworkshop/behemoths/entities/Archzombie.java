@@ -39,7 +39,7 @@ import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 import org.celestialworkshop.behemoths.registries.BMItems;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
 import org.celestialworkshop.behemoths.registries.BMSoundEvents;
-import org.celestialworkshop.behemoths.utils.WorldUtils;
+import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class Archzombie extends Monster implements BMEntity {
@@ -228,6 +228,11 @@ public class Archzombie extends Monster implements BMEntity {
 
     @Override
     public void setLeftHanded(boolean pLeftHanded) {
+    }
+
+    @Override
+    public MobType getMobType() {
+        return MobType.UNDEAD;
     }
 
     @Override

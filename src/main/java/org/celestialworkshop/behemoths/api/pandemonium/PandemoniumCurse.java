@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
-import org.celestialworkshop.behemoths.utils.ClientUtils;
+import org.celestialworkshop.behemoths.misc.utils.ClientUtils;
 
 import javax.annotation.Nullable;
 
@@ -23,16 +23,12 @@ public class PandemoniumCurse {
         this(null);
     }
 
-    public ResourceLocation getTexture() {
-        return ResourceLocation.fromNamespaceAndPath(this.getId().getNamespace(), "textures/pandemonium_modifiers/" + this.getId().getPath());
-    }
-
     public Component getDisplayName() {
-        return Component.translatable("pandemonium_modifier." + this.getId().getNamespace() + "." + this.getId().getPath());
+        return Component.translatable("pandemonium_curse." + this.getId().getNamespace() + "." + this.getId().getPath());
     }
 
     public Component getDescription() {
-        return Component.translatable("pandemonium_modifier." + this.getId().getNamespace() + "." + this.getId().getPath() + "_description");
+        return Component.translatable("pandemonium_curse." + this.getId().getNamespace() + "." + this.getId().getPath() + "_description");
     }
 
     public ResourceLocation getId() {

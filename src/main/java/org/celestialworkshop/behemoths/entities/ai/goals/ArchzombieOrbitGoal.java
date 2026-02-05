@@ -6,7 +6,7 @@ import net.minecraft.world.phys.Vec3;
 import org.celestialworkshop.behemoths.entities.Archzombie;
 import org.celestialworkshop.behemoths.entities.BanishingStampede;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
-import org.celestialworkshop.behemoths.utils.WorldUtils;
+import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
 
 import java.util.EnumSet;
 import java.util.List;

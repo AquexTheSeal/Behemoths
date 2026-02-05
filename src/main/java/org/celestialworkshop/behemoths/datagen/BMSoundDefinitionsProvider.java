@@ -27,6 +27,16 @@ public class BMSoundDefinitionsProvider extends SoundDefinitionsProvider {
         this.basicSound(BMSoundEvents.STAMPEDE_DEATH);
         this.basicSound(BMSoundEvents.STAMPEDE_CHARGE_STEP);
         this.variantSound(BMSoundEvents.STAMPEDE_AMBIENT, 3);
+
+        this.music(BMSoundEvents.VOTING_AMBIENT);
+        this.basicSound(BMSoundEvents.VOTING_DRUM);
+        this.basicSound(BMSoundEvents.VOTING_TRANSITION);
+    }
+
+    private void music(RegistryObject<SoundEvent> sound) {
+        this.add(sound.get(), subtitledSound(sound.getId().getPath())
+                .with(sound(Behemoths.prefix(sound.getId().getPath())).stream())
+        );
     }
 
     private void basicSound(RegistryObject<SoundEvent> sound) {

@@ -1,11 +1,14 @@
-package org.celestialworkshop.behemoths.utils;
+package org.celestialworkshop.behemoths.misc.utils;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.RegistryObject;
 import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
+import org.celestialworkshop.behemoths.config.BMConfigManager;
 import org.celestialworkshop.behemoths.network.BMNetwork;
 import org.celestialworkshop.behemoths.network.s2c.OpenPandemoniumSelectionPacket;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
@@ -30,15 +33,21 @@ public class WorldUtils {
             WorldPandemoniumData data = WorldPandemoniumData.get((ServerLevel) level);
 
             if (data.isVotingActive()) {
-                Behemoths.LOGGER.warn("Tried to open Pandemonium Selection, but Voting is active.");
+                data.markVotingRequested();
                 return;
             }
 
             if (data.getSelectableCurses().isEmpty()) {
 
-                data.setRemainingTime(5000);
+                double configTime = BMConfigManager.COMMON.pandemoniumVotingTimer.get();
+                data.setRemainingTime(Mth.floor(configTime * 20));
 
                 List<PandemoniumCurse> curseLookup = new ArrayList<>(BMPandemoniumCurses.REGISTRY.get().getEntries().stream()
+                        .filter(curseObj -> {
+                            List<? extends String> blackListConfig = BMConfigManager.COMMON.pandemoniumVotingBlacklist.get();
+                            List<ResourceLocation> blacklist = blackListConfig.stream().map(ResourceLocation::parse).toList();
+                            return !blacklist.contains(curseObj.getKey().location());
+                        })
                         .map(Map.Entry::getValue)
                         .filter(curse -> !data.getActivePandemoniumCurses().contains(curse))
                         .toList());
@@ -47,6 +56,7 @@ public class WorldUtils {
                 int sublistEnd = Math.min(3, curseLookup.size());
                 if (sublistEnd == 0) {
                     Behemoths.LOGGER.warn("No available curses to select.");
+                    data.removePendingRequests();
                     return;
                 }
 
@@ -68,15 +78,44 @@ public class WorldUtils {
         if (level instanceof ServerLevel server) {
             WorldPandemoniumData data = WorldPandemoniumData.get(server);
 
-            Behemoths.LOGGER.debug("(Server) Pandemonium Curse Selection ended. Votes: ");
-            for (Object2IntMap.Entry<UUID> entry : data.getVoteData().object2IntEntrySet()) {
-                Behemoths.LOGGER.debug("\t-\tPlayer " + level.getPlayerByUUID(entry.getKey()).getDisplayName().getString() + " voted for " + data.getSelectableCurses().get(entry.getIntValue()).getDisplayName().getString());
+            data.finishVotingCalculations(server, forceStopClients);
+            data.clearSelectableCurses();
+            data.clearVoteData();
+
+            if (data.getPendingRequests() > 0) {
+                data.decrementPendingRequests();
+                openPandemoniumSelection(level);
+            }
+        }
+    }
+
+    public static void resolveInterruptedVote(ServerLevel level) {
+        WorldPandemoniumData data = WorldPandemoniumData.get(level);
+
+        if (data.isVotingActive()) {
+            int randomIndex = level.random.nextInt(data.getSelectableCurses().size());
+            data.addActivePandemoniumCurse(data.getSelectableCurses().get(randomIndex));
+            data.clearSelectableCurses();
+            data.clearVoteData();
+        }
+
+        int pending = data.getPendingRequests();
+        if (pending > 0) {
+            List<PandemoniumCurse> available = new ArrayList<>(BMPandemoniumCurses.REGISTRY.get().getValues().stream()
+                    .filter(c -> !data.getActivePandemoniumCurses().contains(c))
+                    .toList());
+
+            Collections.shuffle(available);
+
+            for (int i = 0; i < pending && i < available.size(); i++) {
+                data.addActivePandemoniumCurse(available.get(i));
             }
 
-            data.finishVotingCalculations(forceStopClients);
-            data.clearVoteData();
-            data.clearSelectableCurses();
+            while(data.getPendingRequests() > 0) data.decrementPendingRequests();
         }
+
+        data.setRemainingTime(0);
+        data.setDirty();
     }
 
     public static int[] getVoteResultsFromData(Object2IntMap<UUID> voteData, int selectableSize) {

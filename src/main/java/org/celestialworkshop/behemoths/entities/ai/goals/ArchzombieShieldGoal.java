@@ -4,7 +4,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ShieldItem;
 import org.celestialworkshop.behemoths.entities.Archzombie;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
-import org.celestialworkshop.behemoths.utils.WorldUtils;
+import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
 
 import java.util.EnumSet;
 

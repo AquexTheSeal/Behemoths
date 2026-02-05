@@ -4,7 +4,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import org.celestialworkshop.behemoths.entities.Archzombie;
 import org.celestialworkshop.behemoths.entities.BanishingStampede;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
-import org.celestialworkshop.behemoths.utils.WorldUtils;
+import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
 
 public class StampedeArchzombieRamGoal extends Goal {
     private final BanishingStampede stampede;

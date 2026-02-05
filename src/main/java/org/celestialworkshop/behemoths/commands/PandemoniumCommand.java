@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
-import org.celestialworkshop.behemoths.utils.WorldUtils;
+import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
 import org.celestialworkshop.behemoths.world.savedata.WorldPandemoniumData;
 
 public class PandemoniumCommand {
@@ -50,24 +50,32 @@ public class PandemoniumCommand {
                         )
 
                         .then(Commands.literal("voting")
-                                .requires(source -> source.hasPermission(2))
                                 .then(Commands.literal("start")
+                                        .requires(source -> source.hasPermission(2))
                                         .executes(PandemoniumCommand::startVoting))
                                 .then(Commands.literal("stop")
+                                        .requires(source -> source.hasPermission(2))
                                         .executes(PandemoniumCommand::stopVoting))
+                                .then(Commands.literal("clearMarkedAdvancements")
+                                        .requires(source -> source.hasPermission(2))
+                                        .executes(PandemoniumCommand::clearMarkedAdvancements))
+                                .then(Commands.literal("clearMarkedEntities")
+                                        .requires(source -> source.hasPermission(2))
+                                        .executes(PandemoniumCommand::clearMarkedEntities))
                         )
         );
     }
 
     private static int startVoting(CommandContext<CommandSourceStack> context) {
         ServerLevel level = context.getSource().getLevel();
+        WorldPandemoniumData data = WorldPandemoniumData.get(level);
 
-        if (WorldPandemoniumData.get(level).isVotingActive()) {
-            context.getSource().sendFailure(Component.literal("Voting has already started!"));
-            return 0;
+        if (data.isVotingActive()) {
+            context.getSource().sendFailure(Component.literal("Voting has already started. Queued: " + (data.getPendingRequests() + 1)));
         }
 
         WorldUtils.openPandemoniumSelection(level);
+
         context.getSource().sendSuccess(() -> Component.literal("Started voting"), true);
         return 1;
     }
@@ -81,6 +89,22 @@ public class PandemoniumCommand {
         }
 
         WorldUtils.endPandemoniumSelection(level, true);
+        context.getSource().sendSuccess(() -> Component.literal("Stopped voting"), true);
+        return 1;
+    }
+
+    private static int clearMarkedAdvancements(CommandContext<CommandSourceStack> context) {
+        ServerLevel level = context.getSource().getLevel();
+
+        WorldPandemoniumData.get(level).clearAdvancementTriggeredVoting();
+        context.getSource().sendSuccess(() -> Component.literal("Stopped voting"), true);
+        return 1;
+    }
+
+    private static int clearMarkedEntities(CommandContext<CommandSourceStack> context) {
+        ServerLevel level = context.getSource().getLevel();
+
+        WorldPandemoniumData.get(level).clearEntityTriggeredVoting();
         context.getSource().sendSuccess(() -> Component.literal("Stopped voting"), true);
         return 1;
     }

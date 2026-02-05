@@ -85,6 +85,9 @@ dependencies {
 
     implementation fg.deobf("curse.maven:jei-238222:${jei_version}")
     implementation fg.deobf("curse.maven:blessfulled-1182590:${blessfulled_version}")
+
+    compileOnly fg.deobf("curse.maven:better-combat-by-daedelus-639842:5625757")
+
 }
 
 repositories {

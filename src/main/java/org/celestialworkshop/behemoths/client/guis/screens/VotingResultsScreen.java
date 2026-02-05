@@ -10,6 +10,8 @@ import org.celestialworkshop.behemoths.api.client.animation.InterpolationTypes;
 import org.celestialworkshop.behemoths.api.client.gui.AnimatedUIElement;
 import org.celestialworkshop.behemoths.client.guis.uielements.VotingCandidateElement;
 import org.celestialworkshop.behemoths.client.guis.uielements.VotingResultElement;
+import org.celestialworkshop.behemoths.config.BMConfigManager;
+import org.celestialworkshop.behemoths.registries.BMSoundEvents;
 
 public class VotingResultsScreen extends BMVotingScreen {
     public static final ResourceLocation MAIN_TEXTURE = Behemoths.prefix("textures/gui/voting_results.png");
@@ -29,6 +31,9 @@ public class VotingResultsScreen extends BMVotingScreen {
 
     @Override
     public void initUIElements() {
+
+        this.playSound(BMSoundEvents.VOTING_TRANSITION.get());
+
         screenTick = 0;
 
         candid = new VotingCandidateElement(this, 0);
@@ -62,7 +67,9 @@ public class VotingResultsScreen extends BMVotingScreen {
 
         Screen scr = Minecraft.getInstance().screen;
         RandomSource r = Minecraft.getInstance().level.random;
-        for (int i = 0; i < 2 + r.nextInt(3); i++) {
+        int minParticles = BMConfigManager.CLIENT.votingScreenParticlesMin.get();
+        int maxParticles = BMConfigManager.CLIENT.votingScreenParticlesMax.get();
+        for (int i = 0; i < r.nextIntBetweenInclusive(minParticles, maxParticles); i++) {
             int xR = r.nextInt(scr.width);
             dots.add(new Dot(40 + r.nextInt(60), 2 + r.nextInt(5), r.nextFloat(), r.nextInt(4) == 0, xR, scr.height - 1));
         }

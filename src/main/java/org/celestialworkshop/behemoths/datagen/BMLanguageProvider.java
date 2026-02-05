@@ -33,17 +33,24 @@ public class BMLanguageProvider extends LanguageProvider {
         this.add("screen.behemoths.colossangrim", "The Colosssangrim");
         this.add("screen.behemoths.curse_selection.title", "SELECT YOUR CURSE.");
         this.add("screen.behemoths.curse_selection.hover_button", "Vote for this modifier.");
-        this.add("screen.behemoths.voting_results.votes", "%s Votes");
+        this.add("screen.behemoths.voting_results.votes", "%s Vote/s");
         this.add("screen.behemoths.voting_results.winner", "Winner: %s");
 
         this.add("overlay.behemoths.voting_progress", "Voting in progress. Press [%s] to open voting screen.");
+
+        this.add("chat.behemoths.voting_result_header", "Pandemonium Voting is over!");
+        this.add("chat.behemoths.voting_result_player_breakdown_header", "Player Voting Breakdown: ");
+        this.add("chat.behemoths.voting_result_player_breakdown", "Player %s voted for %s.");
+        this.add("chat.behemoths.voting_result_tally_breakdown_header", "Result Tally Breakdown: ");
+        this.add("chat.behemoths.voting_result_tally_breakdown", "%s has gained %s votes in total.");
+        this.add("chat.behemoths.voting_final_curse", "Selected Curse: %s");
 
         // PANDEMONIUM CURSE
 
         this.addPandemoniumCurse(BMPandemoniumCurses.FRAGILITY.get(), "Mortal Frailty", "Natural regeneration is slower and hunger depletes more quickly.");
 
-        this.addPandemoniumCurse(BMPandemoniumCurses.RELENTLESS.get(), "Relentless Dead", "Zombies move faster at night and can detect players from a much greater distance.");
-        this.addPandemoniumCurse(BMPandemoniumCurses.FERAL_HORDE.get(), "Feral Horde", "Zombies spawn in larger packs and gain increased attack power when near other zombies.");
+        this.addPandemoniumCurse(BMPandemoniumCurses.RELENTLESS.get(), "Relentless", "Zombies move x1.5 faster at night and can detect players from a much greater distance.");
+        this.addPandemoniumCurse(BMPandemoniumCurses.FERAL_HORDE.get(), "Feral Horde", "Zombies gain increased attack power when near other undead entities.");
 
         this.addPandemoniumCurse(BMPandemoniumCurses.ARCHZOMBIE_DOMINION.get(), "Archzombie Dominion", "Archzombie leaders can now spawn along with 2-4 Archzombies surrounding them.");
         this.addPandemoniumCurse(BMPandemoniumCurses.GRAVEBREAKER_MOMENTUM.get(), "Gravebreaker Momentum", "Banishing Stampede chasing speed: x1.3. Banishing Stampedes ridden by Archzombies can now also ram.");

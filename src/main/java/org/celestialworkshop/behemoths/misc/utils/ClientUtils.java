@@ -1,4 +1,4 @@
-package org.celestialworkshop.behemoths.utils;
+package org.celestialworkshop.behemoths.misc.utils;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.RemotePlayer;

@@ -17,7 +17,7 @@ public class BMPandemoniumCurses {
     public static final DeferredRegister<PandemoniumCurse> PANDEMONIUM_CURSES = DeferredRegister.create(PANDEMONIUM_CURSES_KEY, Behemoths.MODID);
     public static final Supplier<IForgeRegistry<PandemoniumCurse>> REGISTRY = PANDEMONIUM_CURSES.makeRegistry(() -> new RegistryBuilder<PandemoniumCurse>().disableSaving().disableOverrides());
 
-    public static final RegistryObject<PandemoniumCurse> FRAGILITY = PANDEMONIUM_CURSES.register("fragility", () -> new PandemoniumCurse(EntityType.PLAYER));
+    public static final RegistryObject<PandemoniumCurse> FRAGILITY = PANDEMONIUM_CURSES.register("fragility", PandemoniumCurse::new);
 
     public static final RegistryObject<PandemoniumCurse> RELENTLESS = PANDEMONIUM_CURSES.register("relentless", () -> new PandemoniumCurse(EntityType.ZOMBIE));
     public static final RegistryObject<PandemoniumCurse> FERAL_HORDE = PANDEMONIUM_CURSES.register("feral_horde", () -> new PandemoniumCurse(EntityType.ZOMBIE));

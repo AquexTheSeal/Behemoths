@@ -14,7 +14,7 @@ import org.celestialworkshop.behemoths.particles.VFXParticleData;
 import org.celestialworkshop.behemoths.particles.VFXTypes;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
 import org.celestialworkshop.behemoths.registries.BMSoundEvents;
-import org.celestialworkshop.behemoths.utils.WorldUtils;
+import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
 
 public class StampedeRamAction extends ManagedAction<BanishingStampede> {
     public Vec3 lockedDirection = null;

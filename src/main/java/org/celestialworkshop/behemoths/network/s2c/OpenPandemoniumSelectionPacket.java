@@ -5,7 +5,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent;
 import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
+import org.celestialworkshop.behemoths.misc.sounds.PandemoniumMusicManager;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
+import org.celestialworkshop.behemoths.registries.BMSoundEvents;
 import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
 
 import java.util.List;
@@ -34,8 +36,9 @@ public record OpenPandemoniumSelectionPacket(List<ResourceLocation> selectableCu
     public static void handle(OpenPandemoniumSelectionPacket packet, Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
             List<PandemoniumCurse> list = packet.selectableCurseIds().stream().map(BMPandemoniumCurses.REGISTRY.get()::getValue).toList();
+            PandemoniumMusicManager.play(BMSoundEvents.VOTING_AMBIENT.get());
             ClientPandemoniumData.openPandemoniumSelection(list, true);
-            ClientPandemoniumData.localSelectableCurses = list;
+            ClientPandemoniumData.localSelectableCurses.addAll(list);
             ClientPandemoniumData.localRemainingTime = packet.time();
             ClientPandemoniumData.localMaxTime = packet.time();
         });

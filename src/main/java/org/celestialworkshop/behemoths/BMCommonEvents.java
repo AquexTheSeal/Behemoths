@@ -5,13 +5,22 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
@@ -19,16 +28,19 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.celestialworkshop.behemoths.api.entity.BehemothProperties;
 import org.celestialworkshop.behemoths.api.item.specialty.ItemSpecialtyCapabilityProvider;
 import org.celestialworkshop.behemoths.api.item.specialty.SpecialtyInstance;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.commands.PandemoniumCommand;
 import org.celestialworkshop.behemoths.config.BMConfigManager;
 import org.celestialworkshop.behemoths.datagen.reloadlisteners.BehemothPropertiesReloadListener;
 import org.celestialworkshop.behemoths.datagen.reloadlisteners.ItemSpecialtyReloadListener;
 import org.celestialworkshop.behemoths.items.BehemothHeartItem;
 import org.celestialworkshop.behemoths.network.BMNetwork;
+import org.celestialworkshop.behemoths.network.s2c.OpenPandemoniumSelectionPacket;
 import org.celestialworkshop.behemoths.network.s2c.SyncSpecialtiesDataPacket;
 import org.celestialworkshop.behemoths.registries.BMAdvancementTriggers;
 import org.celestialworkshop.behemoths.registries.BMCapabilities;
-import org.celestialworkshop.behemoths.utils.WorldUtils;
+import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
+import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
 import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
 import org.celestialworkshop.behemoths.world.savedata.WorldPandemoniumData;
 
@@ -49,6 +61,24 @@ public class BMCommonEvents {
     }
 
     @SubscribeEvent
+    public static void onServerStopping(ServerStoppingEvent event) {
+        WorldUtils.resolveInterruptedVote(event.getServer().getLevel(Level.OVERWORLD));
+    }
+
+    @SubscribeEvent
+    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!event.getEntity().level().isClientSide) {
+            WorldPandemoniumData data = WorldPandemoniumData.get((ServerLevel) event.getEntity().level());
+
+            if (data.isVotingActive()) {
+                BMNetwork.sendToPlayer((ServerPlayer) event.getEntity(), new OpenPandemoniumSelectionPacket(
+                        data.getSelectableCurses().stream().map(PandemoniumCurse::getId).toList(), data.getRemainingTime())
+                );
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void onEntityDeath(LivingDeathEvent event) {
         LivingEntity entity = event.getEntity();
         Entity killer = event.getSource().getEntity();
@@ -58,32 +88,31 @@ public class BMCommonEvents {
 
         if (!entity.level().isClientSide) {
             if (killer instanceof ServerPlayer player) {
-                for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                    ItemStack stack = player.getInventory().getItem(i);
-                    if (!stack.isEmpty() && stack.getItem() instanceof BehemothHeartItem) {
-                        BehemothHeartItem.addHeartEnergy(stack, BehemothProperties.getHeartEnergy(entity));
-                    }
-                }
 
                 if (BehemothProperties.isBehemoth(entity)) {
+                    for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                        ItemStack stack = player.getInventory().getItem(i);
+                        if (!stack.isEmpty() && stack.getItem() instanceof BehemothHeartItem) {
+                            BehemothHeartItem.addHeartEnergy(stack, BehemothProperties.getHeartEnergy(entity));
+                        }
+                    }
+
                     BMAdvancementTriggers.KILL_BEHEMOTH.trigger(player);
                 }
 
-                List<String> onceList = BMConfigManager.COMMON.pandemoniumOnceEntities.get().stream().map(s -> (String) s).toList();
-                List<String> repeatList = BMConfigManager.COMMON.pandemoniumRepeatEntities.get().stream().map(s -> (String) s).toList();
-
                 WorldPandemoniumData data = WorldPandemoniumData.get(player.serverLevel());
+                List<String> onceList = BMConfigManager.COMMON.pandemoniumOnceEntities.get().stream().map(s -> (String) s).toList();;
+                List<String> repeatList = BMConfigManager.COMMON.pandemoniumRepeatEntities.get().stream().map(s -> (String) s).toList();;
+                String idString = entityId.toString();
 
-                if (onceList.contains(entityId.toString())) {
-                    if (data.hasEntityTriggeredVoting(entityId)) return;
-
-                    data.markEntityTriggeredVoting(entityId);
+                Behemoths.LOGGER.info("Entity {}.", idString);
+                if (repeatList.contains(idString)) {
                     WorldUtils.openPandemoniumSelection(player.level());
-                    return;
-                }
-
-                if (repeatList.contains(entityId.toString())) {
-                    WorldUtils.openPandemoniumSelection(player.level());
+                } else if (onceList.contains(idString)) {
+                    if (!data.hasEntityTriggeredVoting(entityId)) {
+                        data.markEntityTriggeredVoting(entityId);
+                        WorldUtils.openPandemoniumSelection(player.level());
+                    }
                 }
             }
         }
@@ -91,14 +120,51 @@ public class BMCommonEvents {
 
     @SubscribeEvent
     public static void onPlayerAdvancement(AdvancementEvent.AdvancementEarnEvent event) {
-        List<String> onceList = BMConfigManager.COMMON.pandemoniumOnceAdvancements.get().stream().map(s -> (String) s).toList();
-        List<String> repeatList = BMConfigManager.COMMON.pandemoniumRepeatAdvancements.get().stream().map(s -> (String) s).toList();
+        if (!event.getEntity().level().isClientSide) {
+            List<String> onceList = BMConfigManager.COMMON.pandemoniumOnceAdvancements.get().stream().map(s -> (String) s).toList();
+            List<String> repeatList = BMConfigManager.COMMON.pandemoniumRepeatAdvancements.get().stream().map(s -> (String) s).toList();
 
-        if (onceList.contains(event.getAdvancement().getId().toString())) {
-            WorldUtils.openPandemoniumSelection(event.getEntity().level());
+            ResourceLocation id = event.getAdvancement().getId();
 
-        } else if (repeatList.contains(event.getAdvancement().getId().toString())) {
-            if (WorldUtils.)
+            if (repeatList.contains(id.toString())) {
+                WorldUtils.openPandemoniumSelection(event.getEntity().level());
+
+            } else if (onceList.contains(id.toString())) {
+                WorldPandemoniumData data = WorldPandemoniumData.get((ServerLevel) event.getEntity().level());
+                if (!data.hasAdvancementTriggeredVoting(id)) {
+                    data.markAdvancementTriggeredVoting(id);
+                    WorldUtils.openPandemoniumSelection(event.getEntity().level());
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntitySpawn(MobSpawnEvent.FinalizeSpawn event) {
+        Mob entity = event.getEntity();
+        ServerLevel level = event.getLevel().getLevel();
+        if (entity instanceof Zombie) {
+            if (WorldUtils.hasPandemoniumCurse(level, BMPandemoniumCurses.RELENTLESS)) {
+                entity.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) * 1.5);
+                entity.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(entity.getAttributeBaseValue(Attributes.FOLLOW_RANGE) * 2);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityHurt(LivingHurtEvent event) {
+        Level level = event.getEntity().level();
+        if (!level.isClientSide) {
+            Entity attacker = event.getSource().getEntity();
+
+            if (attacker == null) return;
+
+            if (attacker instanceof Zombie) {
+                if (WorldUtils.hasPandemoniumCurse(level, BMPandemoniumCurses.FERAL_HORDE)) {
+                    List<Mob> nearUndead = level.getEntitiesOfClass(Mob.class, attacker.getBoundingBox().inflate(8)).stream().filter(e -> e.getMobType() == MobType.UNDEAD).toList();
+                    event.setAmount(event.getAmount() * (1 + (nearUndead.size() * 0.2F)));
+                }
+            }
         }
     }
 

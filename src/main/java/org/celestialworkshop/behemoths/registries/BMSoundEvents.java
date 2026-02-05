@@ -21,6 +21,10 @@ public class BMSoundEvents {
     public static final RegistryObject<SoundEvent> STAMPEDE_CHARGE_STEP = registerSoundEvent("stampede_charge_step");
     public static final RegistryObject<SoundEvent> STAMPEDE_AMBIENT = registerSoundEvent("stampede_ambient");
 
+    public static final RegistryObject<SoundEvent> VOTING_AMBIENT = registerSoundEvent("voting_ambient");
+    public static final RegistryObject<SoundEvent> VOTING_DRUM = registerSoundEvent("voting_drum");
+    public static final RegistryObject<SoundEvent> VOTING_TRANSITION = registerSoundEvent("voting_transition");
+
     private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
         return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(Behemoths.prefix(name)));
     }

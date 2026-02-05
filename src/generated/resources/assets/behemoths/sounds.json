@@ -59,5 +59,26 @@
       "behemoths:stampede_hurt_2"
     ],
     "subtitle": "behemoths.subtitle.stampede_hurt"
+  },
+  "voting_ambient": {
+    "sounds": [
+      {
+        "name": "behemoths:voting_ambient",
+        "stream": true
+      }
+    ],
+    "subtitle": "behemoths.subtitle.voting_ambient"
+  },
+  "voting_drum": {
+    "sounds": [
+      "behemoths:voting_drum"
+    ],
+    "subtitle": "behemoths.subtitle.voting_drum"
+  },
+  "voting_transition": {
+    "sounds": [
+      "behemoths:voting_transition"
+    ],
+    "subtitle": "behemoths.subtitle.voting_transition"
   }
 }
