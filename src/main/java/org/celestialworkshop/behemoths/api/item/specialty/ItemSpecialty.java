@@ -21,16 +21,8 @@ public abstract class ItemSpecialty {
         return originalDamage;
     }
 
-    public float onDamageSweep(LivingEntity attacker, LivingEntity sweepTarget, ItemStack itemStack, float sweepDamage, float originalDamage, int specialityLevel) {
-        return sweepDamage;
-    }
-
     public void onPostMelee(LivingEntity attacker, LivingEntity target, ItemStack itemStack, boolean wasCritical, int specialityLevel) {
     }
-
-//    public float onDamageRanged(LivingEntity attacker, LivingEntity target, ItemStack itemStack, Projectile ammo, float originalDamage, boolean wasFullyCharged, int specialityLevel) {
-//        return originalDamage;
-//    }
 
     public Category getCategory() {
         return category;
