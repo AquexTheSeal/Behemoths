@@ -88,7 +88,7 @@ public class PandemoniumCommand {
             return 0;
         }
 
-        WorldUtils.endPandemoniumSelection(level, true);
+        WorldUtils.endPandemoniumSelection(level);
         context.getSource().sendSuccess(() -> Component.literal("Stopped voting"), true);
         return 1;
     }

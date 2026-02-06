@@ -6,6 +6,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 public class BMClientConfig {
 
     public final ForgeConfigSpec.BooleanValue enableVotingMusic;
+    public final ForgeConfigSpec.BooleanValue enableResultsChatLogging;
     public final ForgeConfigSpec.IntValue votingScreenParticlesMin;
     public final ForgeConfigSpec.IntValue votingScreenParticlesMax;
 
@@ -15,6 +16,11 @@ public class BMClientConfig {
         enableVotingMusic = builder
                 .comment("Should the custom music be played during Pandemonium Voting?")
                 .define("Enable Voting Music", true);
+
+        enableResultsChatLogging = builder
+                .comment("Should Pandemonium Voting Results tallies display in chat?")
+                .comment("Warning: If disabled, preceding winning curses will not be shown to players during consecutive/queued voting sessions.")
+                .define("Display Pandemonium Voting Results in Chat", true);
 
         votingScreenParticlesMin = builder
                 .comment("How many particles in minimum should pop up in the background of the Pandemonium Voting screens?")

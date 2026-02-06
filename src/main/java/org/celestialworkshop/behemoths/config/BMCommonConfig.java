@@ -9,7 +9,6 @@ import java.util.List;
 public class BMCommonConfig {
 
     public final ForgeConfigSpec.DoubleValue pandemoniumVotingTimer;
-    public final ForgeConfigSpec.BooleanValue enableResultsChatLogging;
     public final ForgeConfigSpec.BooleanValue enableResultsShowVoters;
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> pandemoniumVotingBlacklist;
 
@@ -29,14 +28,9 @@ public class BMCommonConfig {
                         .comment("Define how long a Pandemonium Voting session would last in seconds.")
                         .defineInRange("Pandemonium Voting Time", 120, 0, Double.MAX_VALUE);
 
-                enableResultsChatLogging = builder
-                        .comment("Should Pandemonium Voting Results tallies display in chat?")
-                        .comment("Warning: If disabled, preceding winning curses will not be shown to players during consecutive/queued voting sessions.")
-                        .define("Display Pandemonium Voting Results in Chat", true);
-
                 enableResultsShowVoters = builder
                         .comment("Should Pandemonium Voting Results display player names and what they voted for in chat?")
-                        .comment("Warning: Disabling \"Display Pandemonium Voting Results in Chat\" will render this config useless.")
+                        .comment("Warning: Disabling \"Display Pandemonium Voting Results in Chat\" in the client will render this config useless.")
                         .define("Include Pandemonium Voting Player Results in Chat", true);
 
                 pandemoniumVotingBlacklist = builder

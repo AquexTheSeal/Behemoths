@@ -28,10 +28,6 @@ public class BMClientEvents {
                     ClientPandemoniumData.openPandemoniumSelection(ClientPandemoniumData.localSelectableCurses, false);
                 }
             }
-
-            if (time > 0 && time % 15 == 0) {
-
-            }
         }
     }
 

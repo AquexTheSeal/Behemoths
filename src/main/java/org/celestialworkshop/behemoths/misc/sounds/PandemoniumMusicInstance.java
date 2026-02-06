@@ -5,6 +5,7 @@ import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import org.celestialworkshop.behemoths.client.guis.screens.BMVotingScreen;
 
 public class PandemoniumMusicInstance extends AbstractTickableSoundInstance {
 
@@ -36,7 +37,7 @@ public class PandemoniumMusicInstance extends AbstractTickableSoundInstance {
             this.stop();
         }
 
-        if (Minecraft.getInstance().screen == null) {
+        if (!(Minecraft.getInstance().screen instanceof BMVotingScreen)) {
             this.volume = maxVolume * 0.3F;
         } else {
             this.volume = maxVolume;

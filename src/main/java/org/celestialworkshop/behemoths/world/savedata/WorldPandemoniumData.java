@@ -3,25 +3,21 @@ package org.celestialworkshop.behemoths.world.savedata;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.config.BMConfigManager;
+import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
 import org.celestialworkshop.behemoths.network.BMNetwork;
-import org.celestialworkshop.behemoths.network.s2c.SendVoteDataPacket;
+import org.celestialworkshop.behemoths.network.s2c.FinishVotingPacket;
 import org.celestialworkshop.behemoths.network.s2c.ShortenVoteTimerPacket;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
-import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -118,7 +114,7 @@ public class WorldPandemoniumData extends SavedData {
         } else {
             remainingTime++;
             if (remainingTime == -1 && !selectableCurses.isEmpty()) {
-                WorldUtils.endPandemoniumSelection(level, false);
+                WorldUtils.endPandemoniumSelection(level);
             }
         }
 
@@ -128,62 +124,21 @@ public class WorldPandemoniumData extends SavedData {
         }
     }
 
-    public void finishVotingCalculations(ServerLevel server, boolean forceStopClients) {
+    public void finishVotingCalculations(ServerLevel server) {
         int[] voteResults = WorldUtils.getVoteResultsFromData(voteData, selectableCurses.size());
-        BMNetwork.sendToAll(new SendVoteDataPacket(voteResults, forceStopClients));
 
-        int highestVoteIndex = voteResults[3];
-        String winningCurse = selectableCurses
-                .get(highestVoteIndex)
-                .getDisplayName()
-                .getString();
-
-        if (BMConfigManager.COMMON.enableResultsChatLogging.get()) {
-            server.players().forEach(player -> {
-
-                player.playNotifySound(SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.5F, 0.5F);
-                player.sendSystemMessage(Component.translatable("chat.behemoths.voting_result_header").withStyle(ChatFormatting.RED));
-
-                if (BMConfigManager.COMMON.enableResultsShowVoters.get()) {
-                    player.sendSystemMessage(Component.translatable("chat.behemoths.voting_result_player_breakdown_header").withStyle(ChatFormatting.LIGHT_PURPLE));
-
-                    for (Object2IntMap.Entry<UUID> entry : this.getVoteData().object2IntEntrySet()) {
-
-                        server.getServer().getProfileCache().get(entry.getKey()).ifPresent(profile -> {
-                            String voterName = profile.getName();
-                            String votedCurse = this.getSelectableCurses().get(entry.getIntValue()).getDisplayName().getString();
-
-                            Component voterNameComponent = Component.literal(voterName).withStyle(ChatFormatting.AQUA);
-                            Component votedCurseComponent = Component.literal(votedCurse).withStyle(ChatFormatting.YELLOW);
-                            player.sendSystemMessage(
-                                    Component.literal("• ").withStyle(ChatFormatting.DARK_GRAY)
-                                            .append(Component.translatable("chat.behemoths.voting_result_player_breakdown", voterNameComponent, votedCurseComponent))
-                            );
-                        });
-                    }
-                }
-
-                player.sendSystemMessage(Component.translatable("chat.behemoths.voting_result_tally_breakdown_header").withStyle(ChatFormatting.LIGHT_PURPLE));
-                for (int i = 0; i < this.getSelectableCurses().size(); i++) {
-                    PandemoniumCurse curse = this.getSelectableCurses().get(i);
-                    String indexCurse = curse.getDisplayName().getString();
-                    int indexVotes = voteResults[i];
-
-                    Component indexCurseComponent = Component.literal(indexCurse).withStyle(ChatFormatting.DARK_RED);
-                    Component indexVotesComponent = Component.literal(String.valueOf(indexVotes)).withStyle(ChatFormatting.YELLOW);
-
-                    player.sendSystemMessage(
-                            Component.literal("• ").withStyle(ChatFormatting.DARK_GRAY)
-                                    .append(Component.translatable("chat.behemoths.voting_result_tally_breakdown", indexCurseComponent, indexVotesComponent))
-                    );
-                }
-
-                Component winningCurseComponent = Component.literal(winningCurse).withStyle(ChatFormatting.RED);
-                player.sendSystemMessage(Component.translatable("chat.behemoths.voting_final_curse", winningCurseComponent).withStyle(ChatFormatting.GRAY));
-            });
+        Object2IntMap<String> playerVoteData = new Object2IntArrayMap<>();
+        if (BMConfigManager.COMMON.enableResultsShowVoters.get()) {
+            for (Object2IntMap.Entry<UUID> playerData : voteData.object2IntEntrySet()) {
+                server.getServer().getProfileCache().get(playerData.getKey()).ifPresent(profile -> {
+                    playerVoteData.put(profile.getName(), playerData.getIntValue());
+                });
+            }
         }
 
-        addActivePandemoniumCurse(selectableCurses.get(highestVoteIndex));
+        BMNetwork.sendToAll(new FinishVotingPacket(playerVoteData, voteResults));
+
+        addActivePandemoniumCurse(selectableCurses.get(voteResults[3]));
     }
 
     public ObjectArrayList<PandemoniumCurse> getActivePandemoniumCurses() {

@@ -18,15 +18,17 @@ public class VotingResultsScreen extends BMVotingScreen {
     public int screenTick = 0;
 
     public final int[] voteResults;
+    public final int selectedIndex;
 
     public VotingResultElement result;
     public VotingCandidateElement candid;
     public VotingCandidateElement candid1;
     public VotingCandidateElement candid2;
 
-    public VotingResultsScreen(int[] voteResults) {
+    public VotingResultsScreen(int[] voteResults, int selectedIndex) {
         super(Component.empty());
         this.voteResults = voteResults;
+        this.selectedIndex = selectedIndex;
     }
 
     @Override

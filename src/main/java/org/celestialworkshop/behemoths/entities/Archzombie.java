@@ -87,7 +87,7 @@ public class Archzombie extends Monster implements BMEntity {
                 .add(Attributes.ARMOR, 7.0D)
                 .add(Attributes.ARMOR_TOUGHNESS, 1.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
-                .add(Attributes.FOLLOW_RANGE, 80.0D)
+                .add(Attributes.FOLLOW_RANGE, 64.0D)
                 .build();
     }
 
@@ -150,7 +150,7 @@ public class Archzombie extends Monster implements BMEntity {
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
 
         boolean leaderEnabled = WorldUtils.hasPandemoniumCurse(level(), BMPandemoniumCurses.ARCHZOMBIE_DOMINION);
-        float leaderChance = 0.15F;
+        float leaderChance = 0.12F;
 
         if (reason != MobSpawnType.REINFORCEMENT && random.nextFloat() < leaderChance && leaderEnabled) {
             setupAsLeader(level, difficulty, reason);

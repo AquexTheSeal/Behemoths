@@ -25,7 +25,7 @@ public class BMNetwork {
         int id = 0;
         INSTANCE.registerMessage(id++, ManageAnimationStatePacket.class, ManageAnimationStatePacket::encode, ManageAnimationStatePacket::decode, ManageAnimationStatePacket::handle);
         INSTANCE.registerMessage(id++, OpenPandemoniumSelectionPacket.class, OpenPandemoniumSelectionPacket::encode, OpenPandemoniumSelectionPacket::decode, OpenPandemoniumSelectionPacket::handle);
-        INSTANCE.registerMessage(id++, SendVoteDataPacket.class, SendVoteDataPacket::encode, SendVoteDataPacket::decode, SendVoteDataPacket::handle);
+        INSTANCE.registerMessage(id++, FinishVotingPacket.class, FinishVotingPacket::encode, FinishVotingPacket::decode, FinishVotingPacket::handle);
         INSTANCE.registerMessage(id++, ShortenVoteTimerPacket.class, ShortenVoteTimerPacket::encode, ShortenVoteTimerPacket::decode, ShortenVoteTimerPacket::handle);
         INSTANCE.registerMessage(id++, SyncSpecialtiesDataPacket.class, SyncSpecialtiesDataPacket::encode, SyncSpecialtiesDataPacket::decode, SyncSpecialtiesDataPacket::handle);
 

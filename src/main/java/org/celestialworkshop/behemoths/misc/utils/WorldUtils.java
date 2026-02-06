@@ -74,11 +74,11 @@ public class WorldUtils {
         }
     }
 
-    public static void endPandemoniumSelection(Level level, boolean forceStopClients) {
+    public static void endPandemoniumSelection(Level level) {
         if (level instanceof ServerLevel server) {
             WorldPandemoniumData data = WorldPandemoniumData.get(server);
 
-            data.finishVotingCalculations(server, forceStopClients);
+            data.finishVotingCalculations(server);
             data.clearSelectableCurses();
             data.clearVoteData();
 
