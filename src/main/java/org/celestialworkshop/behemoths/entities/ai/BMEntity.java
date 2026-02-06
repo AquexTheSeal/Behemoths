@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import org.celestialworkshop.behemoths.api.client.animation.EntityAnimationManager;
-import org.celestialworkshop.behemoths.misc.utils.mixinhelpers.MobMixinHelper;
+import org.celestialworkshop.behemoths.misc.mixinhelpers.MobMixinHelper;
 
 public interface BMEntity {
 

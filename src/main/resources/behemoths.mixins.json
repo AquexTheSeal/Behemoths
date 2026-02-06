@@ -4,9 +4,10 @@
   "package": "org.celestialworkshop.behemoths.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "behemoths.refmap.json",
+  "plugin": "org.celestialworkshop.behemoths.mixin.BMMixinConfigPlugin",
   "mixins": [
     "FoodDataMixin",
-    "ItemStackRendererMixin",
+    "jei.ItemStackRendererMixin",
     "MobMixin",
     "PlayerMixin",
     "ShapedRecipeMixin",

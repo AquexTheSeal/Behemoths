@@ -3,7 +3,7 @@ package org.celestialworkshop.behemoths.mixin;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.world.entity.Mob;
 import org.celestialworkshop.behemoths.entities.ai.BMEntity;
-import org.celestialworkshop.behemoths.misc.utils.mixinhelpers.MobMixinHelper;
+import org.celestialworkshop.behemoths.misc.mixinhelpers.MobMixinHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

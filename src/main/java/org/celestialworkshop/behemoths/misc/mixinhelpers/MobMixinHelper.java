@@ -1,4 +1,4 @@
-package org.celestialworkshop.behemoths.misc.utils.mixinhelpers;
+package org.celestialworkshop.behemoths.misc.mixinhelpers;
 
 import it.unimi.dsi.fastutil.Pair;
 import org.celestialworkshop.behemoths.entities.ai.BMEntity;

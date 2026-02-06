@@ -1,7 +1,6 @@
 package org.celestialworkshop.behemoths.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,9 +17,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin extends LivingEntity {
@@ -51,21 +52,27 @@ public abstract class PlayerMixin extends LivingEntity {
         return result;
     }
 
-    @Redirect(method = "attack", at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"
-    ))
-    private boolean modifySweepingDamage(LivingEntity sweepTarget, DamageSource source, float sweepDamage, @Local(ordinal = 0) float originalDamage) {
-        float result = sweepDamage;
+    @ModifyArg(
+            method = "attack",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"
+            ),
+            index = 1
+    )
+    private float modifySweepingDamage(float sweepDamage, @Local(ordinal = 0) float originalDamage, @Local LivingEntity sweepTarget) {
+        AtomicReference<Float> result = new AtomicReference<>(sweepDamage);
         ItemStack stack = this.bm$getAttackingItem();
-        LazyOptional<ItemSpecialtyCapability> cap = stack.getCapability(BMCapabilities.ITEM_SPECIALTY);
-        if (cap.isPresent()) {
-            for (SpecialtyInstance entry : cap.resolve().get().getSpecialties()) {
-                result = entry.specialty().onDamageSweep(this, sweepTarget, stack, result, originalDamage, entry.level());
+
+        stack.getCapability(BMCapabilities.ITEM_SPECIALTY).ifPresent(cap -> {
+            for (SpecialtyInstance entry : cap.getSpecialties()) {
+                result.set(entry.specialty().onDamageSweep(this, sweepTarget, stack, result.get(), originalDamage, entry.level()));
             }
-        }
-        return sweepTarget.hurt(source, result);
+        });
+
+        return result.get();
     }
+
 
     @Inject(method = "attack", at = @At(
             value = "INVOKE",

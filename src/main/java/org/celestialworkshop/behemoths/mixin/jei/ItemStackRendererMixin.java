@@ -1,4 +1,4 @@
-package org.celestialworkshop.behemoths.mixin;
+package org.celestialworkshop.behemoths.mixin.jei;
 
 import mezz.jei.library.render.ItemStackRenderer;
 import net.minecraft.client.gui.GuiGraphics;
