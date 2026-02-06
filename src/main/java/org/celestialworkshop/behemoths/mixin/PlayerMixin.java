@@ -58,7 +58,7 @@ public abstract class PlayerMixin extends LivingEntity {
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"
             ),
-            index = 1
+            index = 2
     )
     private float modifySweepingDamage(float sweepDamage, @Local(ordinal = 0) float originalDamage, @Local LivingEntity sweepTarget) {
         AtomicReference<Float> result = new AtomicReference<>(sweepDamage);
