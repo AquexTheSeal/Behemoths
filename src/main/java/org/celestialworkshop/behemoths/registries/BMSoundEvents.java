@@ -21,6 +21,14 @@ public class BMSoundEvents {
     public static final RegistryObject<SoundEvent> STAMPEDE_CHARGE_STEP = registerSoundEvent("stampede_charge_step");
     public static final RegistryObject<SoundEvent> STAMPEDE_AMBIENT = registerSoundEvent("stampede_ambient");
 
+    public static final RegistryObject<SoundEvent> HOLLOWBORNE_AMBIENT = registerSoundEvent("hollowborne_ambient");
+    public static final RegistryObject<SoundEvent> HOLLOWBORNE_DEATH = registerSoundEvent("hollowborne_death");
+    public static final RegistryObject<SoundEvent> HOLLOWBORNE_HURT = registerSoundEvent("hollowborne_hurt");
+
+    public static final RegistryObject<SoundEvent> HOLLOWBORNE_TURRET_SHOOT = registerSoundEvent("hollowborne_turret_shoot");
+
+    public static final RegistryObject<SoundEvent> HOLLOWCORPER_IMPACT = registerSoundEvent("hollowcorper_impact");
+
     public static final RegistryObject<SoundEvent> VOTING_AMBIENT = registerSoundEvent("voting_ambient");
     public static final RegistryObject<SoundEvent> VOTING_DRUM = registerSoundEvent("voting_drum");
     public static final RegistryObject<SoundEvent> VOTING_TRANSITION = registerSoundEvent("voting_transition");

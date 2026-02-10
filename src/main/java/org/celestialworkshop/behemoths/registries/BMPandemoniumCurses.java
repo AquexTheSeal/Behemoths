@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 public class BMPandemoniumCurses {
     public static final ResourceKey<Registry<PandemoniumCurse>> PANDEMONIUM_CURSES_KEY = ResourceKey.createRegistryKey(Behemoths.prefix("pandemonium_curses"));
     public static final DeferredRegister<PandemoniumCurse> PANDEMONIUM_CURSES = DeferredRegister.create(PANDEMONIUM_CURSES_KEY, Behemoths.MODID);
-    public static final Supplier<IForgeRegistry<PandemoniumCurse>> REGISTRY = PANDEMONIUM_CURSES.makeRegistry(() -> new RegistryBuilder<PandemoniumCurse>().disableSaving().disableOverrides());
+    public static final Supplier<IForgeRegistry<PandemoniumCurse>> REGISTRY = PANDEMONIUM_CURSES.makeRegistry(() -> new RegistryBuilder<PandemoniumCurse>().disableOverrides());
 
     public static final RegistryObject<PandemoniumCurse> FRAGILITY = PANDEMONIUM_CURSES.register("fragility", PandemoniumCurse::new);
 
@@ -26,4 +26,9 @@ public class BMPandemoniumCurses {
     public static final RegistryObject<PandemoniumCurse> GRAVEBREAKER_MOMENTUM = PANDEMONIUM_CURSES.register("gravebreaker_momentum", () -> new PandemoniumCurse(BMEntityTypes.ARCHZOMBIE.get()));
     public static final RegistryObject<PandemoniumCurse> PHANTOM_STEED = PANDEMONIUM_CURSES.register("phantom_steed", () -> new PandemoniumCurse(BMEntityTypes.ARCHZOMBIE.get()));
 
+    public static final RegistryObject<PandemoniumCurse> HEAVY_ARROW = PANDEMONIUM_CURSES.register("heavy_arrow", () -> new PandemoniumCurse(EntityType.SKELETON));
+    public static final RegistryObject<PandemoniumCurse> BURNING_ARCHER = PANDEMONIUM_CURSES.register("burning_archer", () -> new PandemoniumCurse(EntityType.SKELETON));
+
+    public static final RegistryObject<PandemoniumCurse> OVERSEER = PANDEMONIUM_CURSES.register("overseer", () -> new PandemoniumCurse(BMEntityTypes.HOLLOWBORNE_TURRET.get()));
+    public static final RegistryObject<PandemoniumCurse> DEATH_LEAP = PANDEMONIUM_CURSES.register("death_leap", () -> new PandemoniumCurse(BMEntityTypes.HOLLOWBORNE_TURRET.get()));
 }

@@ -1,0 +1,4 @@
+{
+  "type": "minecraft:entity",
+  "random_sequence": "behemoths:entities/hollowborne_turret"
+}

@@ -8,39 +8,39 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-@Mixin(FoodData.class)
+// Fix: 1200 priority for Pufferfish Attributes
+@Mixin(value = FoodData.class, priority = 1200)
 public abstract class FoodDataMixin {
 
-
-    @ModifyConstant(method = "tick", constant = @Constant(floatValue = 4.0F, ordinal = 0))
-    private float foodLvlRedThresh(float original, Player player) {
+    @ModifyConstant(method = "tick", constant = @Constant(floatValue = 4.0F, ordinal = 0), require = 0)
+    private float foodLvlRedThresh(float value, Player player) {
         if (WorldUtils.hasPandemoniumCurse(player.level(), BMPandemoniumCurses.FRAGILITY)) {
-            return 2.0F;
+            return value * 0.5F;
         }
-        return original;
+        return value;
     }
 
-    @ModifyConstant(method = "tick", constant = @Constant(floatValue = 4.0F, ordinal = 1))
-    private float foodLvlRedThresh2(float original, Player player) {
+    @ModifyConstant(method = "tick", constant = @Constant(floatValue = 4.0F, ordinal = 1), require = 0)
+    private float foodLvlRedThresh2(float value, Player player) {
         if (WorldUtils.hasPandemoniumCurse(player.level(), BMPandemoniumCurses.FRAGILITY)) {
-            return 2.0F;
+            return value * 0.5F;
         }
-        return original;
+        return value;
     }
 
-    @ModifyConstant(method = "tick", constant = @Constant(intValue = 10))
-    private int fastHealTimer(int original, Player player) {
+    @ModifyConstant(method = "tick", constant = @Constant(intValue = 10), require = 0)
+    private int fastHealTimer(int value, Player player) {
         if (WorldUtils.hasPandemoniumCurse(player.level(), BMPandemoniumCurses.FRAGILITY)) {
-            return 20;
+            return value * 2;
         }
-        return original;
+        return value;
     }
 
-    @ModifyConstant(method = "tick", constant = @Constant(floatValue = 1.0F, ordinal = 0))
-    private float healNerf(float original, Player player) {
+    @ModifyConstant(method = "tick", constant = @Constant(floatValue = 1.0F, ordinal = 0), require = 0)
+    private float healNerf(float value, Player player) {
         if (WorldUtils.hasPandemoniumCurse(player.level(), BMPandemoniumCurses.FRAGILITY)) {
-            return 0.5F;
+            return value * 0.5F;
         }
-        return original;
+        return value;
     }
 }

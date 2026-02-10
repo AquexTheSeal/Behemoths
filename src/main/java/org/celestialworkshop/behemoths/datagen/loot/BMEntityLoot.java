@@ -56,6 +56,27 @@ public class BMEntityLoot extends EntityLootSubProvider {
                         .when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.12F, 0.02F))
                 ))
         );
+
+        this.add(BMEntityTypes.HOLLOWBORNE.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 3)).add(LootItem.lootTableItem(Items.BONE)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                        .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                ))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.BONE_BLOCK)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
+                        .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                ))
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 3)).add(LootItem.lootTableItem(Items.BONE_MEAL)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                        .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
+                ))
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(BMItems.BEHEMOTH_HEART.get())
+                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.17F, 0.02F))
+                ))
+        );
+
+        this.add(BMEntityTypes.HOLLOWBORNE_TURRET.get(), LootTable.lootTable());
     }
 
     @Override

@@ -22,11 +22,11 @@ public class BehemothDamageBonusSpecialty extends ItemSpecialty {
     @Override
     public String[] getDisplayVariables(int level) {
         return new String[]{
-                ItemSpecialty.asPercentFormat(calculatePower(level))
+                ItemSpecialty.asPercentFormat(calculatePower(level + 1))
         };
     }
 
     private static float calculatePower(int specialityLevel) {
-        return 1.0F + ((specialityLevel + 1) * 0.2F);
+        return 1.0F + (specialityLevel * 0.2F);
     }
 }

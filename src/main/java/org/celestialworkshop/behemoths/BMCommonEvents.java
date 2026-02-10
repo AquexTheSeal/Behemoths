@@ -9,11 +9,15 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.event.*;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -34,13 +38,13 @@ import org.celestialworkshop.behemoths.config.BMConfigManager;
 import org.celestialworkshop.behemoths.datagen.reloadlisteners.BehemothPropertiesReloadListener;
 import org.celestialworkshop.behemoths.datagen.reloadlisteners.ItemSpecialtyReloadListener;
 import org.celestialworkshop.behemoths.items.BehemothHeartItem;
+import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
 import org.celestialworkshop.behemoths.network.BMNetwork;
 import org.celestialworkshop.behemoths.network.s2c.OpenPandemoniumSelectionPacket;
 import org.celestialworkshop.behemoths.network.s2c.SyncSpecialtiesDataPacket;
 import org.celestialworkshop.behemoths.registries.BMAdvancementTriggers;
 import org.celestialworkshop.behemoths.registries.BMCapabilities;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
-import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
 import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
 import org.celestialworkshop.behemoths.world.savedata.WorldPandemoniumData;
 
@@ -56,6 +60,20 @@ public class BMCommonEvents {
                 WorldPandemoniumData.get((ServerLevel) event.level).tickPandemoniumWorld(event.level);
             } else {
                 ClientPandemoniumData.tickPandemoniumClient();
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onProjectileImpact(ProjectileImpactEvent event) {
+        if (event.getProjectile() instanceof AbstractArrow arrow) {
+            if (arrow.getOwner() instanceof Skeleton) {
+                if (event.getRayTraceResult() instanceof EntityHitResult ehr && ehr.getEntity() instanceof LivingEntity target) {
+                    if (WorldUtils.hasPandemoniumCurse(event.getEntity().level(), BMPandemoniumCurses.HEAVY_ARROW)) {
+                        target.hasImpulse = true;
+                        target.setDeltaMovement(arrow.getDeltaMovement().scale(2).multiply(1, 0.2, 1));
+                    }
+                }
             }
         }
     }
@@ -145,8 +163,8 @@ public class BMCommonEvents {
         ServerLevel level = event.getLevel().getLevel();
         if (entity instanceof Zombie) {
             if (WorldUtils.hasPandemoniumCurse(level, BMPandemoniumCurses.RELENTLESS)) {
-                entity.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(entity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) * 1.5);
-                entity.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(entity.getAttributeBaseValue(Attributes.FOLLOW_RANGE) * 2);
+                entity.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(entity.getAttributeValue(Attributes.MOVEMENT_SPEED) * 1.5);
+                entity.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(entity.getAttributeValue(Attributes.FOLLOW_RANGE) * 2);
             }
         }
     }

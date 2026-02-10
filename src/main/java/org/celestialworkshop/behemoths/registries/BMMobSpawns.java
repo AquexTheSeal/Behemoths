@@ -8,6 +8,8 @@ import org.celestialworkshop.behemoths.Behemoths;
 public class BMMobSpawns {
 
     // Biome Spawn Modifiers
-    public static final ResourceKey<BiomeModifier> ARCHZOMBIE_SPAWNS = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Behemoths.prefix("archzombie_spawns"));
+    public static final ResourceKey<BiomeModifier> OVERWORLD_SPAWNS = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Behemoths.prefix("overworld_spawns"));
+
+    public static final ResourceKey<BiomeModifier> MOUNTAIN_SPAWNS = ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, Behemoths.prefix("mountain_spawns"));
 
 }

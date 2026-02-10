@@ -7,6 +7,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.celestialworkshop.behemoths.entities.Archzombie;
+import org.celestialworkshop.behemoths.entities.HollowborneTurret;
 import org.celestialworkshop.behemoths.network.BMNetwork;
 import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 
@@ -23,5 +24,7 @@ public class BMCommonSetup {
     @SubscribeEvent
     public static void onSpawnPlacementRegistry(SpawnPlacementRegisterEvent event) {
         event.register(BMEntityTypes.ARCHZOMBIE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Archzombie::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(BMEntityTypes.HOLLOWBORNE_TURRET.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, HollowborneTurret::checkHollowborneSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+
     }
 }

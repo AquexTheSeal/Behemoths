@@ -37,8 +37,9 @@ public record OpenPandemoniumSelectionPacket(List<ResourceLocation> selectableCu
         context.get().enqueueWork(() -> {
             List<PandemoniumCurse> list = packet.selectableCurseIds().stream().map(BMPandemoniumCurses.REGISTRY.get()::getValue).toList();
             PandemoniumMusicManager.play(BMSoundEvents.VOTING_AMBIENT.get());
-            ClientPandemoniumData.openPandemoniumSelection(list, true);
+            ClientPandemoniumData.localSelectableCurses.clear();
             ClientPandemoniumData.localSelectableCurses.addAll(list);
+            ClientPandemoniumData.openPandemoniumSelection(list, true);
             ClientPandemoniumData.localRemainingTime = packet.time();
             ClientPandemoniumData.localMaxTime = packet.time();
         });

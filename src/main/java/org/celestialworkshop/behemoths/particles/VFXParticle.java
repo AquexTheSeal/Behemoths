@@ -19,7 +19,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.celestialworkshop.behemoths.api.client.animation.InterpolationTypes;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 import java.util.List;
@@ -240,7 +239,6 @@ public class VFXParticle extends TextureSheetParticle {
             pose.scale(-1, -1, 1);
             pose.translate(0.0F, -1.5F, 0.0F);
             Matrix4f poseMatrix = pose.last().pose();
-            Matrix3f normalMatrix = pose.last().normal();
             VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
             int overlay = OverlayTexture.NO_OVERLAY;
@@ -252,8 +250,6 @@ public class VFXParticle extends TextureSheetParticle {
             vertexConsumer.vertex(poseMatrix, 1.0F, -1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(1.0F, 1.0F).overlayCoords(overlay).uv2(light).normal(0F, 1.0F, 0F).endVertex();
             vertexConsumer.vertex(poseMatrix, 1.0F, 1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(1.0F, 0.0F).overlayCoords(overlay).uv2(light).normal(0F, 1.0F, 0F).endVertex();
             vertexConsumer.vertex(poseMatrix, -1.0F, 1.0F, 0.0F).color(1.0F, 1.0F, 1.0F, currentAlpha).uv(0.0F, 0.0F).overlayCoords(overlay).uv2(light).normal(0F, 1.0F, 0F).endVertex();
-
-
 
             pose.popPose();
         }
@@ -286,7 +282,7 @@ public class VFXParticle extends TextureSheetParticle {
 
     @Override
     public @NotNull ParticleRenderType getRenderType() {
-        return ParticleRenderType.CUSTOM;
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     public static void clearCaches() {

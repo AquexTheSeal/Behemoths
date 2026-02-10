@@ -26,6 +26,36 @@
     ],
     "subtitle": "behemoths.subtitle.archzombie_swing"
   },
+  "hollowborne_ambient": {
+    "sounds": [
+      "behemoths:hollowborne_ambient"
+    ],
+    "subtitle": "behemoths.subtitle.hollowborne_ambient"
+  },
+  "hollowborne_death": {
+    "sounds": [
+      "behemoths:hollowborne_death"
+    ],
+    "subtitle": "behemoths.subtitle.hollowborne_death"
+  },
+  "hollowborne_hurt": {
+    "sounds": [
+      "behemoths:hollowborne_hurt"
+    ],
+    "subtitle": "behemoths.subtitle.hollowborne_hurt"
+  },
+  "hollowborne_turret_shoot": {
+    "sounds": [
+      "behemoths:hollowborne_turret_shoot"
+    ],
+    "subtitle": "behemoths.subtitle.hollowborne_turret_shoot"
+  },
+  "hollowcorper_impact": {
+    "sounds": [
+      "behemoths:hollowcorper_impact"
+    ],
+    "subtitle": "behemoths.subtitle.hollowcorper_impact"
+  },
   "stampede_ambient": {
     "sounds": [
       "behemoths:stampede_ambient_0",

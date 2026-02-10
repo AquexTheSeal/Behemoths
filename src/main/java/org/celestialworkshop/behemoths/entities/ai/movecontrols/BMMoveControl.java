@@ -20,6 +20,7 @@ public class BMMoveControl<T extends Mob & BMEntity> extends MoveControl {
 
     @Override
     public void tick() {
+
         if (this.operation == MoveControl.Operation.STRAFE) {
             float baseSpeed = (float) this.entity.getAttributeValue(Attributes.MOVEMENT_SPEED);
             float adjustedSpeed = (float) this.speedModifier * baseSpeed;

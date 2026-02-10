@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
 import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.client.models.ArchzombieModel;
-import org.celestialworkshop.behemoths.client.renderlayers.ArchzombieBannerLayer;
+import org.celestialworkshop.behemoths.client.renderers.layers.ArchzombieBannerLayer;
 import org.celestialworkshop.behemoths.entities.Archzombie;
 
 public class ArchzombieRenderer extends MobRenderer<Archzombie, ArchzombieModel<Archzombie>> {

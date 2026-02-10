@@ -56,6 +56,9 @@ public class BMLanguageProvider extends LanguageProvider {
         this.addPandemoniumCurse(BMPandemoniumCurses.GRAVEBREAKER_MOMENTUM.get(), "Gravebreaker Momentum", "Banishing Stampede chasing speed: x1.3. Banishing Stampedes ridden by Archzombies can now also ram.");
         this.addPandemoniumCurse(BMPandemoniumCurses.PHANTOM_STEED.get(), "Phantom Steed", "Chance for an Archzombie to spawn with a Banishing Stampede: 5% -> 25%.");
 
+        this.addPandemoniumCurse(BMPandemoniumCurses.OVERSEER.get(), "Overseer", "Hollowborne Turret projectile impact: x2. Hollowborne Turrets now gain a 30% damage reduction against any projectiles.");
+        this.addPandemoniumCurse(BMPandemoniumCurses.DEATH_LEAP.get(), "Death Leap", "Hollowbornes can now leap towards the target and crush them when the turret is destroyed.");
+
         // TOOLTIP
 
         this.add("tooltip.behemoths.heart_energy_desc", "Can only be used as a crafting material when the Heart Energy is full, then all of it is consumed when used. Heart Energy slowly replenishes while in your inventory, but each Behemoth Heart you carry reduces the recovery speed. Defeating Behemoths restores a large amount of Heart Energy.");

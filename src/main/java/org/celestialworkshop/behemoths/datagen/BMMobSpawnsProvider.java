@@ -17,10 +17,18 @@ public class BMMobSpawnsProvider {
 
     public static void bootstrapBiome(BootstapContext<BiomeModifier> ctx) {
         HolderGetter<Biome> biomeRegistry = ctx.lookup(Registries.BIOME);
-        ctx.register(BMMobSpawns.ARCHZOMBIE_SPAWNS, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
+        ctx.register(BMMobSpawns.OVERWORLD_SPAWNS, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
                 biomeRegistry.getOrThrow(BiomeTags.IS_OVERWORLD),
                 List.of(
-                new MobSpawnSettings.SpawnerData(BMEntityTypes.ARCHZOMBIE.get(), 30, 1, 1)
+                        new MobSpawnSettings.SpawnerData(BMEntityTypes.ARCHZOMBIE.get(), 25, 1, 2),
+                        new MobSpawnSettings.SpawnerData(BMEntityTypes.HOLLOWBORNE_TURRET.get(), 12, 1, 1)
+                ))
+        );
+
+        ctx.register(BMMobSpawns.MOUNTAIN_SPAWNS, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
+                biomeRegistry.getOrThrow(BiomeTags.IS_MOUNTAIN),
+                List.of(
+                        new MobSpawnSettings.SpawnerData(BMEntityTypes.HOLLOWBORNE_TURRET.get(), 20, 1, 1)
                 ))
         );
     }

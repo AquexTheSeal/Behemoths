@@ -10,10 +10,8 @@ import org.celestialworkshop.behemoths.client.guis.overlays.BanishingStampedeJum
 import org.celestialworkshop.behemoths.client.guis.overlays.VotingProgressOverlay;
 import org.celestialworkshop.behemoths.client.guis.tooltips.HeartTooltip;
 import org.celestialworkshop.behemoths.client.guis.tooltips.SpecialtyTooltip;
-import org.celestialworkshop.behemoths.client.models.ArchzombieModel;
-import org.celestialworkshop.behemoths.client.models.BanishingStampedeModel;
-import org.celestialworkshop.behemoths.client.renderers.ArchzombieRenderer;
-import org.celestialworkshop.behemoths.client.renderers.BanishingStampedeRenderer;
+import org.celestialworkshop.behemoths.client.models.*;
+import org.celestialworkshop.behemoths.client.renderers.*;
 import org.celestialworkshop.behemoths.particles.VFXParticle;
 import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 import org.celestialworkshop.behemoths.registries.BMItems;
@@ -28,12 +26,18 @@ public class BMClientSetup {
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(BMEntityTypes.ARCHZOMBIE.get(), ArchzombieRenderer::new);
         event.registerEntityRenderer(BMEntityTypes.BANISHING_STAMPEDE.get(), BanishingStampedeRenderer::new);
+        event.registerEntityRenderer(BMEntityTypes.HOLLOWBORNE.get(), HollowborneRenderer::new);
+        event.registerEntityRenderer(BMEntityTypes.HOLLOWBORNE_TURRET.get(), HollowborneTurretRenderer::new);
+        event.registerEntityRenderer(BMEntityTypes.HOLLOWCORPER.get(), HollowcorperRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerEntityModels(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ArchzombieModel.LAYER_LOCATION, ArchzombieModel::createBodyLayer);
         event.registerLayerDefinition(BanishingStampedeModel.LAYER_LOCATION, BanishingStampedeModel::createBodyLayer);
+        event.registerLayerDefinition(HollowborneModel.LAYER_LOCATION, HollowborneModel::createBodyLayer);
+        event.registerLayerDefinition(HollowborneTurretModel.LAYER_LOCATION, HollowborneTurretModel::createBodyLayer);
+        event.registerLayerDefinition(HollowcorperModel.LAYER_LOCATION, HollowcorperModel::createBodyLayer);
     }
 
     @SubscribeEvent

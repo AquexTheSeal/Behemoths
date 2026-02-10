@@ -28,6 +28,14 @@ public class BMSoundDefinitionsProvider extends SoundDefinitionsProvider {
         this.basicSound(BMSoundEvents.STAMPEDE_CHARGE_STEP);
         this.variantSound(BMSoundEvents.STAMPEDE_AMBIENT, 3);
 
+        this.basicSound(BMSoundEvents.HOLLOWBORNE_AMBIENT);
+        this.basicSound(BMSoundEvents.HOLLOWBORNE_DEATH);
+        this.basicSound(BMSoundEvents.HOLLOWBORNE_HURT);
+
+        this.basicSound(BMSoundEvents.HOLLOWBORNE_TURRET_SHOOT);
+
+        this.basicSound(BMSoundEvents.HOLLOWCORPER_IMPACT);
+
         this.music(BMSoundEvents.VOTING_AMBIENT);
         this.basicSound(BMSoundEvents.VOTING_DRUM);
         this.basicSound(BMSoundEvents.VOTING_TRANSITION);

@@ -13,6 +13,7 @@ plugins {
     id 'idea'
     id 'net.minecraftforge.gradle' version '[6.0.16,6.2]'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 apply plugin: 'org.spongepowered.mixin'
@@ -88,6 +89,7 @@ dependencies {
 
     compileOnly fg.deobf("curse.maven:better-combat-by-daedelus-639842:5625757")
 
+    runtimeOnly fg.deobf("curse.maven:puffish-attributes-991341:7551331")
 }
 
 repositories {
@@ -127,17 +129,49 @@ tasks.named('processResources', ProcessResources).configure {
 }
 
 tasks.named('jar', Jar).configure {
+    enabled = false
+}
+
+afterEvaluate {
+    tasks.named('reobfJar').configure {
+        enabled = false
+    }
+}
+
+tasks.named('jarJar', Jar).configure {
+    archiveClassifier = ""
     manifest {
         attributes([
                 "Specification-Title"     : mod_id,
                 "Specification-Vendor"    : mod_authors,
                 "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
+                "Implementation-Version"  : archiveVersion,
                 "Implementation-Vendor"   : mod_authors,
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
+}
 
-    finalizedBy 'reobfJar'
+reobf {
+    jarJar {}
+}
+
+publishMods {
+    file = tasks.named('jarJar').get().archiveFile
+    changelog = file("changelog/CL-${mod_version}.md").text
+    type = STABLE
+    modLoaders.add("forge")
+
+    curseforge {
+        projectId = "1454931"
+        accessToken = providers.environmentVariable("curseforgeToken")
+        minecraftVersions.add(minecraft_version)
+    }
+
+    modrinth {
+        projectId = "V2LHp4Si"
+        accessToken = providers.environmentVariable("modrinthToken")
+        minecraftVersions.add(minecraft_version)
+    }
 }

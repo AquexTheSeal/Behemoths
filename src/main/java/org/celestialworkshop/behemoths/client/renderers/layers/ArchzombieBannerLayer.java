@@ -1,4 +1,4 @@
-package org.celestialworkshop.behemoths.client.renderlayers;
+package org.celestialworkshop.behemoths.client.renderers.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;

@@ -14,5 +14,7 @@ public class BMBehemothPropertiesProvider extends BehemothPropertiesProvider {
     protected void addEntries() {
         this.add(BMEntityTypes.ARCHZOMBIE.get(), new BehemothProperties(800));
         this.add(BMEntityTypes.BANISHING_STAMPEDE.get(), new BehemothProperties(500));
+        this.add(BMEntityTypes.HOLLOWBORNE.get(), new BehemothProperties(800));
+        this.add(BMEntityTypes.HOLLOWBORNE_TURRET.get(), new BehemothProperties(500));
     }
 }

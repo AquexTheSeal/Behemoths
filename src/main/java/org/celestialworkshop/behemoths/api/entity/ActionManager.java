@@ -24,6 +24,7 @@ public class ActionManager<T extends Entity> {
         this.action.addAll(Arrays.asList(tasks));
     }
 
+
     public void tick() {
         if (this.currentAction != null) {
             if (!this.currentAction.onTick() || !entity.isAlive()) {
