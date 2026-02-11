@@ -84,12 +84,11 @@ dependencies {
         jarJar.ranged(it, "[${mixinextras_version},)")
     }
 
-    implementation fg.deobf("curse.maven:jei-238222:${jei_version}")
-    implementation fg.deobf("curse.maven:blessfulled-1182590:${blessfulled_version}")
+    implementation fg.deobf("curse.maven:jei-238222:7391695")
+    implementation fg.deobf("curse.maven:blessfulled-1182590:6624691")
+    implementation fg.deobf("curse.maven:emi-580555:6420945")
 
     compileOnly fg.deobf("curse.maven:better-combat-by-daedelus-639842:5625757")
-
-    runtimeOnly fg.deobf("curse.maven:puffish-attributes-991341:7551331")
 }
 
 repositories {
@@ -125,6 +124,17 @@ tasks.named('processResources', ProcessResources).configure {
 
     filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
         expand replaceProperties + [project: project]
+    }
+}
+
+tasks.register('buildIntoProduction', Copy) {
+    dependsOn 'build'
+
+    from(tasks.named('jarJar').flatMap { it.archiveFile })
+    into(project.findProperty("CURSEFORGE_LAUNCHER_FOLDER") ?: providers.environmentVariable("CURSEFORGE_LAUNCHER_FOLDER").getOrElse(""))
+
+    doFirst {
+        println "Installing mod jar into CurseForge profile mods folder..."
     }
 }
 
@@ -165,13 +175,13 @@ publishMods {
 
     curseforge {
         projectId = "1454931"
-        accessToken = providers.environmentVariable("curseforgeToken")
+        accessToken = project.findProperty("CURSEFORGE_TOKEN") ?: providers.environmentVariable("CURSEFORGE_TOKEN").getOrElse("")
         minecraftVersions.add(minecraft_version)
     }
 
     modrinth {
         projectId = "V2LHp4Si"
-        accessToken = providers.environmentVariable("modrinthToken")
+        accessToken = project.findProperty("MODRINTH_TOKEN") ?: providers.environmentVariable("MODRINTH_TOKEN").getOrElse("")
         minecraftVersions.add(minecraft_version)
     }
 }

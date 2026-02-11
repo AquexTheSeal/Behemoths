@@ -1,6 +1,7 @@
 package org.celestialworkshop.behemoths.misc.utils;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -8,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.RegistryObject;
 import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumVoteResult;
 import org.celestialworkshop.behemoths.config.BMConfigManager;
 import org.celestialworkshop.behemoths.network.BMNetwork;
 import org.celestialworkshop.behemoths.network.s2c.OpenPandemoniumSelectionPacket;
@@ -17,6 +19,13 @@ import org.celestialworkshop.behemoths.world.savedata.WorldPandemoniumData;
 import java.util.*;
 
 public class WorldUtils {
+
+    public static final List<RegistryObject<PandemoniumCurse>> BLACLISTED_CURSES = List.of(
+            BMPandemoniumCurses.HEAVY_ARROW,
+            BMPandemoniumCurses.BURNING_ARCHER,
+            BMPandemoniumCurses.DEATH_LEAP,
+            BMPandemoniumCurses.OVERSEER
+    );
 
     public static boolean hasPandemoniumCurse(Level level, PandemoniumCurse curse) {
         if (level.isClientSide) return false;
@@ -28,55 +37,77 @@ public class WorldUtils {
         return hasPandemoniumCurse(level, curse.get());
     }
 
-    public static void openPandemoniumSelection(Level level) {
-        if (!level.isClientSide) {
-            WorldPandemoniumData data = WorldPandemoniumData.get((ServerLevel) level);
+    public static PandemoniumVoteResult openPandemoniumSelection(Level level) {
+        if (level.isClientSide) {
+            return PandemoniumVoteResult.fail(Component.literal("Cannot start Pandemonium voting on client side."));
+        }
 
+        WorldPandemoniumData data = WorldPandemoniumData.get((ServerLevel) level);
+
+        int maxCurses = BMConfigManager.COMMON.maxPandemoniumCurses.get();
+        int activeCurseSize = data.getActivePandemoniumCurses().size();
+
+        if (maxCurses != -1) {
             if (data.isVotingActive()) {
-                data.markVotingRequested();
-                return;
-            }
-
-            if (data.getSelectableCurses().isEmpty()) {
-
-                double configTime = BMConfigManager.COMMON.pandemoniumVotingTimer.get();
-                data.setRemainingTime(Mth.floor(configTime * 20));
-
-                List<PandemoniumCurse> curseLookup = new ArrayList<>(BMPandemoniumCurses.REGISTRY.get().getEntries().stream()
-                        .filter(curseObj -> {
-                            List<? extends String> blackListConfig = BMConfigManager.COMMON.pandemoniumVotingBlacklist.get();
-                            List<ResourceLocation> blacklist = blackListConfig.stream().map(ResourceLocation::parse).toList();
-                            return !blacklist.contains(curseObj.getKey().location());
-                        })
-                        .map(Map.Entry::getValue)
-                        .filter(curse -> !data.getActivePandemoniumCurses().contains(curse))
-                        .toList());
-
-                Collections.shuffle(curseLookup);
-                int sublistEnd = Math.min(3, curseLookup.size());
-                if (sublistEnd == 0) {
-                    Behemoths.LOGGER.warn("No available curses to select.");
-                    data.removePendingRequests();
-                    return;
+                int overallCurseSize = activeCurseSize + data.getPendingRequests() + 1;
+                if (overallCurseSize >= maxCurses) {
+                    return PandemoniumVoteResult.fail(Component.literal("Could not queue Pandemonium voting session. The configured maximum curses has been reached: " + overallCurseSize + "/" + maxCurses));
                 }
-
-                List<PandemoniumCurse> sublist = curseLookup.subList(0, sublistEnd);
-                data.clearSelectableCurses();
-                for (int i = 0; i < sublistEnd; i++) {
-                    data.addSelectableCurse(sublist.get(i));
-                }
-
-                BMNetwork.sendToAll(new OpenPandemoniumSelectionPacket(data.getSelectableCurses().stream().map(PandemoniumCurse::getId).toList(), data.getRemainingTime()));
-
             } else {
-                Behemoths.LOGGER.warn("Tried to open Pandemonium Selection, but Selectable Curses are not empty.");
+                if (activeCurseSize >= maxCurses) {
+                    return PandemoniumVoteResult.fail(Component.literal("Could not start Pandemonium voting session. The configured maximum curses has been reached: " + activeCurseSize + "/" + maxCurses));
+                }
             }
         }
+
+        if (data.isVotingActive()) {
+            data.markVotingRequested();
+            return PandemoniumVoteResult.success(Component.literal("Pandemonium voting session has been queued. Queue: " + data.getPendingRequests() + "."));
+        }
+
+        if (!data.getSelectableCurses().isEmpty()) {
+            return PandemoniumVoteResult.fail(Component.literal("Could not start Pandemonium voting session. Selectable Curses are not empty."));
+        }
+
+        double configTime = BMConfigManager.COMMON.pandemoniumVotingTimer.get();
+        data.setRemainingTime(Mth.floor(configTime * 20));
+
+        List<PandemoniumCurse> curseLookup = new ArrayList<>(BMPandemoniumCurses.REGISTRY.get().getEntries().stream()
+                .filter(curseObj -> {
+                    List<? extends String> blackListConfig = BMConfigManager.COMMON.pandemoniumVotingBlacklist.get();
+                    List<ResourceLocation> blacklist = blackListConfig.stream().map(ResourceLocation::parse).toList();
+                    return !blacklist.contains(curseObj.getKey().location()) && !BLACLISTED_CURSES.stream().map(RegistryObject::getKey).toList().contains(curseObj.getKey());
+                })
+                .map(Map.Entry::getValue)
+                .filter(curse -> !data.getActivePandemoniumCurses().contains(curse))
+                .toList());
+
+        Collections.shuffle(curseLookup);
+        int sublistEnd = Math.min(3, curseLookup.size());
+        if (sublistEnd == 0) {
+            Behemoths.LOGGER.warn("No available curses to select.");
+            data.removePendingRequests();
+            return PandemoniumVoteResult.fail(Component.literal("Could not start Pandemonium voting session. No more available curses to select."));
+        }
+
+        List<PandemoniumCurse> sublist = curseLookup.subList(0, sublistEnd);
+        data.clearSelectableCurses();
+        for (int i = 0; i < sublistEnd; i++) {
+            data.addSelectableCurse(sublist.get(i));
+        }
+
+        BMNetwork.sendToAll(new OpenPandemoniumSelectionPacket(data.getSelectableCurses().stream().map(PandemoniumCurse::getId).toList(), data.getRemainingTime()));
+
+        return PandemoniumVoteResult.success(Component.literal("Pandemonium voting session has started!"));
     }
 
-    public static void endPandemoniumSelection(Level level) {
+    public static PandemoniumVoteResult endPandemoniumSelection(Level level) {
         if (level instanceof ServerLevel server) {
             WorldPandemoniumData data = WorldPandemoniumData.get(server);
+
+            if (!data.isVotingActive()) {
+                return PandemoniumVoteResult.fail(Component.literal("No active Pandemonium voting session to end."));
+            }
 
             data.finishVotingCalculations(server);
             data.clearSelectableCurses();
@@ -86,6 +117,10 @@ public class WorldUtils {
                 data.decrementPendingRequests();
                 openPandemoniumSelection(level);
             }
+
+            return PandemoniumVoteResult.success(Component.literal("Pandemonium voting session ended."));
+        } else {
+            return PandemoniumVoteResult.fail(Component.literal("Cannot stop Pandemonium voting on client side."));
         }
     }
 

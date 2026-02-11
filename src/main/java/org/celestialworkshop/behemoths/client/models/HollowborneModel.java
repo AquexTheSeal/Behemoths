@@ -143,17 +143,17 @@ public class HollowborneModel<T extends Hollowborne> extends BMHierarchicalModel
 
 		this.parts().forEach(ModelPart::resetPose);
 
-		this.armml1.yRot += (Mth.sin(limbSwing * 0.3F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
-		this.armml1.zRot += (-Mth.cos(limbSwing * 0.3F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+		this.armml1.yRot += (Mth.sin(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+		this.armml1.zRot += (-Mth.cos(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
 
-		this.armmr1.yRot += (Mth.cos(limbSwing * 0.3F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
-		this.armmr1.zRot += (Mth.sin(limbSwing * 0.3F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+		this.armmr1.yRot += (Mth.cos(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+		this.armmr1.zRot += (Mth.sin(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
 
-		this.armmlb1.yRot += (Mth.cos(limbSwing * 0.3F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
-		this.armmlb1.zRot += (Mth.sin(limbSwing * 0.3F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+		this.armmlb1.yRot += (Mth.cos(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+		this.armmlb1.zRot += (Mth.sin(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
 
-		this.armmrb1.yRot += (Mth.sin(limbSwing * 0.3F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
-		this.armmrb1.zRot += (-Mth.cos(limbSwing * 0.3F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+		this.armmrb1.yRot += (Mth.sin(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+		this.armmrb1.zRot += (-Mth.cos(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
 
 
 		this.limbr.solve(entity, ageInTicks - entity.tickCount, true);

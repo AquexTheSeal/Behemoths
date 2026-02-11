@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumVoteResult;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
 import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
 import org.celestialworkshop.behemoths.world.savedata.WorldPandemoniumData;
@@ -68,29 +69,28 @@ public class PandemoniumCommand {
 
     private static int startVoting(CommandContext<CommandSourceStack> context) {
         ServerLevel level = context.getSource().getLevel();
-        WorldPandemoniumData data = WorldPandemoniumData.get(level);
 
-        if (data.isVotingActive()) {
-            context.getSource().sendFailure(Component.literal("Voting has already started. Queued: " + (data.getPendingRequests() + 1)));
+        PandemoniumVoteResult result = WorldUtils.openPandemoniumSelection(level);
+        if (result.isSuccess()) {
+            context.getSource().sendSuccess(result::getMessage, true);
+            return 1;
+        } else {
+            context.getSource().sendFailure(result.getMessage());
+            return 0;
         }
-
-        WorldUtils.openPandemoniumSelection(level);
-
-        context.getSource().sendSuccess(() -> Component.literal("Started voting"), true);
-        return 1;
     }
 
     private static int stopVoting(CommandContext<CommandSourceStack> context) {
         ServerLevel level = context.getSource().getLevel();
 
-        if (!WorldPandemoniumData.get(level).isVotingActive()) {
-            context.getSource().sendFailure(Component.literal("There is no current voting process!"));
+        PandemoniumVoteResult result = WorldUtils.endPandemoniumSelection(level);
+        if (result.isSuccess()) {
+            context.getSource().sendSuccess(result::getMessage, true);
+            return 1;
+        } else {
+            context.getSource().sendFailure(result.getMessage());
             return 0;
         }
-
-        WorldUtils.endPandemoniumSelection(level);
-        context.getSource().sendSuccess(() -> Component.literal("Stopped voting"), true);
-        return 1;
     }
 
     private static int clearMarkedAdvancements(CommandContext<CommandSourceStack> context) {

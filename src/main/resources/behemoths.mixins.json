@@ -4,14 +4,14 @@
   "package": "org.celestialworkshop.behemoths.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "behemoths.refmap.json",
-  "plugin": "org.celestialworkshop.behemoths.mixin.BMMixinConfigPlugin",
   "mixins": [
     "FoodDataMixin",
-    "jei.ItemStackRendererMixin",
     "MobMixin",
     "PlayerMixin",
     "ShapedRecipeMixin",
-    "ShapelessRecipeMixin"
+    "ShapelessRecipeMixin",
+    "emi.ItemEmiStackMixin",
+    "jei.ItemStackRendererMixin"
   ],
   "client": [
     "LocalPlayerMixin"

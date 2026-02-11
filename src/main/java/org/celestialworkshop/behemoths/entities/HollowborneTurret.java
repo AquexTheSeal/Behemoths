@@ -2,6 +2,7 @@ package org.celestialworkshop.behemoths.entities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -109,7 +110,7 @@ public class HollowborneTurret extends PathfinderMob implements BMEntity {
 
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        Hollowborne hollowborne = BMEntityTypes.HOLLOWBORNE.get().spawn(pLevel.getLevel(), this.blockPosition(), pReason);
+        Hollowborne hollowborne = BMEntityTypes.HOLLOWBORNE.get().spawn(pLevel.getLevel(), this.blockPosition().above(), pReason);
         this.startRiding(hollowborne);
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
@@ -123,7 +124,20 @@ public class HollowborneTurret extends PathfinderMob implements BMEntity {
     }
 
     public static boolean checkHollowborneSpawnRules(EntityType<? extends HollowborneTurret> pType, ServerLevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
-        return pLevel.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(pLevel, pPos, pRandom) && checkMobSpawnRules(pType, pLevel, pSpawnType, pPos, pRandom);
+        int w = Mth.ceil(pType.getWidth());
+        int h = Mth.ceil(pType.getHeight());
+        boolean f = true;
+        for (int i = -w; i <= w; i++) {
+            for (int j = -w; j <= w; j++) {
+                for (int k = 0; k <= h; k++) {
+                    BlockPos pos = pPos.above(Mth.ceil(BMEntityTypes.HOLLOWBORNE.get().getHeight())).offset(i, j, k);
+                    if (!pLevel.getBlockState(pos).isAir()) {
+                        f = false;
+                    }
+                }
+            }
+        }
+        return f && pLevel.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(pLevel, pPos, pRandom) && checkMobSpawnRules(pType, pLevel, pSpawnType, pPos, pRandom);
     }
 
     @Override

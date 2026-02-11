@@ -23,6 +23,8 @@ public class BMItemModelProvider extends ItemModelProvider {
         handheld(BMItems.BEHEBUGGER.get());
         behemothSpawnEgg(BMItems.BANISHING_STAMPEDE_SPAWN_EGG.get());
         behemothSpawnEgg(BMItems.ARCHZOMBIE_SPAWN_EGG.get());
+        behemothSpawnEgg(BMItems.HOLLOWBORNE_SPAWN_EGG.get());
+        behemothSpawnEgg(BMItems.HOLLOWBORNE_TURRET_SPAWN_EGG.get());
 
         basicItem(BMItems.BEHEMOTH_HEART.get());
 

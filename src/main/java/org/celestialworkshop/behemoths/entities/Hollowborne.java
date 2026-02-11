@@ -26,6 +26,7 @@ import org.celestialworkshop.behemoths.client.animations.HollowborneAnimations;
 import org.celestialworkshop.behemoths.entities.ai.BMEntity;
 import org.celestialworkshop.behemoths.entities.ai.goals.HollowborneTargetSyncGoal;
 import org.celestialworkshop.behemoths.entities.ai.goals.SimpleChaseGoal;
+import org.celestialworkshop.behemoths.entities.ai.goals.WanderGoal;
 import org.celestialworkshop.behemoths.entities.ai.movecontrols.BMMoveControl;
 import org.celestialworkshop.behemoths.registries.BMSoundEvents;
 import org.jetbrains.annotations.Nullable;
@@ -59,7 +60,7 @@ public class Hollowborne extends Monster implements BMEntity {
     public static AttributeSupplier createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 200.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.2D)
+                .add(Attributes.MOVEMENT_SPEED, 0.22D)
                 .add(Attributes.ATTACK_DAMAGE, 20.0D)
                 .add(Attributes.ARMOR, 10.0D)
                 .add(Attributes.ARMOR_TOUGHNESS, 1.5D)
@@ -71,7 +72,8 @@ public class Hollowborne extends Monster implements BMEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new SimpleChaseGoal(this, 1.0D, mob -> mob.getFirstPassenger() instanceof HollowborneTurret));
-        this.goalSelector.addGoal(1, new SimpleChaseGoal(this, 1.5D, mob -> !(mob.getFirstPassenger() instanceof HollowborneTurret)));
+        this.goalSelector.addGoal(2, new SimpleChaseGoal(this, 1.3D, mob -> !(mob.getFirstPassenger() instanceof HollowborneTurret)));
+        this.goalSelector.addGoal(3, new WanderGoal(this, 0.8D));
         this.targetSelector.addGoal(1, new HollowborneTargetSyncGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false) {
             @Override
@@ -184,7 +186,8 @@ public class Hollowborne extends Monster implements BMEntity {
 
             for (int j = scanRange; j >= -scanRange; j--) {
                 BlockPos checkPos = BlockPos.containing(x, y + j, z);
-                VoxelShape shape = this.level().getBlockState(checkPos).getCollisionShape(this.level(), checkPos);
+                BlockState state = this.level().getBlockState(checkPos);
+                VoxelShape shape = state.getCollisionShape(this.level(), checkPos);
                 if (!shape.isEmpty()) {
                     foundY = (float) (checkPos.getY() + shape.max(Direction.Axis.Y));
                     break;
