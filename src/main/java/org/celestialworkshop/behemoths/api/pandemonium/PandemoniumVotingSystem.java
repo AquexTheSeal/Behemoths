@@ -1,4 +1,4 @@
-package org.celestialworkshop.behemoths.misc.utils;
+package org.celestialworkshop.behemoths.api.pandemonium;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.network.chat.Component;
@@ -8,8 +8,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.RegistryObject;
 import org.celestialworkshop.behemoths.Behemoths;
-import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
-import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumVoteResult;
 import org.celestialworkshop.behemoths.config.BMConfigManager;
 import org.celestialworkshop.behemoths.network.BMNetwork;
 import org.celestialworkshop.behemoths.network.s2c.OpenPandemoniumSelectionPacket;
@@ -18,13 +16,13 @@ import org.celestialworkshop.behemoths.world.savedata.WorldPandemoniumData;
 
 import java.util.*;
 
-public class WorldUtils {
+public class PandemoniumVotingSystem {
 
-    public static final List<RegistryObject<PandemoniumCurse>> BLACLISTED_CURSES = List.of(
-            BMPandemoniumCurses.HEAVY_ARROW,
-            BMPandemoniumCurses.BURNING_ARCHER,
-            BMPandemoniumCurses.DEATH_LEAP,
-            BMPandemoniumCurses.OVERSEER
+    public static final List<RegistryObject<PandemoniumCurse>> DISABLED_CURSES = List.of(
+//            BMPandemoniumCurses.HEAVY_ARROW,
+//            BMPandemoniumCurses.BURNING_ARCHER,
+//            BMPandemoniumCurses.DEATH_LEAP,
+//            BMPandemoniumCurses.OVERSEER
     );
 
     public static boolean hasPandemoniumCurse(Level level, PandemoniumCurse curse) {
@@ -76,7 +74,7 @@ public class WorldUtils {
                 .filter(curseObj -> {
                     List<? extends String> blackListConfig = BMConfigManager.COMMON.pandemoniumVotingBlacklist.get();
                     List<ResourceLocation> blacklist = blackListConfig.stream().map(ResourceLocation::parse).toList();
-                    return !blacklist.contains(curseObj.getKey().location()) && !BLACLISTED_CURSES.stream().map(RegistryObject::getKey).toList().contains(curseObj.getKey());
+                    return !blacklist.contains(curseObj.getKey().location()) && !DISABLED_CURSES.stream().map(RegistryObject::getKey).toList().contains(curseObj.getKey());
                 })
                 .map(Map.Entry::getValue)
                 .filter(curse -> !data.getActivePandemoniumCurses().contains(curse))

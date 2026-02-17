@@ -1,9 +1,9 @@
 package org.celestialworkshop.behemoths.api.entity;
 
 import net.minecraft.world.entity.Entity;
+
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -19,11 +19,9 @@ public class ActionManager<T extends Entity> {
         this.entity = entity;
     }
 
-    @SafeVarargs
-    public final void addAction(ManagedAction<T>... tasks) {
-        this.action.addAll(Arrays.asList(tasks));
+    public final void addAction(ManagedAction<T> tasks) {
+        this.action.add(tasks);
     }
-
 
     public void tick() {
         if (this.currentAction != null) {

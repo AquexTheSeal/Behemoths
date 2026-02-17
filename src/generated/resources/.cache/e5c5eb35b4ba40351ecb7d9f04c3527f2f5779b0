@@ -1,4 +1,5 @@
-// 1.20.1	2026-02-03T01:06:31.7198756	Advancements
+// 1.20.1	2026-02-17T20:51:33.5232528	Advancements
 240677ac4d1063b4e1d102e7f3a963b408b63186 data/behemoths/advancements/killed_behemoth.json
-a33913bbed5724286f0a6c912f730213d3f289b0 data/behemoths/advancements/obtain_behemoth_heart.json
+858d83d198799d5e54416ef24fb0cc495eada7d1 data/behemoths/advancements/obtain_behemoth_heart.json
 54773542e513d509b0e3d00e51d89b9e8a80c2f7 data/behemoths/advancements/obtain_magnalyth_ingot.json
+b5f738f9838e24ff972db25f87c63c80045998e2 data/behemoths/advancements/tamed_hollowborne.json

@@ -5,7 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import org.celestialworkshop.behemoths.Behemoths;
@@ -13,10 +13,12 @@ import org.celestialworkshop.behemoths.Behemoths;
 public class BMTags {
 
     public static final class Items {
+        public static final TagKey<Item> HOLLOWBORNE_FOOD = BMTags.behemothsTag(Registries.ITEM, "hollowborne_food");
     }
 
     public static final class Blocks {
         public static final TagKey<Block> NEEDS_MAGNALYTH_TOOL = BMTags.behemothsTag(Registries.BLOCK, "needs_magnalyth_tool");
+        public static final TagKey<Block> NEEDS_MORTYX_TOOL = BMTags.behemothsTag(Registries.BLOCK, "needs_mortyx_tool");
     }
 
     public static final class Entities {

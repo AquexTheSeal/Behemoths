@@ -18,6 +18,7 @@ public class BMBlockLoot extends BlockLootSubProvider {
     @Override
     public void generate() {
          this.dropSelf(BMBlocks.MAGNALYTH_BLOCK.get());
+        this.dropSelf(BMBlocks.MORTYX_BLOCK.get());
     }
 
     @Override

@@ -14,7 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumVoteResult;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
-import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumVotingSystem;
 import org.celestialworkshop.behemoths.world.savedata.WorldPandemoniumData;
 
 public class PandemoniumCommand {
@@ -48,6 +48,10 @@ public class PandemoniumCommand {
                                 .then(Commands.literal("clear")
                                         .requires(source -> source.hasPermission(2))
                                         .executes(PandemoniumCommand::clearCurses))
+
+                                .then(Commands.literal("addAll")
+                                        .requires(source -> source.hasPermission(2))
+                                        .executes(PandemoniumCommand::addAllCurses))
                         )
 
                         .then(Commands.literal("voting")
@@ -70,7 +74,7 @@ public class PandemoniumCommand {
     private static int startVoting(CommandContext<CommandSourceStack> context) {
         ServerLevel level = context.getSource().getLevel();
 
-        PandemoniumVoteResult result = WorldUtils.openPandemoniumSelection(level);
+        PandemoniumVoteResult result = PandemoniumVotingSystem.openPandemoniumSelection(level);
         if (result.isSuccess()) {
             context.getSource().sendSuccess(result::getMessage, true);
             return 1;
@@ -83,7 +87,7 @@ public class PandemoniumCommand {
     private static int stopVoting(CommandContext<CommandSourceStack> context) {
         ServerLevel level = context.getSource().getLevel();
 
-        PandemoniumVoteResult result = WorldUtils.endPandemoniumSelection(level);
+        PandemoniumVoteResult result = PandemoniumVotingSystem.endPandemoniumSelection(level);
         if (result.isSuccess()) {
             context.getSource().sendSuccess(result::getMessage, true);
             return 1;
@@ -128,6 +132,15 @@ public class PandemoniumCommand {
 
         data.addActivePandemoniumCurse(curse);
         context.getSource().sendSuccess(() -> Component.literal("Added curse: " + curse.getDisplayName().getString()), true);
+        return 1;
+    }
+
+    private static int addAllCurses(CommandContext<CommandSourceStack> context) {
+        ServerLevel level = context.getSource().getLevel();
+        WorldPandemoniumData data = WorldPandemoniumData.get(level);
+
+        BMPandemoniumCurses.REGISTRY.get().getValues().forEach(data::addActivePandemoniumCurse);
+        context.getSource().sendSuccess(() -> Component.literal("Added all curses!"), true);
         return 1;
     }
 

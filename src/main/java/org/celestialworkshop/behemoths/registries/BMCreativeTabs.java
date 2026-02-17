@@ -15,8 +15,7 @@ public class BMCreativeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Behemoths.MODID);
 
     public static final List<RegistryObject<?>> BLACKLIST = List.of(
-            BMItems.HOLLOWBORNE_SPAWN_EGG,
-            BMItems.HOLLOWBORNE_TURRET_SPAWN_EGG
+            BMItems.BEHEBUGGER
     );
 
     public static final RegistryObject<CreativeModeTab> BEHEMOTHS = CREATIVE_TABS.register("behemoths", () -> CreativeModeTab.builder()

@@ -20,6 +20,10 @@ public class BMBlocks {
             new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(6.0F, 7.5F))
     );
 
+    public static final RegistryObject<Block> MORTYX_BLOCK = registerBlock("mortyx_block", () ->
+            new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).strength(12.0F, 10.0F))
+    );
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         return registerBlock(name, block, new Item.Properties());
     }

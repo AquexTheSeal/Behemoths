@@ -17,6 +17,7 @@ import org.celestialworkshop.behemoths.particles.VFXTypes;
 import org.celestialworkshop.behemoths.registries.BMSoundEvents;
 
 public class Hollowcorper extends AbstractArrow {
+    public float damage = 5.0F;
     public boolean hasHit;
 
     public Hollowcorper(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
@@ -43,7 +44,6 @@ public class Hollowcorper extends AbstractArrow {
         super.onHit(pResult);
         this.hasHit = true;
         this.playSound(BMSoundEvents.HOLLOWCORPER_IMPACT.get(), 2.0f, 1.0f);
-//        this.explode();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class Hollowcorper extends AbstractArrow {
             }
         }
 
-        if (target.hurt(damagesource, 10.0F)) {
+        if (target.hurt(damagesource, damage)) {
             if (target instanceof LivingEntity le) {
                 this.doPostHurtEffects(le);
             }

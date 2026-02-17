@@ -7,12 +7,12 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.network.c2s.CurseSelectionIndexPacket;
+import org.celestialworkshop.behemoths.network.shared.QueueJumpPacket;
 import org.celestialworkshop.behemoths.network.s2c.*;
 import org.celestialworkshop.behemoths.network.shared.EntityActionSharedPacket;
 
 public class BMNetwork {
     private static final String PROTOCOL_VERSION = "1.0";
-    private static int packetId = 0;
     
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             Behemoths.prefix("main"),
@@ -28,8 +28,10 @@ public class BMNetwork {
         INSTANCE.registerMessage(id++, FinishVotingPacket.class, FinishVotingPacket::encode, FinishVotingPacket::decode, FinishVotingPacket::handle);
         INSTANCE.registerMessage(id++, ShortenVoteTimerPacket.class, ShortenVoteTimerPacket::encode, ShortenVoteTimerPacket::decode, ShortenVoteTimerPacket::handle);
         INSTANCE.registerMessage(id++, SyncSpecialtiesDataPacket.class, SyncSpecialtiesDataPacket::encode, SyncSpecialtiesDataPacket::decode, SyncSpecialtiesDataPacket::handle);
+        INSTANCE.registerMessage(id++, BMCameraShakePacket.class, BMCameraShakePacket::encode, BMCameraShakePacket::decode, BMCameraShakePacket::handle);
 
         INSTANCE.registerMessage(id++, CurseSelectionIndexPacket.class, CurseSelectionIndexPacket::encode, CurseSelectionIndexPacket::decode, CurseSelectionIndexPacket::handle);
+        INSTANCE.registerMessage(id++, QueueJumpPacket.class, QueueJumpPacket::encode, QueueJumpPacket::decode, QueueJumpPacket::handle);
 
         INSTANCE.registerMessage(id++, EntityActionSharedPacket.class, EntityActionSharedPacket::encode, EntityActionSharedPacket::decode, EntityActionSharedPacket::handle);
     }

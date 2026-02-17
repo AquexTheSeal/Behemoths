@@ -1,6 +1,11 @@
-// 1.20.1	2026-02-02T17:03:01.4402293	Item Specialties: behemoths
+// 1.20.1	2026-02-15T23:44:53.0972041	Item Specialties: behemoths
 342590fa2750ae77461a696bcc0afb3fa9a7911d data/behemoths/behemoths/item_specialties/magnalyth_axe.json
 342590fa2750ae77461a696bcc0afb3fa9a7911d data/behemoths/behemoths/item_specialties/magnalyth_hoe.json
 342590fa2750ae77461a696bcc0afb3fa9a7911d data/behemoths/behemoths/item_specialties/magnalyth_pickaxe.json
 342590fa2750ae77461a696bcc0afb3fa9a7911d data/behemoths/behemoths/item_specialties/magnalyth_shovel.json
 342590fa2750ae77461a696bcc0afb3fa9a7911d data/behemoths/behemoths/item_specialties/magnalyth_sword.json
+ffa82867c59125a8ed19478ef73350430c60c75e data/behemoths/behemoths/item_specialties/mortyx_axe.json
+ffa82867c59125a8ed19478ef73350430c60c75e data/behemoths/behemoths/item_specialties/mortyx_hoe.json
+ffa82867c59125a8ed19478ef73350430c60c75e data/behemoths/behemoths/item_specialties/mortyx_pickaxe.json
+ffa82867c59125a8ed19478ef73350430c60c75e data/behemoths/behemoths/item_specialties/mortyx_shovel.json
+ffa82867c59125a8ed19478ef73350430c60c75e data/behemoths/behemoths/item_specialties/mortyx_sword.json

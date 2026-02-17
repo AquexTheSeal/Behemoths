@@ -1,6 +1,7 @@
-// 1.20.1	2026-02-02T00:56:55.9160849	Tags for minecraft:item mod id behemoths
-17382329bded98eff6152cc6770fa3d31e56e3d2 data/minecraft/tags/items/axes.json
-afa52d8e1e73465936cb0a0b896ffe3d09131975 data/minecraft/tags/items/hoes.json
-1eae8aa461a26272ee5a465159cefe252b62f2fe data/minecraft/tags/items/pickaxes.json
-9dccd39e52309a8e3254c1339b3f63c7eeb814e2 data/minecraft/tags/items/shovels.json
-713b8fdb14f928d9615cd187fc79a07d5d0c65b3 data/minecraft/tags/items/swords.json
+// 1.20.1	2026-02-16T00:41:33.0989454	Tags for minecraft:item mod id behemoths
+f869aaa016925585e22a7014876b3d543ee338eb data/behemoths/tags/items/hollowborne_food.json
+9eb8a69af7ed8aa2083c91a7a69bb5cea377f553 data/minecraft/tags/items/axes.json
+fef7f1183bc1be65bb767bf5b6001e1ce62c4472 data/minecraft/tags/items/hoes.json
+9cb118a773af135a3e883d1ff856764417b51cb8 data/minecraft/tags/items/pickaxes.json
+891f96109fcba12ab8e2d3cd2fd0f85375387261 data/minecraft/tags/items/shovels.json
+85baf43778665115fc17fd6c212d27f89bd11fe0 data/minecraft/tags/items/swords.json

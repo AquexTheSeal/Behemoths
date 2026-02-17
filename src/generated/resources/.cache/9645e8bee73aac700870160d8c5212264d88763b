@@ -1,3 +1,4 @@
-// 1.20.1	2026-02-02T00:56:55.9160849	Tags for minecraft:block mod id behemoths
-39be95600bb4e24c9034a34b5761b886a0f40ff2 data/minecraft/tags/blocks/mineable/pickaxe.json
+// 1.20.1	2026-02-15T01:21:42.664925	Tags for minecraft:block mod id behemoths
+926ce9ca3a9a133ed72ef3a429405d57c8419306 data/minecraft/tags/blocks/mineable/pickaxe.json
+9d129371478a502fbb97158d8e2cdf0903d33eae data/minecraft/tags/blocks/needs_diamond_tool.json
 39be95600bb4e24c9034a34b5761b886a0f40ff2 data/minecraft/tags/blocks/needs_iron_tool.json

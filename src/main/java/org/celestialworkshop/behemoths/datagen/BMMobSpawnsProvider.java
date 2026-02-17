@@ -20,15 +20,15 @@ public class BMMobSpawnsProvider {
         ctx.register(BMMobSpawns.OVERWORLD_SPAWNS, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
                 biomeRegistry.getOrThrow(BiomeTags.IS_OVERWORLD),
                 List.of(
-                        new MobSpawnSettings.SpawnerData(BMEntityTypes.ARCHZOMBIE.get(), 25, 1, 2)
-//                        new MobSpawnSettings.SpawnerData(BMEntityTypes.HOLLOWBORNE_TURRET.get(), 12, 1, 1)
+                        new MobSpawnSettings.SpawnerData(BMEntityTypes.ARCHZOMBIE.get(), 25, 1, 2),
+                        new MobSpawnSettings.SpawnerData(BMEntityTypes.HOLLOWBORNE_TURRET.get(), 9, 1, 1)
                 ))
         );
 
         ctx.register(BMMobSpawns.MOUNTAIN_SPAWNS, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
                 biomeRegistry.getOrThrow(BiomeTags.IS_MOUNTAIN),
                 List.of(
-//                        new MobSpawnSettings.SpawnerData(BMEntityTypes.HOLLOWBORNE_TURRET.get(), 20, 1, 1)
+                        new MobSpawnSettings.SpawnerData(BMEntityTypes.HOLLOWBORNE_TURRET.get(), 12, 1, 1)
                 ))
         );
     }

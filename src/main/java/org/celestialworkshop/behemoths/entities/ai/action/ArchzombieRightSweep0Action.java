@@ -32,7 +32,7 @@ public class ArchzombieRightSweep0Action extends ManagedAction<Archzombie> {
         if (entity.getTarget() != null) {
             if (timer == 15) {
                 if (entity.getTarget().distanceTo(entity) <= 3.5) {
-                    entity.multiplyAndAttackTarget(entity.getTarget(), 0.5F);
+                    entity.attackTargetMultiplication(entity.getTarget(), 0.5F);
                     entity.getTarget().knockback(1.75, entity.getX() - entity.getTarget().getX(), entity.getZ() - entity.getTarget().getZ());
                 }
 

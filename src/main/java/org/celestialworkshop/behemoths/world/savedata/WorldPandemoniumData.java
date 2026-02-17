@@ -1,8 +1,6 @@
 package org.celestialworkshop.behemoths.world.savedata;
 
-import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -13,7 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.config.BMConfigManager;
-import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumVotingSystem;
 import org.celestialworkshop.behemoths.network.BMNetwork;
 import org.celestialworkshop.behemoths.network.s2c.FinishVotingPacket;
 import org.celestialworkshop.behemoths.network.s2c.ShortenVoteTimerPacket;
@@ -25,7 +23,7 @@ import java.util.UUID;
 
 public class WorldPandemoniumData extends SavedData {
 
-    private final ObjectArrayList<PandemoniumCurse> activePandemoniumCurses = new ObjectArrayList<>();
+    private final ObjectSet<PandemoniumCurse> activePandemoniumCurses = new ObjectOpenHashSet<>();
     private final Set<ResourceLocation> votingTriggeredEntities = new HashSet<>();
     private final Set<ResourceLocation> votingTriggeredAdvancements = new HashSet<>();
 
@@ -114,7 +112,7 @@ public class WorldPandemoniumData extends SavedData {
         } else {
             remainingTime++;
             if (remainingTime == -1 && !selectableCurses.isEmpty()) {
-                WorldUtils.endPandemoniumSelection(level);
+                PandemoniumVotingSystem.endPandemoniumSelection(level);
             }
         }
 
@@ -125,7 +123,7 @@ public class WorldPandemoniumData extends SavedData {
     }
 
     public void finishVotingCalculations(ServerLevel server) {
-        int[] voteResults = WorldUtils.getVoteResultsFromData(voteData, selectableCurses.size());
+        int[] voteResults = PandemoniumVotingSystem.getVoteResultsFromData(voteData, selectableCurses.size());
 
         Object2IntMap<String> playerVoteData = new Object2IntArrayMap<>();
         if (BMConfigManager.COMMON.enableResultsShowVoters.get()) {
@@ -141,7 +139,7 @@ public class WorldPandemoniumData extends SavedData {
         addActivePandemoniumCurse(selectableCurses.get(voteResults[3]));
     }
 
-    public ObjectArrayList<PandemoniumCurse> getActivePandemoniumCurses() {
+    public ObjectSet<PandemoniumCurse> getActivePandemoniumCurses() {
         return activePandemoniumCurses;
     }
 

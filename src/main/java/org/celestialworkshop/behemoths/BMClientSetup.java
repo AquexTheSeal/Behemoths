@@ -1,12 +1,14 @@
 package org.celestialworkshop.behemoths;
 
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.celestialworkshop.behemoths.client.guis.itemdecorations.BehemothHeartDecoration;
-import org.celestialworkshop.behemoths.client.guis.overlays.BanishingStampedeJumpMeterOverlay;
+import org.celestialworkshop.behemoths.client.guis.overlays.BehemothJumpBarOverlay;
 import org.celestialworkshop.behemoths.client.guis.overlays.VotingProgressOverlay;
 import org.celestialworkshop.behemoths.client.guis.tooltips.HeartTooltip;
 import org.celestialworkshop.behemoths.client.guis.tooltips.SpecialtyTooltip;
@@ -38,11 +40,19 @@ public class BMClientSetup {
         event.registerLayerDefinition(HollowborneModel.LAYER_LOCATION, HollowborneModel::createBodyLayer);
         event.registerLayerDefinition(HollowborneTurretModel.LAYER_LOCATION, HollowborneTurretModel::createBodyLayer);
         event.registerLayerDefinition(HollowcorperModel.LAYER_LOCATION, HollowcorperModel::createBodyLayer);
+        event.registerLayerDefinition(HollowborneSaddleModel.LAYER_LOCATION, HollowborneSaddleModel::createBodyLayer);
+    }
+
+    @SubscribeEvent
+    public static void registerExtraCreativeTabItems(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.OP_BLOCKS) {
+            event.accept(BMItems.BEHEBUGGER);
+        }
     }
 
     @SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent ev) {
-        ev.registerAbove(VanillaGuiOverlay.JUMP_BAR.id(), "banishing_stampede", BanishingStampedeJumpMeterOverlay::render);
+        ev.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "behemoth_jump_bar", BehemothJumpBarOverlay::render);
         ev.registerAbove(VanillaGuiOverlay.BOSS_EVENT_PROGRESS.id(), "voting_progress", VotingProgressOverlay::render);
     }
 

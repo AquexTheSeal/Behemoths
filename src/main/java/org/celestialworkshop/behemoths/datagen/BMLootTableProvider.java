@@ -6,6 +6,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.datagen.loot.BMBlockLoot;
+import org.celestialworkshop.behemoths.datagen.loot.BMChestLoot;
 import org.celestialworkshop.behemoths.datagen.loot.BMEntityLoot;
 
 import java.util.List;
@@ -19,7 +20,8 @@ public class BMLootTableProvider extends LootTableProvider {
     public BMLootTableProvider(PackOutput output) {
         super(output, Set.of(), List.of(
                 new SubProviderEntry(BMEntityLoot::new, LootContextParamSets.ENTITY),
-                new SubProviderEntry(BMBlockLoot::new, LootContextParamSets.BLOCK)
+                new SubProviderEntry(BMBlockLoot::new, LootContextParamSets.BLOCK),
+                new SubProviderEntry(BMChestLoot::new, LootContextParamSets.CHEST)
         ));
     }
 

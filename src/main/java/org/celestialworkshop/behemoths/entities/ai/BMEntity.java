@@ -4,7 +4,10 @@ import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import org.celestialworkshop.behemoths.api.client.animation.EntityAnimationManager;
-import org.celestialworkshop.behemoths.misc.mixinhelpers.MobMixinHelper;
+import org.celestialworkshop.behemoths.api.entity.ActionManager;
+import org.celestialworkshop.behemoths.misc.mixinhelpers.IMixinMob;
+
+import java.util.List;
 
 public interface BMEntity {
 
@@ -18,22 +21,30 @@ public interface BMEntity {
         return null;
     }
 
+    default List<ActionManager> getActionManagers() {
+        return null;
+    }
+
     // ATTACKING
 
-    default void attackTarget(Entity target, float damageModifier, Operation operation) {
-        if (bmSelf() instanceof MobMixinHelper mm) {
+    default boolean attackTarget(Entity target, float damageModifier, Operation operation) {
+        boolean flag = false;
+        if (bmSelf() instanceof IMixinMob mm) {
             mm.bm$setDamageModifier(Pair.of(damageModifier, operation));
-            this.bmSelf().doHurtTarget(target);
+            if (target != null) {
+                return this.bmSelf().doHurtTarget(target);
+            }
             mm.bm$setDamageModifier(null);
         }
+        return flag;
     }
 
-    default void addAndAttackTarget(Entity target, float damageModifier) {
-        this.attackTarget(target, damageModifier, Operation.ADD);
+    default boolean attackTargetAddition(Entity target, float damageModifier) {
+        return this.attackTarget(target, damageModifier, Operation.ADD);
     }
 
-    default void multiplyAndAttackTarget(Entity target, float damageModifier) {
-        this.attackTarget(target, damageModifier, Operation.MULTIPLY);
+    default boolean attackTargetMultiplication(Entity target, float damageModifier) {
+        return this.attackTarget(target, damageModifier, Operation.MULTIPLY);
     }
 
     enum Operation {

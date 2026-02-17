@@ -1,11 +1,10 @@
 # BEHEMOTHS 1.0.3 CHANGELOG
 
---- 
+---
 ### New Features
 - Added EMI support for Behemoth Hearts.
-- 
----
 
+---
 ### Bug / Incompatibility Fixes
 - Fixed the Pandemonium Voting System's client-side de-sync.
 - Fixed a crash with Pufferfish Attributes.

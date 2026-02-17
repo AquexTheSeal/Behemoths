@@ -1,12 +1,12 @@
 package org.celestialworkshop.behemoths.entities;
 
-import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -26,28 +26,31 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ForgeMod;
 import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.api.client.animation.EntityAnimationManager;
 import org.celestialworkshop.behemoths.api.entity.ActionManager;
 import org.celestialworkshop.behemoths.client.animations.BanishingStampedeAnimations;
-import org.celestialworkshop.behemoths.entities.ai.BMCustomJumpableEntity;
 import org.celestialworkshop.behemoths.entities.ai.BMEntity;
+import org.celestialworkshop.behemoths.entities.ai.CustomSaddleable;
 import org.celestialworkshop.behemoths.entities.ai.action.StampedeRamAction;
 import org.celestialworkshop.behemoths.entities.ai.goals.StampedeArchzombieRamGoal;
 import org.celestialworkshop.behemoths.entities.ai.goals.StampedeMovementGoal;
 import org.celestialworkshop.behemoths.entities.ai.goals.StampedeRunAroundGoal;
+import org.celestialworkshop.behemoths.entities.ai.mount.CustomJumpingMount;
+import org.celestialworkshop.behemoths.entities.ai.mount.MountJumpManager;
 import org.celestialworkshop.behemoths.entities.ai.movecontrols.BMMoveControl;
-import org.celestialworkshop.behemoths.network.BMNetwork;
-import org.celestialworkshop.behemoths.network.shared.EntityActionSharedPacket;
 import org.celestialworkshop.behemoths.particles.VFXParticleData;
 import org.celestialworkshop.behemoths.particles.VFXTypes;
+import org.celestialworkshop.behemoths.registries.BMItems;
 import org.celestialworkshop.behemoths.registries.BMSoundEvents;
 import org.jetbrains.annotations.Nullable;
 
-public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCustomJumpableEntity {
+import java.util.List;
 
+public class BanishingStampede extends Horse implements BMEntity, Enemy, CustomSaddleable, CustomJumpingMount<BanishingStampede> {
+
+    private static final EntityDataAccessor<Boolean> DATA_IS_SADDLED = SynchedEntityData.defineId(BanishingStampede.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_IS_RAMMING = SynchedEntityData.defineId(BanishingStampede.class, EntityDataSerializers.BOOLEAN);
 
     public static final String IDLE_ANIMATION = "idle";
@@ -56,8 +59,7 @@ public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCusto
 
     public final EntityAnimationManager animationManager = new EntityAnimationManager(this);
     public final ActionManager<BanishingStampede> attackManager = new ActionManager<>(this);
-
-    public int jumpTime = 0;
+    public final MountJumpManager<BanishingStampede> mountJumpManager = new MountJumpManager<>(this);
 
     public BanishingStampede(EntityType<? extends Horse> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -70,14 +72,17 @@ public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCusto
         this.animationManager.registerAnimation(RAMMING_ANIMATION, () -> BanishingStampedeAnimations.RAM);
         this.animationManager.registerAnimation(THROW_RIDER_ANIMATION, () -> BanishingStampedeAnimations.THROW_RIDER);
 
-        this.attackManager.addAction(
-                new StampedeRamAction(this)
-        );
+        this.attackManager.addAction(new StampedeRamAction(this));
     }
 
     @Override
     public EntityAnimationManager getAnimationManager() {
         return this.animationManager;
+    }
+
+    @Override
+    public List<ActionManager> getActionManagers() {
+        return List.of(attackManager);
     }
 
     public static AttributeSupplier createAttributes() {
@@ -98,8 +103,6 @@ public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCusto
         if (level().isClientSide) {
             this.manageIdleAnimations();
             this.emitAura();
-        } else {
-            this.attackManager.tick();
         }
     }
 
@@ -129,62 +132,41 @@ public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCusto
         return BMSoundEvents.STAMPEDE_AMBIENT.get();
     }
 
-    public boolean isWithinRamThreshold(float playerJumpPendingScale) {
-        return playerJumpPendingScale > 0.6;
+    public boolean isWithinRamThreshold(int power) {
+        return power >= 60;
     }
 
     @Override
-    public float calculateCustomJumpScale(boolean isJumping) {
-        if (this.isRamming()) {
-            this.jumpTime = 0;
-            return 0.0F;
-        }
+    public void performJump(int power) {
 
-        if (isJumping) {
-            if (this.jumpTime < 100) {
-                ++this.jumpTime;
+        float jumpScale = (Math.min(power, 40) / 100.0F + 0.2F) * 2;
+
+        if (isWithinRamThreshold(power)) {
+            if (!level().isClientSide) {
+                this.setRamming(true);
             }
         } else {
-            this.jumpTime = 0;
+            if (level().isClientSide) {
+                double verticalJump = this.getCustomJump() * jumpScale * this.getBlockJumpFactor();
+                double finalJump = verticalJump + this.getJumpBoostPower();
+
+                Vec3 movement = this.getDeltaMovement();
+                this.setDeltaMovement(movement.x, finalJump, movement.z);
+
+                Vec3 horizontalBoost = this.getLookAngle().multiply(0.4F + jumpScale, 0, 0.4F + jumpScale);
+                this.setDeltaMovement(this.getDeltaMovement().add(horizontalBoost));
+            }
         }
-        return Mth.lerp(this.jumpTime / 100.0F, 0.0F, 1.0F);
     }
 
     @Override
-    public void onPlayerJump(int pJumpPower) {
-        if (this.isSaddled()) {
-            if (pJumpPower < 0) {
-                pJumpPower = 0;
-            } else {
-                this.allowStandSliding = true;
-                this.standIfPossible();
-            }
-
-            this.playerJumpPendingScale = (float) pJumpPower / 100.0F;
-        }
+    public boolean getJumpCondition() {
+        return this.onGround() && this.isSaddled();
     }
 
-    public void executeRidersJump(float pPlayerJumpPendingScale, Vec3 pTravelVector) {
-        if (this.isWithinRamThreshold(pPlayerJumpPendingScale)) {
-            BMNetwork.sendToServer(new EntityActionSharedPacket(this.getId(), EntityActionSharedPacket.Action.START_STAMPEDE_RAMMING,
-                    Pair.of("backswingTime", (pPlayerJumpPendingScale - 0.5F) * 2)
-                    )
-            );
-        } else {
-            pPlayerJumpPendingScale = (Math.min(pPlayerJumpPendingScale, 0.4F) + 0.2F) * 2;
-            double calculatedJump = this.getCustomJump() * pPlayerJumpPendingScale * this.getBlockJumpFactor();
-            double finalJump = calculatedJump + this.getJumpBoostPower();
-
-            Vec3 movementFactor = this.getDeltaMovement();
-            this.setDeltaMovement(movementFactor.x, finalJump, movementFactor.z);
-
-            Vec3 horizontalBoost = this.getLookAngle().multiply(0.4F + pPlayerJumpPendingScale, 0, 0.4F + pPlayerJumpPendingScale);
-            this.setDeltaMovement(this.getDeltaMovement().add(horizontalBoost));
-
-            this.setIsJumping(true);
-            this.hasImpulse = true;
-            ForgeHooks.onLivingJump(this);
-        }
+    @Override
+    public int getJumpCooldown(int power) {
+        return isWithinRamThreshold(power) ? 200 : 40;
     }
 
     public void emitAura() {
@@ -260,6 +242,7 @@ public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCusto
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(DATA_IS_RAMMING, false);
+        this.entityData.define(DATA_IS_SADDLED, false);
     }
 
     public boolean isRamming() {
@@ -273,5 +256,40 @@ public class BanishingStampede extends Horse implements BMEntity, Enemy, BMCusto
     @Override
     public float getRotationFreedom() {
         return 0.075F;
+    }
+
+    @Override
+    public MountJumpManager<BanishingStampede> getMountJumpManager() {
+        return mountJumpManager;
+    }
+
+    @Override
+    public void onPlayerJump(int pJumpPower) {
+    }
+
+    @Override
+    public boolean canJump() {
+        return false;
+    }
+
+    @Override
+    public void handleStartJump(int pJumpPower) {
+    }
+
+    @Override
+    public void handleStopJump() {
+    }
+
+    @Override
+    public boolean canEquipSaddle(ItemStack stack) {
+        return stack.getItem() == BMItems.BEHEMOTH_SADDLE.get();
+    }
+
+    @Override
+    public void equipCustomSaddle(@Nullable SoundSource pSource) {
+        this.inventory.setItem(0, new ItemStack(BMItems.BEHEMOTH_SADDLE.get()));
+    }
+
+    public void equipSaddle(@Nullable SoundSource pSource) {
     }
 }

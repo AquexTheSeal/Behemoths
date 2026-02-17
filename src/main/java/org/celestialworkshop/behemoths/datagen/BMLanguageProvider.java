@@ -4,6 +4,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SmithingTemplateItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.registries.RegistryObject;
@@ -21,6 +22,8 @@ public class BMLanguageProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+
+        // MISC
 
         this.add("item_group.behemoths.behemoths", "Behemoths");
 
@@ -56,8 +59,11 @@ public class BMLanguageProvider extends LanguageProvider {
         this.addPandemoniumCurse(BMPandemoniumCurses.GRAVEBREAKER_MOMENTUM.get(), "Gravebreaker Momentum", "Banishing Stampede chasing speed: x1.3. Banishing Stampedes ridden by Archzombies can now also ram.");
         this.addPandemoniumCurse(BMPandemoniumCurses.PHANTOM_STEED.get(), "Phantom Steed", "Chance for an Archzombie to spawn with a Banishing Stampede: 5% -> 25%.");
 
-        this.addPandemoniumCurse(BMPandemoniumCurses.OVERSEER.get(), "Overseer", "Hollowborne Turret projectile impact: x2. Hollowborne Turrets now gain a 30% damage reduction against any projectiles.");
-        this.addPandemoniumCurse(BMPandemoniumCurses.DEATH_LEAP.get(), "Death Leap", "Hollowbornes can now leap towards the target and crush them when the turret is destroyed.");
+        this.addPandemoniumCurse(BMPandemoniumCurses.QUICKDRAW.get(), "Quickdraw", "Skeletons now gain increased movement speed and shoot more frequently.");
+        this.addPandemoniumCurse(BMPandemoniumCurses.HEAVY_ARROW.get(), "Heavy Arrow", "Skeleton now have a 15% chance to boost its arrows, gaining increased velocity and knocking targets back further.");
+
+        this.addPandemoniumCurse(BMPandemoniumCurses.OVERSEER.get(), "Overseer", "Hollowborne Turret's max HP increases by x1.3 and now gains a 30% damage reduction against any projectiles.");
+        this.addPandemoniumCurse(BMPandemoniumCurses.DEADLY_HOLLOWCORPER.get(), "Deadly Hollowcorper", "Hollowborne projectile velocity and damage increases by x1.5.");
 
         // TOOLTIP
 
@@ -66,19 +72,28 @@ public class BMLanguageProvider extends LanguageProvider {
 
         this.add("tooltip.behemoths.specialty", "Behemoth Weapon Specialties");
 
-        this.addSpecialty(BMItemSpecialties.BEHEMOTH_DAMAGE_BONUS.get(), "Behemoth Damage Bonus");
+        this.addSpecialty(BMItemSpecialties.BEHEMOTH_DAMAGE_BONUS.get(), "Colossus Slayer");
         this.addSpecialtyDescription(BMItemSpecialties.BEHEMOTH_DAMAGE_BONUS.get(), "Deals %s damage against all behemoth entities.");
+
+        this.addSpecialty(BMItemSpecialties.UNDEAD_DAMAGE_BONUS.get(), "Banishment of the Dead");
+        this.addSpecialtyDescription(BMItemSpecialties.UNDEAD_DAMAGE_BONUS.get(), "Deals %s damage against all undead entities.");
+
 
         // ADVANCEMENTS
 
         this.addAdvancement("kill_behemoth", "Bane of the Colossus", "Slay a Behemoth.");
         this.addAdvancement("obtain_behemoth_heart", "Essence of the Colossus", "Obtain a Behemoth's heart by slaying it.");
         this.addAdvancement("obtain_magnalyth_ingot", "An Abnormal Material", "Fill a Behemoth Heart's energy and use it to craft a Magnalyth ingot.");
+        this.addAdvancement("tame_hollowborne", "Soul Pact", "Successfully tame a turretless Hollowborne using soul sand or other soul-related items.");
+
+        // SPECIAL
+
+        this.addUpgradeTemplateTranslations("mortyx", "magnalyth", false);
 
         // REGISTRIES
 
         for (RegistryObject<Item> item : BMItems.ITEMS.getEntries()) {
-            if (!(item.get() instanceof BlockItem)) {
+            if (!(item.get() instanceof BlockItem) && !(item.get() instanceof SmithingTemplateItem)) {
                 this.addItem(item, WordUtils.capitalize(item.getId().getPath().replace("_", " ")));
             }
         }
@@ -109,4 +124,20 @@ public class BMLanguageProvider extends LanguageProvider {
         this.add("advancement.behemoths." + name + ".title", title);
         this.add("advancement.behemoths." + name + ".description", desc);
     }
+
+    protected void addUpgradeTemplateTranslations(String materialId, String preMaterialId, boolean includeArmor) {
+        String displayName = WordUtils.capitalize(materialId);
+        String preMaterialDisplayName = WordUtils.capitalize(preMaterialId);
+
+        String placeWhat = includeArmor ? " armor, weapon, or tool" : " weapon or tool";
+
+        String basePath = "item." + Behemoths.MODID + ".smithing_template." + materialId + "_upgrade.";
+        add(basePath + "applies_to", preMaterialDisplayName + " Equipment");
+        add(basePath + "ingredients", displayName + " Ingot");
+
+        add("upgrade." + Behemoths.MODID + "." + materialId + "_upgrade", displayName + " Upgrade");
+        add(basePath + "base_slot_description", "Add " + preMaterialDisplayName + placeWhat + " tool here");
+        add(basePath + "additions_slot_description", "Add " + displayName + " Ingot");
+    }
+
 }

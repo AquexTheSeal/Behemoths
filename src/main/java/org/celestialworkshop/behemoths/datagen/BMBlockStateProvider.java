@@ -14,5 +14,6 @@ public class BMBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         simpleBlock(BMBlocks.MAGNALYTH_BLOCK.get());
+        simpleBlock(BMBlocks.MORTYX_BLOCK.get());
     }
 }

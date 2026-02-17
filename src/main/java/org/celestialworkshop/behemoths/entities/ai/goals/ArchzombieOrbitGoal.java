@@ -6,7 +6,7 @@ import net.minecraft.world.phys.Vec3;
 import org.celestialworkshop.behemoths.entities.Archzombie;
 import org.celestialworkshop.behemoths.entities.BanishingStampede;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
-import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumVotingSystem;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -57,7 +57,7 @@ public class ArchzombieOrbitGoal extends Goal {
         if (target == null) return;
 
         if (--pandemoniumCacheTicks <= 0) {
-            cachedPandemoniumSpeed = WorldUtils.hasPandemoniumCurse(archzombie.level(), BMPandemoniumCurses.GRAVEBREAKER_MOMENTUM.get()) ? 1.2 : 1.0;
+            cachedPandemoniumSpeed = PandemoniumVotingSystem.hasPandemoniumCurse(archzombie.level(), BMPandemoniumCurses.GRAVEBREAKER_MOMENTUM.get()) ? 1.2 : 1.0;
             pandemoniumCacheTicks = 80;
         }
 

@@ -1,10 +1,12 @@
 package org.celestialworkshop.behemoths.entities;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.celestialworkshop.behemoths.api.client.animation.EntityAnimationManager;
 import org.celestialworkshop.behemoths.api.entity.ActionManager;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumVotingSystem;
 import org.celestialworkshop.behemoths.client.animations.ArchzombieAnimations;
 import org.celestialworkshop.behemoths.entities.ai.BMEntity;
 import org.celestialworkshop.behemoths.entities.ai.action.ArchzombieRidingSweepAttackAction;
@@ -35,12 +38,14 @@ import org.celestialworkshop.behemoths.entities.ai.goals.ArchzombieOrbitGoal;
 import org.celestialworkshop.behemoths.entities.ai.goals.SimpleChaseGoal;
 import org.celestialworkshop.behemoths.entities.ai.goals.WanderGoal;
 import org.celestialworkshop.behemoths.entities.ai.movecontrols.BMMoveControl;
+import org.celestialworkshop.behemoths.misc.utils.EntityUtils;
 import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 import org.celestialworkshop.behemoths.registries.BMItems;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
 import org.celestialworkshop.behemoths.registries.BMSoundEvents;
-import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class Archzombie extends Monster implements BMEntity {
 
@@ -67,16 +72,19 @@ public class Archzombie extends Monster implements BMEntity {
         this.animationManager.registerAnimation(SWEEP_0_ANIMATION, () -> ArchzombieAnimations.SWEEP_RIGHT_0);
         this.animationManager.registerAnimation(SWEEP_1_ANIMATION, () -> ArchzombieAnimations.SWEEP_RIGHT_1);
 
-        this.attackManager.addAction(
-                new ArchzombieRightSweep0Action(this),
-                new ArchzombieRightSweep1Action(this),
-                new ArchzombieRidingSweepAttackAction(this)
-        );
+        this.attackManager.addAction(new ArchzombieRightSweep0Action(this));
+        this.attackManager.addAction(new ArchzombieRightSweep1Action(this));
+        this.attackManager.addAction(new ArchzombieRidingSweepAttackAction(this));
     }
 
     @Override
     public EntityAnimationManager getAnimationManager() {
         return animationManager;
+    }
+
+    @Override
+    public List<ActionManager> getActionManagers() {
+        return List.of(attackManager);
     }
 
     public static AttributeSupplier createAttributes() {
@@ -109,7 +117,6 @@ public class Archzombie extends Monster implements BMEntity {
         super.aiStep();
 
         if (!this.level().isClientSide) {
-            this.attackManager.tick();
             if (this.getVehicle() != null) {
                 this.setYRot(this.getVehicle().getYRot());
                 this.yBodyRot = this.getVehicle().getYRot();
@@ -149,7 +156,7 @@ public class Archzombie extends Monster implements BMEntity {
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
 
-        boolean leaderEnabled = WorldUtils.hasPandemoniumCurse(level(), BMPandemoniumCurses.ARCHZOMBIE_DOMINION);
+        boolean leaderEnabled = PandemoniumVotingSystem.hasPandemoniumCurse(level(), BMPandemoniumCurses.ARCHZOMBIE_DOMINION);
         float leaderChance = 0.12F;
 
         if (reason != MobSpawnType.REINFORCEMENT && random.nextFloat() < leaderChance && leaderEnabled) {
@@ -158,7 +165,7 @@ public class Archzombie extends Monster implements BMEntity {
             ItemStack weapon = random.nextFloat() < 0.7F ? new ItemStack(Items.IRON_SWORD) : new ItemStack(Items.IRON_AXE);
             this.setItemSlot(EquipmentSlot.MAINHAND, weapon);
 
-            float mountChance = WorldUtils.hasPandemoniumCurse(level(), BMPandemoniumCurses.PHANTOM_STEED) ? 0.25F : 0.05F;
+            float mountChance = PandemoniumVotingSystem.hasPandemoniumCurse(level(), BMPandemoniumCurses.PHANTOM_STEED) ? 0.25F : 0.05F;
             if (random.nextFloat() < mountChance) {
                 spawnStampedeAndRideOnIt(level, difficulty);
             }
@@ -171,6 +178,7 @@ public class Archzombie extends Monster implements BMEntity {
         this.setLeader(true);
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(BMItems.MAGNALYTH_AXE.get()));
         this.multiplyAttribute(Attributes.MAX_HEALTH, 2.0F);
+        this.heal((float) this.getAttributeValue(Attributes.MAX_HEALTH) - this.getHealth());
         this.multiplyAttribute(Attributes.ATTACK_DAMAGE, 1.2F);
         this.multiplyAttribute(Attributes.ARMOR, 1.4F);
 
@@ -204,6 +212,10 @@ public class Archzombie extends Monster implements BMEntity {
                 this.startRiding(stampede);
             }
         }
+    }
+
+    public static boolean checkArchzombieSpawnRules(EntityType<? extends Monster> pType, ServerLevelAccessor pLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom) {
+        return EntityUtils.doesAreaFitEntity(pLevel, pPos, pType, BMEntityTypes.BANISHING_STAMPEDE.get()) && Monster.checkMonsterSpawnRules(pType, pLevel, pSpawnType, pPos, pRandom);
     }
 
     @Override

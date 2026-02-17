@@ -23,7 +23,7 @@ public class BMCommonSetup {
 
     @SubscribeEvent
     public static void onSpawnPlacementRegistry(SpawnPlacementRegisterEvent event) {
-        event.register(BMEntityTypes.ARCHZOMBIE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Archzombie::checkMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(BMEntityTypes.ARCHZOMBIE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Archzombie::checkArchzombieSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(BMEntityTypes.HOLLOWBORNE_TURRET.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, HollowborneTurret::checkHollowborneSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
 
     }

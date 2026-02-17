@@ -30,16 +30,17 @@ public class BMDataGenerators {
         generator.addProvider(event.includeClient(), new BMItemModelProvider(packOutput, efh));
         generator.addProvider(event.includeClient(), new BMBlockStateProvider(packOutput, efh));
 
-        BMTagsProvider.Blocks blockTagsProvider = new BMTagsProvider.Blocks(packOutput, lookupProvider, efh);
+        BMTagsProvider.BlocksProvider blockTagsProvider = new BMTagsProvider.BlocksProvider(packOutput, lookupProvider, efh);
         generator.addProvider(event.includeServer(), blockTagsProvider);
-        generator.addProvider(event.includeServer(), new BMTagsProvider.Items(packOutput, lookupProvider, blockTagsProvider, efh));
-        generator.addProvider(event.includeServer(), new BMTagsProvider.EntityTypes(packOutput, lookupProvider, efh));
-        generator.addProvider(event.includeServer(), new BMTagsProvider.Biomes(packOutput, lookupProvider, efh));
+        generator.addProvider(event.includeServer(), new BMTagsProvider.ItemsProvider(packOutput, lookupProvider, blockTagsProvider, efh));
+        generator.addProvider(event.includeServer(), new BMTagsProvider.EntityTypesProvider(packOutput, lookupProvider, efh));
+        generator.addProvider(event.includeServer(), new BMTagsProvider.BiomesProvider(packOutput, lookupProvider, efh));
         generator.addProvider(event.includeServer(), new BMItemSpecialtyProvider(packOutput));
         generator.addProvider(event.includeServer(), new BMRecipeProvider(packOutput));
         generator.addProvider(event.includeServer(), new BMBehemothPropertiesProvider(packOutput));
         generator.addProvider(event.includeServer(), new BMLootTableProvider(packOutput));
         generator.addProvider(event.includeServer(), new BMAdvancementProvider(packOutput, lookupProvider, efh));
+        generator.addProvider(event.includeServer(), new BMGlobalLootModifierProvider(packOutput));
 
         generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, new RegistrySetBuilder()
                 .add(ForgeRegistries.Keys.BIOME_MODIFIERS, BMMobSpawnsProvider::bootstrapBiome),

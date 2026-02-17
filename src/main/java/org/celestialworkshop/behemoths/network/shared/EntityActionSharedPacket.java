@@ -5,7 +5,6 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 import org.celestialworkshop.behemoths.entities.BanishingStampede;
@@ -101,13 +100,6 @@ public record EntityActionSharedPacket(int entityId, Action action, Map<String, 
         if (entity == null) return;
 
         switch (packet.action()) {
-            case FORCE_JUMP_STAMPEDE -> {
-                if (entity instanceof BanishingStampede bm) {
-                    if (packet.parameters.containsKey("strength")) {
-                        bm.executeRidersJump((Float) packet.parameters.get("strength"), Vec3.ZERO);
-                    }
-                }
-            }
             case SET_Y_ROTATION -> {
                 if (entity instanceof BanishingStampede bm) {
                     if (packet.parameters.containsKey("val")) {
@@ -126,21 +118,11 @@ public record EntityActionSharedPacket(int entityId, Action action, Map<String, 
         if (entity == null) return;
 
         switch (packet.action()) {
-            case START_STAMPEDE_RAMMING -> {
-                if (entity instanceof BanishingStampede bm) {
-                    bm.setRamming(true);
-                }
-            }
             default -> throw new IllegalArgumentException("Packet action is invalid for Client -> Server: " + packet.action());
         }
     }
 
     public enum Action {
-        // C2S
-        START_STAMPEDE_RAMMING,
-
-        // S2C
-        FORCE_JUMP_STAMPEDE,
         SET_Y_ROTATION;
     }
 }

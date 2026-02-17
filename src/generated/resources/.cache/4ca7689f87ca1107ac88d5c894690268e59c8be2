@@ -1,3 +1,5 @@
-// 1.20.1	2026-02-02T00:45:19.2629911	Block States: behemoths
+// 1.20.1	2026-02-15T22:38:06.5105572	Block States: behemoths
 931306088dc85739c7e9e4e5b3369cab1e7cf5f7 assets/behemoths/blockstates/magnalyth_block.json
+fdb1f5cf00de94d82bf15d9a7d8d4f186d3a9f83 assets/behemoths/blockstates/mortyx_block.json
 0e4b0fa99af37c5254cfcd600455b850dcef20db assets/behemoths/models/block/magnalyth_block.json
+afbfa80f42c95a2326d2e1aa7fc5838df1af30f1 assets/behemoths/models/block/mortyx_block.json

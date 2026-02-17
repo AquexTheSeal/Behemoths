@@ -81,7 +81,6 @@ public record VFXParticleData(
             (instance) -> instance.group(
                     Codec.STRING.fieldOf("textureName").forGetter(VFXParticleData::textureName),
                     Codec.INT.fieldOf("type").forGetter(VFXParticleData::type),
-                    // Use the interpolation data codec
                     VFXInterpolationData.CODEC.fieldOf("scaleData").forGetter(VFXParticleData::scaleData),
                     VFXInterpolationData.CODEC.fieldOf("alphaData").forGetter(VFXParticleData::alphaData),
                     Codec.INT.fieldOf("lifetime").forGetter(VFXParticleData::lifetime),

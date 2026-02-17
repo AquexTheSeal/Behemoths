@@ -12,6 +12,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import org.celestialworkshop.behemoths.Behemoths;
+import org.celestialworkshop.behemoths.client.animations.HollowborneAnimations;
 import org.celestialworkshop.behemoths.entities.Hollowborne;
 
 import java.util.List;
@@ -25,8 +26,8 @@ public class HollowborneModel<T extends Hollowborne> extends BMHierarchicalModel
 	public final Leg limblb;
 	public final Leg limbrb;
 
-	private final ModelPart mob;
-	private final ModelPart subroot;
+	public final ModelPart mob;
+	public final ModelPart subroot;
 	private final ModelPart spiner;
 	private final ModelPart spinel;
 	private final ModelPart armml;
@@ -143,18 +144,17 @@ public class HollowborneModel<T extends Hollowborne> extends BMHierarchicalModel
 
 		this.parts().forEach(ModelPart::resetPose);
 
-		this.armml1.yRot += (Mth.sin(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
-		this.armml1.zRot += (-Mth.cos(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
-
-		this.armmr1.yRot += (Mth.cos(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
-		this.armmr1.zRot += (Mth.sin(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
-
-		this.armmlb1.yRot += (Mth.cos(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
-		this.armmlb1.zRot += (Mth.sin(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
-
-		this.armmrb1.yRot += (Mth.sin(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
-		this.armmrb1.zRot += (-Mth.cos(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
-
+//		this.armml1.yRot += (Mth.sin(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+//		this.armml1.zRot += (-Mth.cos(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+//
+//		this.armmr1.yRot += (Mth.cos(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+//		this.armmr1.zRot += (Mth.sin(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+//
+//		this.armmlb1.yRot += (Mth.cos(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+//		this.armmlb1.zRot += (Mth.sin(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+//
+//		this.armmrb1.yRot += (Mth.sin(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
+//		this.armmrb1.zRot += (-Mth.cos(limbSwing * 0.4F) * 25 * limbSwingAmount) * Mth.DEG_TO_RAD;
 
 		this.limbr.solve(entity, ageInTicks - entity.tickCount, true);
 		this.limbl.solve(entity, ageInTicks - entity.tickCount, false);
@@ -162,6 +162,8 @@ public class HollowborneModel<T extends Hollowborne> extends BMHierarchicalModel
 		this.limblb.solve(entity, ageInTicks - entity.tickCount, false);
 
 		this.animateManager(entity, ageInTicks);
+		this.animateWalk(HollowborneAnimations.WALK, limbSwing, limbSwingAmount, 1.5F, entity.getPassengers().size() > 1 ? 0.5F : 1.0F);
+
 	}
 
 	@Override
@@ -205,7 +207,7 @@ public class HollowborneModel<T extends Hollowborne> extends BMHierarchicalModel
 				leg.zRot += (-22.5F * lerpedDepth * inv) * Mth.DEG_TO_RAD;
 				knee.zRot += (12.5F * lerpedDepth * inv) * Mth.DEG_TO_RAD;
 			} else {
-				leg.zRot = Mth.clamp(leg.zRot + (-18.5F * lerpedDepth * inv) * Mth.DEG_TO_RAD, -120 * Mth.DEG_TO_RAD, 120 * Mth.DEG_TO_RAD);
+				leg.zRot = Mth.clamp(leg.zRot + (-15.5F * lerpedDepth * inv) * Mth.DEG_TO_RAD, -120 * Mth.DEG_TO_RAD, 120 * Mth.DEG_TO_RAD);
 				knee.zRot = Mth.clamp(knee.zRot + (25.5F * lerpedDepth * inv) * Mth.DEG_TO_RAD, -80 * Mth.DEG_TO_RAD, 80 * Mth.DEG_TO_RAD);
 			}
 		}

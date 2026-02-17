@@ -5,9 +5,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
-import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.api.client.gui.AnimatedUIElement;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.client.guis.screens.VotingResultsScreen;
+import org.celestialworkshop.behemoths.misc.utils.ClientUtils;
 import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
 import org.joml.Quaternionf;
 
@@ -55,7 +56,7 @@ public class VotingCandidateElement extends AnimatedUIElement<VotingResultsScree
         Font font = minecraft.font;
         int maxLineWidth = 75;
         int titleHeight = this.getRenderY() - (this.getHeight() / 2) - 10 - (font.lineHeight * (font.split(this.curse.getDisplayName(), maxLineWidth).size() - 1));
-        this.drawCenteredOutlinedWordWrap(guiGraphics, font, this.curse.getDisplayName(), this.getRenderX(), titleHeight, maxLineWidth, 0xffd6a1, 0x4f1714);
+        ClientUtils.drawCenteredOutlinedWordWrap(guiGraphics, font, this.curse.getDisplayName(), this.getRenderX(), titleHeight, maxLineWidth, 0xffd6a1, 0x4f1714);
 
         guiGraphics.drawCenteredString(font, Component.translatable("screen.behemoths.voting_results.votes", screen.voteResults[index]), this.getRenderX(), this.getRenderY() + (this.getHeight() / 2) + 4, 0xffd6a1);
     }

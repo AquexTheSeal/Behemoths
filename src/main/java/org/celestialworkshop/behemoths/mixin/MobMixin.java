@@ -3,14 +3,14 @@ package org.celestialworkshop.behemoths.mixin;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.world.entity.Mob;
 import org.celestialworkshop.behemoths.entities.ai.BMEntity;
-import org.celestialworkshop.behemoths.misc.mixinhelpers.MobMixinHelper;
+import org.celestialworkshop.behemoths.misc.mixinhelpers.IMixinMob;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(Mob.class)
-public class MobMixin implements MobMixinHelper {
+public class MobMixin implements IMixinMob {
 
     @Unique private Pair<Float, BMEntity.Operation> bm$damageModifier;
 

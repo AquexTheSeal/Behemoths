@@ -12,7 +12,12 @@ import java.util.List;
 public class BMItemTiers {
 
     public static final Tier MAGNALYTH = TierSortingRegistry.registerTier(
-            new ForgeTier(3, 1800, 8.5F, 3.5F, 8, BMTags.Blocks.NEEDS_MAGNALYTH_TOOL, () -> Ingredient.of(BMItems.MAGNALYTH_INGOT.get())),
+            new ForgeTier(3, 1800, 8.0F, 3.5F, 8, BMTags.Blocks.NEEDS_MAGNALYTH_TOOL, () -> Ingredient.of(BMItems.MAGNALYTH_INGOT.get())),
             Behemoths.prefix("magnalyth"), List.of(Tiers.DIAMOND), List.of(Tiers.NETHERITE)
+    );
+
+    public static final Tier MORTYX = TierSortingRegistry.registerTier(
+            new ForgeTier(4, 2031, 9.0F, 4.0F, 17, BMTags.Blocks.NEEDS_MORTYX_TOOL, () -> Ingredient.of(BMItems.MORTYX_INGOT.get())),
+            Behemoths.prefix("mortyx"), List.of(Tiers.NETHERITE), List.of()
     );
 }

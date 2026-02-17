@@ -3,7 +3,7 @@ package org.celestialworkshop.behemoths.misc.mixinhelpers;
 import it.unimi.dsi.fastutil.Pair;
 import org.celestialworkshop.behemoths.entities.ai.BMEntity;
 
-public interface MobMixinHelper {
+public interface IMixinMob {
 
     void bm$setDamageModifier(Pair<Float, BMEntity.Operation> modifier);
 

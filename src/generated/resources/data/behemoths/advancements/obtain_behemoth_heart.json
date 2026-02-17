@@ -19,7 +19,7 @@
     "description": {
       "translate": "advancement.behemoths.obtain_behemoth_heart.description"
     },
-    "frame": "challenge",
+    "frame": "goal",
     "hidden": false,
     "icon": {
       "item": "behemoths:behemoth_heart"

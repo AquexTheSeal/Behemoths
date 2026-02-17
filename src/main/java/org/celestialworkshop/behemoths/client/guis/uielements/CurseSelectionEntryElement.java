@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import org.celestialworkshop.behemoths.api.client.gui.AnimatedUIElement;
 import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.client.guis.screens.VotingSelectionScreen;
+import org.celestialworkshop.behemoths.misc.utils.ClientUtils;
 import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
 import org.joml.Quaternionf;
 
@@ -86,6 +87,6 @@ public class CurseSelectionEntryElement extends AnimatedUIElement<VotingSelectio
         Color c = new Color(255, 214, 161);
         guiGraphics.hLine(getRenderX() - 105, getRenderX() + 105, getRenderY() - 22, c.getRGB());
 
-        this.drawShadowedWordWrap(guiGraphics, font, curse.getDescription(), getRenderX() - 72, getRenderY() - 18, 154, 0xffede3);
+        ClientUtils.drawShadowedWordWrap(guiGraphics, font, curse.getDescription(), getRenderX() - 72, getRenderY() - 18, 154, 0xffede3);
     }
 }

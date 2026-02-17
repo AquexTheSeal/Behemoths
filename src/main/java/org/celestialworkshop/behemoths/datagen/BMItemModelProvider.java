@@ -27,17 +27,28 @@ public class BMItemModelProvider extends ItemModelProvider {
         behemothSpawnEgg(BMItems.HOLLOWBORNE_TURRET_SPAWN_EGG.get());
 
         basicItem(BMItems.BEHEMOTH_HEART.get());
+        basicItem(BMItems.BEHEMOTH_SADDLE.get());
+        basicItem(BMItems.BEHEMOTH_HARNESS.get());
+        basicItem(BMItems.SAVAGE_FLESH.get());
+        basicItem(BMItems.COLOSSUS_BONE.get());
 
         basicItem(BMItems.MAGNALYTH_INGOT.get());
         basicItem(BMItems.MAGNALYTH_NUGGET.get());
-
         handheld(BMItems.MAGNALYTH_SWORD.get());
         handheld(BMItems.MAGNALYTH_AXE.get());
         handheld(BMItems.MAGNALYTH_PICKAXE.get());
         handheld(BMItems.MAGNALYTH_SHOVEL.get());
         handheld(BMItems.MAGNALYTH_HOE.get());
-
         block(BMBlocks.MAGNALYTH_BLOCK.get());
+
+        basicItem(BMItems.MORTYX_UPGRADE_SMITHING_TEMPLATE.get());
+        basicItem(BMItems.MORTYX_INGOT.get());
+        handheld(BMItems.MORTYX_SWORD.get());
+        handheld(BMItems.MORTYX_AXE.get());
+        handheld(BMItems.MORTYX_PICKAXE.get());
+        handheld(BMItems.MORTYX_SHOVEL.get());
+        handheld(BMItems.MORTYX_HOE.get());
+        block(BMBlocks.MORTYX_BLOCK.get());
     }
 
     public void handheld(Item item) {

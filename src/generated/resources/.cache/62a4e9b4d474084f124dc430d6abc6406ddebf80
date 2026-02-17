@@ -1,8 +1,11 @@
-// 1.20.1	2026-02-11T00:40:50.1072343	Item Models: behemoths
+// 1.20.1	2026-02-16T20:58:02.7823744	Item Models: behemoths
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/behemoths/models/item/archzombie_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/behemoths/models/item/banishing_stampede_spawn_egg.json
 a786baa9052b8d56887563e1e6b3743497b671ee assets/behemoths/models/item/behebugger.json
+3cfaccd1902abc3cf0112a7003577aea4b8df197 assets/behemoths/models/item/behemoth_harness.json
 abff789f6864ac8a65ced4590883b8aefca430ca assets/behemoths/models/item/behemoth_heart.json
+314925dafd1c8b68cf5ee66b905d1b433c345b17 assets/behemoths/models/item/behemoth_saddle.json
+030e6f40e3eeaf47daf0d374ac6cf7ae63416756 assets/behemoths/models/item/colossus_bone.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/behemoths/models/item/hollowborne_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/behemoths/models/item/hollowborne_turret_spawn_egg.json
 6fac0ab9323798dac0e1208f106c4e97cafca240 assets/behemoths/models/item/magnalyth_axe.json
@@ -13,3 +16,12 @@ f25554d9bd91d6188d685fb4c200436bce8d3eeb assets/behemoths/models/item/magnalyth_
 634428d589d6c6600352c62b75dc08fcb98103bc assets/behemoths/models/item/magnalyth_pickaxe.json
 d0b81486c0ae2e6da0e5f6c10cbefcd0256cebad assets/behemoths/models/item/magnalyth_shovel.json
 168e781ed44493f34ed3da9fc606ff553282f1ab assets/behemoths/models/item/magnalyth_sword.json
+9da0359e4273cf51f08467751f32781e37c0677b assets/behemoths/models/item/mortyx_axe.json
+753758d7197cf8bfb7f6f6853d18c80f8bc214ed assets/behemoths/models/item/mortyx_block.json
+9448a568eb759d27330f8c588996184328bd3d2b assets/behemoths/models/item/mortyx_hoe.json
+f5f0c96ae10bb15f9ea57810e5fbd86084eec422 assets/behemoths/models/item/mortyx_ingot.json
+bab1710c61a6d904dd3a049392906aba32f93931 assets/behemoths/models/item/mortyx_pickaxe.json
+874fff2014598a9ccc55ad2f8811c3c5c9db15ad assets/behemoths/models/item/mortyx_shovel.json
+a5f12d59ee0a5072a5afc6af8ab6d9f016559b98 assets/behemoths/models/item/mortyx_sword.json
+c6c81aa5e90b5803639ca6c5bb0368652e150442 assets/behemoths/models/item/mortyx_upgrade_smithing_template.json
+39fc5dcd5910d7f2b6835deaa484805c27c9d9b0 assets/behemoths/models/item/savage_flesh.json

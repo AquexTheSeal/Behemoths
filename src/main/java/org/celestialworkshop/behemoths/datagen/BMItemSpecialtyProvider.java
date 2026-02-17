@@ -25,6 +25,12 @@ public class BMItemSpecialtyProvider extends ItemSpecialtyProvider {
                 if (tieredItem.getTier() == BMItemTiers.MAGNALYTH) {
                     this.add(item, new SpecialtyInstance(BMItemSpecialties.BEHEMOTH_DAMAGE_BONUS.get(), 0));
                 }
+                if (tieredItem.getTier() == BMItemTiers.MORTYX) {
+                    this.add(item,
+                            new SpecialtyInstance(BMItemSpecialties.BEHEMOTH_DAMAGE_BONUS.get(), 0),
+                            new SpecialtyInstance(BMItemSpecialties.UNDEAD_DAMAGE_BONUS.get(), 0)
+                    );
+                }
             }
         }
     }

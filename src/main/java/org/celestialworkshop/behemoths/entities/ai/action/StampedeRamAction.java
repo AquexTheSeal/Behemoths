@@ -14,7 +14,7 @@ import org.celestialworkshop.behemoths.particles.VFXParticleData;
 import org.celestialworkshop.behemoths.particles.VFXTypes;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
 import org.celestialworkshop.behemoths.registries.BMSoundEvents;
-import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumVotingSystem;
 
 public class StampedeRamAction extends ManagedAction<BanishingStampede> {
     public Vec3 lockedDirection = null;
@@ -94,7 +94,7 @@ public class StampedeRamAction extends ManagedAction<BanishingStampede> {
 
             for (LivingEntity target : entity.level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(2.5D))) {
                 if ((!entity.getPassengers().isEmpty() && !entity.getPassengers().contains(target)) && target != entity) {
-                    entity.multiplyAndAttackTarget(target, WorldUtils.hasPandemoniumCurse(entity.level(), BMPandemoniumCurses.GRAVEBREAKER_MOMENTUM.get()) ? 1.0F : 0.5F);
+                    entity.attackTargetMultiplication(target, PandemoniumVotingSystem.hasPandemoniumCurse(entity.level(), BMPandemoniumCurses.GRAVEBREAKER_MOMENTUM.get()) ? 1.0F : 0.5F);
                     target.push(0, 0.2F, 0);
                     target.hurtMarked = true;
                 }

@@ -4,7 +4,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import org.celestialworkshop.behemoths.entities.Archzombie;
 import org.celestialworkshop.behemoths.entities.BanishingStampede;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
-import org.celestialworkshop.behemoths.misc.utils.WorldUtils;
+import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumVotingSystem;
 
 public class StampedeArchzombieRamGoal extends Goal {
     private final BanishingStampede stampede;
@@ -18,7 +18,7 @@ public class StampedeArchzombieRamGoal extends Goal {
     @Override
     public boolean canUse() {
         if (stampede.getControllingPassenger() instanceof Archzombie arc && arc.getTarget() != null) {
-            if (WorldUtils.hasPandemoniumCurse(stampede.level(), BMPandemoniumCurses.GRAVEBREAKER_MOMENTUM.get())) {
+            if (PandemoniumVotingSystem.hasPandemoniumCurse(stampede.level(), BMPandemoniumCurses.GRAVEBREAKER_MOMENTUM.get())) {
                 return true;
             } else {
                 return arc.isLeader();

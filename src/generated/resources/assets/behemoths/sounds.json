@@ -44,6 +44,24 @@
     ],
     "subtitle": "behemoths.subtitle.hollowborne_hurt"
   },
+  "hollowborne_smash": {
+    "sounds": [
+      "behemoths:hollowborne_smash"
+    ],
+    "subtitle": "behemoths.subtitle.hollowborne_smash"
+  },
+  "hollowborne_smash_start": {
+    "sounds": [
+      "behemoths:hollowborne_smash_start"
+    ],
+    "subtitle": "behemoths.subtitle.hollowborne_smash_start"
+  },
+  "hollowborne_step": {
+    "sounds": [
+      "behemoths:hollowborne_step"
+    ],
+    "subtitle": "behemoths.subtitle.hollowborne_step"
+  },
   "hollowborne_turret_shoot": {
     "sounds": [
       "behemoths:hollowborne_turret_shoot"

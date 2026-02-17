@@ -1,5 +1,6 @@
 package org.celestialworkshop.behemoths.items;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -10,7 +11,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import org.celestialworkshop.behemoths.entities.projectile.Hollowcorper;
+import org.celestialworkshop.behemoths.client.guis.screens.ColossangrimScreen;
+import org.celestialworkshop.behemoths.entities.Hollowborne;
+import org.celestialworkshop.behemoths.entities.HollowborneTurret;
 import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 
 public class BehebuggerItem extends Item {
@@ -20,23 +23,25 @@ public class BehebuggerItem extends Item {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext pContext) {
-        if (!pContext.getLevel().isClientSide) {
-            BMEntityTypes.HOLLOWBORNE_TURRET.get().spawn((ServerLevel) pContext.getLevel(), pContext.getClickedPos(), MobSpawnType.NATURAL);
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+        if (pLevel.isClientSide) {
+            ColossangrimScreen dict = new ColossangrimScreen();
+            Minecraft.getInstance().setScreen(dict);
         }
-        return InteractionResult.SUCCESS;
+        return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        if (!pLevel.isClientSide) {
-
-            Hollowcorper proj = new Hollowcorper(BMEntityTypes.HOLLOWCORPER.get(), pPlayer.getX(), pPlayer.getY(0.3333), pPlayer.getZ(), pLevel);
-            proj.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0, 0.05F, 0.0F);
-            proj.setOwner(pPlayer);
-            pLevel.addFreshEntity(proj);
-
+    public InteractionResult useOn(UseOnContext pContext) {
+        if (!pContext.getLevel().isClientSide) {
+            Hollowborne borne = BMEntityTypes.HOLLOWBORNE.get().spawn((ServerLevel) pContext.getLevel(), pContext.getClickedPos(), MobSpawnType.NATURAL);
+            borne.equipCustomSaddle(null);
+            for (int i = 0; i <= 5; i++) {
+                HollowborneTurret turret = BMEntityTypes.HOLLOWBORNE_TURRET.get().create(pContext.getLevel());
+                pContext.getLevel().addFreshEntity(turret);
+                turret.startRiding(borne);
+            }
         }
-        return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
+        return InteractionResult.SUCCESS;
     }
 }

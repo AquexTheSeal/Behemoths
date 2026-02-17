@@ -3,13 +3,13 @@ package org.celestialworkshop.behemoths.client.guis.screens;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.api.client.animation.InterpolationTypes;
 import org.celestialworkshop.behemoths.api.client.gui.AnimatedUIElement;
@@ -18,6 +18,7 @@ import org.celestialworkshop.behemoths.client.guis.uielements.ColossangrimArrows
 import org.celestialworkshop.behemoths.client.guis.uielements.ColossangrimBGElement;
 import org.celestialworkshop.behemoths.client.guis.uielements.ColossangrimMobEntryElement;
 import org.celestialworkshop.behemoths.client.guis.uielements.ColossangrimTitleElement;
+import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,8 +53,8 @@ public class ColossangrimScreen extends SimpleUIScreen {
             }
         });
 
-        for (Map.Entry<ResourceKey<EntityType<?>>, EntityType<?>> type : ForgeRegistries.ENTITY_TYPES.getEntries()) {
-            EntityType<?> t = type.getValue();
+        for (RegistryObject<EntityType<?>> type : BMEntityTypes.ENTITY_TYPES.getEntries()) {
+            EntityType<?> t = type.get();
             if (Minecraft.getInstance().level != null && t.create(Minecraft.getInstance().level) instanceof Mob) {
                 Item egg = eggLookup.getOrDefault(t, null);
                 spawnEggAssociationMap.put(t, egg);

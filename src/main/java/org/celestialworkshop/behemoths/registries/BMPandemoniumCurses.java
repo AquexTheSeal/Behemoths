@@ -26,9 +26,9 @@ public class BMPandemoniumCurses {
     public static final RegistryObject<PandemoniumCurse> GRAVEBREAKER_MOMENTUM = PANDEMONIUM_CURSES.register("gravebreaker_momentum", () -> new PandemoniumCurse(BMEntityTypes.ARCHZOMBIE.get()));
     public static final RegistryObject<PandemoniumCurse> PHANTOM_STEED = PANDEMONIUM_CURSES.register("phantom_steed", () -> new PandemoniumCurse(BMEntityTypes.ARCHZOMBIE.get()));
 
+    public static final RegistryObject<PandemoniumCurse> QUICKDRAW = PANDEMONIUM_CURSES.register("quickdraw", () -> new PandemoniumCurse(EntityType.SKELETON));
     public static final RegistryObject<PandemoniumCurse> HEAVY_ARROW = PANDEMONIUM_CURSES.register("heavy_arrow", () -> new PandemoniumCurse(EntityType.SKELETON));
-    public static final RegistryObject<PandemoniumCurse> BURNING_ARCHER = PANDEMONIUM_CURSES.register("burning_archer", () -> new PandemoniumCurse(EntityType.SKELETON));
 
     public static final RegistryObject<PandemoniumCurse> OVERSEER = PANDEMONIUM_CURSES.register("overseer", () -> new PandemoniumCurse(BMEntityTypes.HOLLOWBORNE_TURRET.get()));
-    public static final RegistryObject<PandemoniumCurse> DEATH_LEAP = PANDEMONIUM_CURSES.register("death_leap", () -> new PandemoniumCurse(BMEntityTypes.HOLLOWBORNE_TURRET.get()));
+    public static final RegistryObject<PandemoniumCurse> DEADLY_HOLLOWCORPER = PANDEMONIUM_CURSES.register("deadly_hollowcorper", () -> new PandemoniumCurse(BMEntityTypes.HOLLOWBORNE_TURRET.get()));
 }
