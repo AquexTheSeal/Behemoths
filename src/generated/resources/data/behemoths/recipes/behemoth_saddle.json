@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "behemoth_saddle",
+  "key": {
+    "#": {
+      "item": "behemoths:behemoth_heart"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "I": {
+      "tag": "minecraft:wool"
+    },
+    "S": {
+      "item": "minecraft:saddle"
+    }
+  },
+  "pattern": [
+    "ISI",
+    "G#G"
+  ],
+  "result": {
+    "item": "behemoths:behemoth_saddle"
+  },
+  "show_notification": true
+}

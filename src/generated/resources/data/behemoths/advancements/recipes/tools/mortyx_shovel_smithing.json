@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_mortyx_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "behemoths:mortyx_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "behemoths:mortyx_shovel_smithing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_mortyx_ingot",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "behemoths:mortyx_shovel_smithing"
+    ]
+  },
+  "sends_telemetry_event": false
+}

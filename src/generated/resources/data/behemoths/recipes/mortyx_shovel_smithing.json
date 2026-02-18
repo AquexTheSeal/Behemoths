@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "behemoths:mortyx_ingot"
+  },
+  "base": {
+    "item": "behemoths:magnalyth_shovel"
+  },
+  "result": {
+    "item": "behemoths:mortyx_shovel"
+  },
+  "template": {
+    "item": "behemoths:mortyx_upgrade_smithing_template"
+  }
+}

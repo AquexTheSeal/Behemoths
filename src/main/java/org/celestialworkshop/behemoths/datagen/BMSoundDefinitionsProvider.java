@@ -34,6 +34,8 @@ public class BMSoundDefinitionsProvider extends SoundDefinitionsProvider {
         this.basicSound(BMSoundEvents.HOLLOWBORNE_SMASH);
         this.basicSound(BMSoundEvents.HOLLOWBORNE_SMASH_START);
         this.basicSound(BMSoundEvents.HOLLOWBORNE_STEP);
+        this.basicSound(BMSoundEvents.HOLLOWBORNE_JUMP);
+        this.basicSound(BMSoundEvents.HOLLOWBORNE_JUMP_STRONG);
 
         this.basicSound(BMSoundEvents.HOLLOWBORNE_TURRET_SHOOT);
 

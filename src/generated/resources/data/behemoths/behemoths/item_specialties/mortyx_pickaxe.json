@@ -1,0 +1,12 @@
+{
+  "specialties": [
+    {
+      "id": "behemoths:behemoth_damage_bonus",
+      "level": 0
+    },
+    {
+      "id": "behemoths:undead_damage_bonus",
+      "level": 0
+    }
+  ]
+}

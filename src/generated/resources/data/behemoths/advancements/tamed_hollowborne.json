@@ -1,0 +1,39 @@
+{
+  "criteria": {
+    "tamed_hollowborne": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "behemoths:hollowborne"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:tame_animal"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.behemoths.tame_hollowborne.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:soul_sand"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.behemoths.tame_hollowborne.title"
+    }
+  },
+  "requirements": [
+    [
+      "tamed_hollowborne"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

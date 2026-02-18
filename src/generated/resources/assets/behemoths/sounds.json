@@ -44,6 +44,18 @@
     ],
     "subtitle": "behemoths.subtitle.hollowborne_hurt"
   },
+  "hollowborne_jump": {
+    "sounds": [
+      "behemoths:hollowborne_jump"
+    ],
+    "subtitle": "behemoths.subtitle.hollowborne_jump"
+  },
+  "hollowborne_jump_strong": {
+    "sounds": [
+      "behemoths:hollowborne_jump_strong"
+    ],
+    "subtitle": "behemoths.subtitle.hollowborne_jump_strong"
+  },
   "hollowborne_smash": {
     "sounds": [
       "behemoths:hollowborne_smash"

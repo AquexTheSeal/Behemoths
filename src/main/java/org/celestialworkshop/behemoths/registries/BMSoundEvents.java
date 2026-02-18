@@ -27,6 +27,8 @@ public class BMSoundEvents {
     public static final RegistryObject<SoundEvent> HOLLOWBORNE_SMASH = registerSoundEvent("hollowborne_smash");
     public static final RegistryObject<SoundEvent> HOLLOWBORNE_SMASH_START = registerSoundEvent("hollowborne_smash_start");
     public static final RegistryObject<SoundEvent> HOLLOWBORNE_STEP = registerSoundEvent("hollowborne_step");
+    public static final RegistryObject<SoundEvent> HOLLOWBORNE_JUMP = registerSoundEvent("hollowborne_jump");
+    public static final RegistryObject<SoundEvent> HOLLOWBORNE_JUMP_STRONG = registerSoundEvent("hollowborne_jump_strong");
 
     public static final RegistryObject<SoundEvent> HOLLOWBORNE_TURRET_SHOOT = registerSoundEvent("hollowborne_turret_shoot");
 

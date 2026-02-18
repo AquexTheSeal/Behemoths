@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "mortyx",
+  "ingredients": [
+    {
+      "item": "behemoths:colossus_bone"
+    },
+    {
+      "item": "behemoths:colossus_bone"
+    },
+    {
+      "item": "behemoths:colossus_bone"
+    },
+    {
+      "item": "behemoths:colossus_bone"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "minecraft:bone_meal"
+  }
+}

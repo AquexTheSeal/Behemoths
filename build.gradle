@@ -164,11 +164,16 @@ tasks.named('jarJar', Jar).configure {
 }
 
 reobf {
-    jarJar {}
+    jarJar {
+    }
+}
+
+tasks.named('publishMods').configure {
+    dependsOn 'build'
 }
 
 publishMods {
-    file = tasks.named('jarJar').get().archiveFile
+    file = tasks.named('jarJar', Jar).flatMap { it.archiveFile }
     changelog = file("changelog/CL-${mod_version}.md").text
     type = STABLE
     modLoaders.add("forge")

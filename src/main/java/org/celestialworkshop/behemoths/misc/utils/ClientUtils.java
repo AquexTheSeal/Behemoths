@@ -1,5 +1,6 @@
 package org.celestialworkshop.behemoths.misc.utils;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.celestialworkshop.behemoths.client.guis.screens.ColossangrimScreen;
 
 public class ClientUtils {
 
@@ -28,6 +30,11 @@ public class ClientUtils {
             };
         }
         return entity;
+    }
+
+    public static void openColossangrimScreen() {
+        ColossangrimScreen dict = new ColossangrimScreen();
+        Minecraft.getInstance().setScreen(dict);
     }
 
     public static void drawShadowedWordWrap(GuiGraphics guiGraphics, Font pFont, FormattedText pText, int pX, int pY, int pLineWidth, int pColor) {

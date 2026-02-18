@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "behemoths:mortyx_ingot"
+  },
+  "base": {
+    "item": "behemoths:magnalyth_sword"
+  },
+  "result": {
+    "item": "behemoths:mortyx_sword"
+  },
+  "template": {
+    "item": "behemoths:mortyx_upgrade_smithing_template"
+  }
+}

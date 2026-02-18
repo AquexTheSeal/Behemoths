@@ -1,6 +1,5 @@
 package org.celestialworkshop.behemoths.items;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -11,9 +10,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import org.celestialworkshop.behemoths.client.guis.screens.ColossangrimScreen;
 import org.celestialworkshop.behemoths.entities.Hollowborne;
 import org.celestialworkshop.behemoths.entities.HollowborneTurret;
+import org.celestialworkshop.behemoths.misc.utils.ClientUtils;
 import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 
 public class BehebuggerItem extends Item {
@@ -25,8 +24,7 @@ public class BehebuggerItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if (pLevel.isClientSide) {
-            ColossangrimScreen dict = new ColossangrimScreen();
-            Minecraft.getInstance().setScreen(dict);
+            ClientUtils.openColossangrimScreen();
         }
         return InteractionResultHolder.success(pPlayer.getItemInHand(pUsedHand));
     }

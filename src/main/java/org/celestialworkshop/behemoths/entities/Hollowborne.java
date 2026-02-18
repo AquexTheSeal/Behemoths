@@ -37,8 +37,10 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidType;
 import org.celestialworkshop.behemoths.Behemoths;
+import org.celestialworkshop.behemoths.api.camera.CameraAngleManager;
 import org.celestialworkshop.behemoths.api.camera.ScreenShakeHandler;
 import org.celestialworkshop.behemoths.api.client.animation.EntityAnimationManager;
+import org.celestialworkshop.behemoths.api.client.animation.InterpolationTypes;
 import org.celestialworkshop.behemoths.api.entity.ActionManager;
 import org.celestialworkshop.behemoths.client.animations.HollowborneAnimations;
 import org.celestialworkshop.behemoths.entities.ai.BMEntity;
@@ -70,6 +72,7 @@ public class Hollowborne extends TamableAnimal implements BMEntity, Enemy, Custo
     public final MountJumpManager<Hollowborne> mountJumpManager = new MountJumpManager<>(this);
 
     public boolean shouldUpdateLegs = true;
+    public int savedJumpPower = 0;
     public float[][] legOffsets = {{3, 3}, {-3, 3}, {3, -3}, {-3, -3}};
     public float[] targetDepthsO = new float[]{-3f, -3f, -3f, -3f};
     public float[] targetDepths = new float[]{-3f, -3f, -3f, -3f};
@@ -142,6 +145,27 @@ public class Hollowborne extends TamableAnimal implements BMEntity, Enemy, Custo
             if (smashCooldown > 0) {
                 smashCooldown--;
             }
+
+            if (this.onGround() && this.savedJumpPower > 0) {
+                AABB area = getBoundingBox().inflate(12, 1, 12).expandTowards(0, -(getBoundingBox().getYsize() / 2), 0);
+                List<LivingEntity> targetList = level().getEntitiesOfClass(LivingEntity.class, area).stream().filter(e -> e != this && !getPassengers().contains(e)).toList();
+
+                for (LivingEntity target : targetList) {
+                    float dist = Math.min(distanceTo(target), 12.0F);
+                    float dmgScale = Mth.lerp(savedJumpPower / 200F, 0.2F, 1.8F);
+                    float dmg = Mth.lerp(dist / 12, dmgScale, 0.1F);
+                    if (attackTargetMultiplication(target, dmg)) {
+                        target.knockback(3.0F, getX() - target.getX(), getZ() - target.getZ());
+                        hasImpulse = true;
+                    }
+                }
+
+                this.playSound(BMSoundEvents.HOLLOWBORNE_SMASH.get(), 2.0F, 1.0F);
+                float intensity = Mth.lerp(savedJumpPower / 200F, 0.1F, 2.0F);
+                CameraAngleManager.shakeArea(this.level(), this.position(), 24, intensity, 40, 30);
+                this.level().broadcastEntityEvent(this, Hollowborne.SMASH_PARTICLES_ENTITY_EVENT);
+                this.savedJumpPower = 0;
+            }
         }
 
         if (!this.isTame()) {
@@ -192,8 +216,25 @@ public class Hollowborne extends TamableAnimal implements BMEntity, Enemy, Custo
         } else {
             if (level().isClientSide) {
                 Vec3 direction = getLookAngle().multiply(1, 0, 1).normalize();
-                Vec3 jumpVelocity = direction.scale(power * 0.05).add(0, power * 0.025, 0);
+                Vec3 jumpVelocity = direction.scale(power * 0.025).add(0, power * 0.0125, 0);
                 setDeltaMovement(jumpVelocity);
+            } else {
+                if (power < 100) {
+                    this.playSound(BMSoundEvents.HOLLOWBORNE_JUMP.get(), 0.5F, 0.7F);
+                } else {
+                    this.playSound(BMSoundEvents.HOLLOWBORNE_JUMP_STRONG.get(), 2.0F, 1.0F);
+                }
+                float delta = power / 200F;
+                float intensity = Mth.lerp(delta, 0.1F, 2.0F);
+                CameraAngleManager.shakeArea(this.level(), this.position(), 24, intensity, 40, 30);
+
+                VFXParticleData.Builder data = new VFXParticleData.Builder().textureName(Behemoths.prefix("hollowborne_jump"))
+                        .type(VFXTypes.FLAT).scale(0,  10 + delta * 5, InterpolationTypes.EASE_OUT_QUAD)
+                        .fadeOut().lifetime(Mth.ceil(10 + delta * 5));
+                ((ServerLevel) this.level()).sendParticles(data.build(), this.getX(), this.getY() + 0.5, this.getZ(), 0, 0, 0, 0, 0);
+
+                this.savedJumpPower = power;
+                this.setOnGround(false);
             }
         }
     }

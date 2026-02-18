@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_colossus_bone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "behemoths:colossus_bone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "behemoths:bonemeal_from_colossus_bone"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_colossus_bone",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "behemoths:bonemeal_from_colossus_bone"
+    ]
+  },
+  "sends_telemetry_event": false
+}

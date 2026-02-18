@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "mortyx",
+  "ingredients": [
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "behemoths:colossus_bone"
+    },
+    {
+      "item": "behemoths:colossus_bone"
+    },
+    {
+      "item": "behemoths:colossus_bone"
+    },
+    {
+      "item": "behemoths:colossus_bone"
+    },
+    {
+      "item": "behemoths:savage_flesh"
+    },
+    {
+      "item": "behemoths:savage_flesh"
+    },
+    {
+      "item": "behemoths:savage_flesh"
+    },
+    {
+      "item": "behemoths:savage_flesh"
+    }
+  ],
+  "result": {
+    "item": "behemoths:mortyx_ingot"
+  }
+}
