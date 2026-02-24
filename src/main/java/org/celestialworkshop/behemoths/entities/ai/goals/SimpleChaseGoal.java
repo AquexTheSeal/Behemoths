@@ -39,6 +39,5 @@ public class SimpleChaseGoal extends Goal {
         if (target == null) return;
 
         entity.getNavigation().moveTo(target, speed);
-        entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
     }
 }

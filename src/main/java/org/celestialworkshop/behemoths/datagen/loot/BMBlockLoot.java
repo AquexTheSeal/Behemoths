@@ -19,6 +19,9 @@ public class BMBlockLoot extends BlockLootSubProvider {
     public void generate() {
          this.dropSelf(BMBlocks.MAGNALYTH_BLOCK.get());
         this.dropSelf(BMBlocks.MORTYX_BLOCK.get());
+
+        this.dropSelf(BMBlocks.PHANTASHROOM.get());
+        this.dropWhenSilkTouch(BMBlocks.PHANTASHROOM_BLOCK.get());
     }
 
     @Override

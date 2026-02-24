@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "behemoths:block/phantashroom_block_bottom",
+    "east": "behemoths:block/phantashroom_block_side",
+    "north": "behemoths:block/phantashroom_block_side",
+    "particle": "behemoths:block/phantashroom_block_side",
+    "south": "behemoths:block/phantashroom_block_side",
+    "up": "behemoths:block/phantashroom_block_top",
+    "west": "behemoths:block/phantashroom_block_side"
+  }
+}

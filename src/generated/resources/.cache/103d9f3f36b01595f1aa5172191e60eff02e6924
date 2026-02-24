@@ -1,3 +1,5 @@
-// 1.20.1	2026-02-14T01:09:10.2078078	Registries
-11b718896cdd56aeb3dab3b0ffd60266459d6551 data/behemoths/forge/biome_modifier/mountain_spawns.json
-9f437395919579430ca0790bb752005166f44050 data/behemoths/forge/biome_modifier/overworld_spawns.json
+// 1.20.1	2026-02-23T18:58:53.2470327	Registries
+ae294400307139879c2a2af9f34b793d40828d4e data/behemoths/forge/biome_modifier/mountain_spawns.json
+852ebb323a6edecada5770f6c801a6f01f19dfba data/behemoths/forge/biome_modifier/overworld_spawns.json
+a08207f20a82c256b016445fdc858c2bce21b9fa data/behemoths/worldgen/structure/charydbis_zone.json
+e8a42543d68d7ee29fc7d3be04404122e778f729 data/behemoths/worldgen/structure_set/charydbis_zone.json

@@ -98,6 +98,12 @@ public class BMTagsProvider {
                     .addTag(BiomeTags.IS_MOUNTAIN)
                     .addTag(Tags.Biomes.IS_SWAMP)
             ;
+
+            this.tag(BMTags.Biomes.CONTAINS_CHARYDBIS_ZONE)
+                    .addTag(Tags.Biomes.IS_PLAINS)
+                    .addTag(Tags.Biomes.IS_PLATEAU)
+                    .addTag(BiomeTags.IS_MOUNTAIN)
+            ;
         }
     }
 }

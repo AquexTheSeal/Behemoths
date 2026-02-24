@@ -31,6 +31,8 @@ public class BMClientSetup {
         event.registerEntityRenderer(BMEntityTypes.HOLLOWBORNE.get(), HollowborneRenderer::new);
         event.registerEntityRenderer(BMEntityTypes.HOLLOWBORNE_TURRET.get(), HollowborneTurretRenderer::new);
         event.registerEntityRenderer(BMEntityTypes.HOLLOWCORPER.get(), HollowcorperRenderer::new);
+        event.registerEntityRenderer(BMEntityTypes.SKY_CHARYDBIS.get(), SkyCharydbisRenderer::new);
+        event.registerEntityRenderer(BMEntityTypes.CRAGPIERCER.get(), CragpiercerRenderer::new);
     }
 
     @SubscribeEvent
@@ -41,6 +43,9 @@ public class BMClientSetup {
         event.registerLayerDefinition(HollowborneTurretModel.LAYER_LOCATION, HollowborneTurretModel::createBodyLayer);
         event.registerLayerDefinition(HollowcorperModel.LAYER_LOCATION, HollowcorperModel::createBodyLayer);
         event.registerLayerDefinition(HollowborneSaddleModel.LAYER_LOCATION, HollowborneSaddleModel::createBodyLayer);
+        event.registerLayerDefinition(SkyCharydbisModel.LAYER_LOCATION, SkyCharydbisModel::createBodyLayer);
+        event.registerLayerDefinition(CragpiercerModel.LAYER_LOCATION, CragpiercerModel::createBodyLayer);
+
     }
 
     @SubscribeEvent

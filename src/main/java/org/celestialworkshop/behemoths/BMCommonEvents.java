@@ -44,6 +44,7 @@ import org.celestialworkshop.behemoths.network.s2c.OpenPandemoniumSelectionPacke
 import org.celestialworkshop.behemoths.network.s2c.SyncSpecialtiesDataPacket;
 import org.celestialworkshop.behemoths.registries.BMAdvancementTriggers;
 import org.celestialworkshop.behemoths.registries.BMCapabilities;
+import org.celestialworkshop.behemoths.registries.BMMobEffects;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
 import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
 import org.celestialworkshop.behemoths.world.savedata.WorldPandemoniumData;
@@ -69,6 +70,22 @@ public class BMCommonEvents {
         LivingEntity entity = event.getEntity();
         if (entity instanceof CustomJumpingMount<?> mount) {
             mount.getMountJumpManager().entityTick();
+        }
+
+        if (entity.hasEffect(BMMobEffects.SOFTFOOTED.get()) && entity.onGround()) {
+            entity.resetFallDistance();
+            entity.removeEffect(BMMobEffects.SOFTFOOTED.get());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLivingFall(LivingFallEvent event) {
+        Entity entity = event.getEntity();
+        if (entity instanceof LivingEntity livingEntity) {
+            if (livingEntity.hasEffect(BMMobEffects.SOFTFOOTED.get())) {
+                livingEntity.removeEffect(BMMobEffects.SOFTFOOTED.get());
+                event.cancel();
+            }
         }
     }
 

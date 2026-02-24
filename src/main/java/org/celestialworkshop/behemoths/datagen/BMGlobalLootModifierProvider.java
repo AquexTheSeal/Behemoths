@@ -23,7 +23,7 @@ public class BMGlobalLootModifierProvider extends GlobalLootModifierProvider {
     protected void start() {
         this.add("mortyx_template_underground", new CurseScalableLootModifier(
                 new LootItemCondition[]{
-                        AnyOfCondition.anyOf(mostlyUndergroundStructures()).build()
+                        AnyOfCondition.anyOf(mostlyUndergroundStructures()).build(),
                 },
                 BMItems.MORTYX_UPGRADE_SMITHING_TEMPLATE.get(), 1, 0.0f, 0.05f, 0.6f
         ));

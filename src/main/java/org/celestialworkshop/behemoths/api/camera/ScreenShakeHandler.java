@@ -1,14 +1,11 @@
 package org.celestialworkshop.behemoths.api.camera;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ViewportEvent;
 
 import java.util.Iterator;
 import java.util.List;
 
-@OnlyIn(Dist.CLIENT)
 public class ScreenShakeHandler {
     public static List<Instance> shakesList = new ObjectArrayList<>();
 
@@ -16,7 +13,7 @@ public class ScreenShakeHandler {
         shakesList.add(new Instance(intensity, duration, frequency));
     }
 
-    public static void tick() {
+    public static void clientTick() {
         Iterator<Instance> iterator = shakesList.iterator();
         while (iterator.hasNext()) {
             Instance instance = iterator.next();

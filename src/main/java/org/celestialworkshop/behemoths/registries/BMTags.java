@@ -26,6 +26,8 @@ public class BMTags {
 
     public static final class Biomes {
         public static final TagKey<Biome> SHOULD_SPAWN_ARCHZOMBIES = behemothsTag(Registries.BIOME, "should_spawn_archzombies");
+
+        public static final TagKey<Biome> CONTAINS_CHARYDBIS_ZONE = behemothsTag(Registries.BIOME, "contains_charydbis_zone");
     }
 
     private static <T> TagKey<T> behemothsTag(ResourceKey<Registry<T>> registry, String path) {

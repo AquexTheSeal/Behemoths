@@ -37,7 +37,7 @@ import org.celestialworkshop.behemoths.entities.ai.goals.ArchzombieJumpGoal;
 import org.celestialworkshop.behemoths.entities.ai.goals.ArchzombieOrbitGoal;
 import org.celestialworkshop.behemoths.entities.ai.goals.SimpleChaseGoal;
 import org.celestialworkshop.behemoths.entities.ai.goals.WanderGoal;
-import org.celestialworkshop.behemoths.entities.ai.movecontrols.BMMoveControl;
+import org.celestialworkshop.behemoths.entities.ai.controls.move.BMMoveControl;
 import org.celestialworkshop.behemoths.misc.utils.EntityUtils;
 import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 import org.celestialworkshop.behemoths.registries.BMItems;

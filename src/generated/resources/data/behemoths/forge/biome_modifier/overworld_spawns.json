@@ -6,13 +6,13 @@
       "type": "behemoths:archzombie",
       "maxCount": 2,
       "minCount": 1,
-      "weight": 25
+      "weight": 15
     },
     {
       "type": "behemoths:hollowborne_turret",
       "maxCount": 1,
       "minCount": 1,
-      "weight": 9
+      "weight": 5
     }
   ]
 }

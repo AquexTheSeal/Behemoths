@@ -6,10 +6,12 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.celestialworkshop.behemoths.Behemoths;
+import org.celestialworkshop.behemoths.network.c2s.CragpiercerKeyInputPacket;
+import org.celestialworkshop.behemoths.network.c2s.CragpiercerRotationInputPacket;
 import org.celestialworkshop.behemoths.network.c2s.CurseSelectionIndexPacket;
-import org.celestialworkshop.behemoths.network.shared.QueueJumpPacket;
 import org.celestialworkshop.behemoths.network.s2c.*;
 import org.celestialworkshop.behemoths.network.shared.EntityActionSharedPacket;
+import org.celestialworkshop.behemoths.network.shared.QueueJumpPacket;
 
 public class BMNetwork {
     private static final String PROTOCOL_VERSION = "1.0";
@@ -29,10 +31,13 @@ public class BMNetwork {
         INSTANCE.registerMessage(id++, ShortenVoteTimerPacket.class, ShortenVoteTimerPacket::encode, ShortenVoteTimerPacket::decode, ShortenVoteTimerPacket::handle);
         INSTANCE.registerMessage(id++, SyncSpecialtiesDataPacket.class, SyncSpecialtiesDataPacket::encode, SyncSpecialtiesDataPacket::decode, SyncSpecialtiesDataPacket::handle);
         INSTANCE.registerMessage(id++, BMCameraShakePacket.class, BMCameraShakePacket::encode, BMCameraShakePacket::decode, BMCameraShakePacket::handle);
+        INSTANCE.registerMessage(id++, CragpiercerExitPacket.class, CragpiercerExitPacket::encode, CragpiercerExitPacket::decode, CragpiercerExitPacket::handle);
 
         INSTANCE.registerMessage(id++, CurseSelectionIndexPacket.class, CurseSelectionIndexPacket::encode, CurseSelectionIndexPacket::decode, CurseSelectionIndexPacket::handle);
-        INSTANCE.registerMessage(id++, QueueJumpPacket.class, QueueJumpPacket::encode, QueueJumpPacket::decode, QueueJumpPacket::handle);
+        INSTANCE.registerMessage(id++, CragpiercerRotationInputPacket.class, CragpiercerRotationInputPacket::encode, CragpiercerRotationInputPacket::decode, CragpiercerRotationInputPacket::handle);
+        INSTANCE.registerMessage(id++, CragpiercerKeyInputPacket.class, CragpiercerKeyInputPacket::encode, CragpiercerKeyInputPacket::decode, CragpiercerKeyInputPacket::handle);
 
+        INSTANCE.registerMessage(id++, QueueJumpPacket.class, QueueJumpPacket::encode, QueueJumpPacket::decode, QueueJumpPacket::handle);
         INSTANCE.registerMessage(id++, EntityActionSharedPacket.class, EntityActionSharedPacket::encode, EntityActionSharedPacket::decode, EntityActionSharedPacket::handle);
     }
 

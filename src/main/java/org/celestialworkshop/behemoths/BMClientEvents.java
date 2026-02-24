@@ -5,17 +5,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderTooltipEvent;
-import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.celestialworkshop.behemoths.api.camera.CragpiercerCameraManager;
 import org.celestialworkshop.behemoths.api.camera.ScreenShakeHandler;
 import org.celestialworkshop.behemoths.client.guis.tooltips.HeartTooltip;
 import org.celestialworkshop.behemoths.client.guis.tooltips.SpecialtyTooltip;
+import org.celestialworkshop.behemoths.config.BMConfigManager;
 import org.celestialworkshop.behemoths.entities.ai.mount.CustomJumpingMount;
 import org.celestialworkshop.behemoths.entities.ai.mount.MountJumpManager;
 import org.celestialworkshop.behemoths.items.BehemothHeartItem;
@@ -31,7 +30,8 @@ public class BMClientEvents {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player != null) {
             if (event.phase == TickEvent.Phase.END) {
-                ScreenShakeHandler.tick();
+                ScreenShakeHandler.clientTick();
+                CragpiercerCameraManager.clientTick();
 
                 int time = ClientPandemoniumData.localRemainingTime;
                 while (BMKeybinds.openVotingProgress.consumeClick()) {
@@ -80,7 +80,8 @@ public class BMClientEvents {
 
     @SubscribeEvent
     public static void onCameraAnglesCompute(ViewportEvent.ComputeCameraAngles event) {
-        ScreenShakeHandler.modifyCameraAngles(event);
+        if (BMConfigManager.CLIENT.enableScreenShake.get()) {
+            ScreenShakeHandler.modifyCameraAngles(event);
+        }
     }
-
 }

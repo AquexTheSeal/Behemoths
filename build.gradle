@@ -84,7 +84,8 @@ dependencies {
         jarJar.ranged(it, "[${mixinextras_version},)")
     }
 
-    implementation fg.deobf("curse.maven:jei-238222:7391695")
+    implementation fg.deobf("mezz.jei:jei-${minecraft_version}-forge:15.20.0.129")
+
     implementation fg.deobf("curse.maven:blessfulled-1182590:6624691")
     implementation fg.deobf("curse.maven:emi-580555:6420945")
 
@@ -102,6 +103,16 @@ repositories {
     maven {
         name = "BlameJared maven"
         url = "https://maven.blamejared.com/"
+    }
+
+    maven {
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+
+    maven {
+        name = "ModMaven"
+        url = "https://modmaven.dev"
     }
 }
 

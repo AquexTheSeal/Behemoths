@@ -34,7 +34,7 @@ public class HollowborneTurretShootBarrageAction extends ManagedAction<Hollowbor
             entity.playSound(BMSoundEvents.HOLLOWBORNE_TURRET_SHOOT.get(), 5.0F, 1.0F);
             Hollowcorper proj = new Hollowcorper(BMEntityTypes.HOLLOWCORPER.get(), entity.getX(), entity.getEyeY(), entity.getZ(), entity.level());
             float multiplier = PandemoniumVotingSystem.hasPandemoniumCurse(entity.level(), BMPandemoniumCurses.DEADLY_HOLLOWCORPER) ? 1.5F : 1.0F;
-            proj.shootFromRotation(entity, entity.getXRot(), entity.getYHeadRot(), 0, 2.7F * multiplier, 2F);
+            proj.shootFromRotation(entity, entity.getXRot(), entity.getYHeadRot(), 0, 2.5F * multiplier, 4F);
             proj.damage *= multiplier;
             proj.setOwner(entity);
             entity.level().addFreshEntity(proj);

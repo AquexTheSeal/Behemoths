@@ -5,6 +5,6 @@
     "type": "behemoths:hollowborne_turret",
     "maxCount": 1,
     "minCount": 1,
-    "weight": 12
+    "weight": 7
   }
 }

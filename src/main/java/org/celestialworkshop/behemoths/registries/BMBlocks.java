@@ -9,6 +9,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.celestialworkshop.behemoths.Behemoths;
+import org.celestialworkshop.behemoths.block.HugePhantashroomBlock;
+import org.celestialworkshop.behemoths.block.PhantashroomBlock;
 
 import java.util.function.Supplier;
 
@@ -16,13 +18,24 @@ public class BMBlocks {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Behemoths.MODID);
 
+    // METALS/GEMS
+
     public static final RegistryObject<Block> MAGNALYTH_BLOCK = registerBlock("magnalyth_block", () ->
-            new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(6.0F, 7.5F))
-    );
+            new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).strength(6.0F, 7.5F)));
 
     public static final RegistryObject<Block> MORTYX_BLOCK = registerBlock("mortyx_block", () ->
-            new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).strength(12.0F, 10.0F))
-    );
+            new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).strength(12.0F, 10.0F)));
+
+    // PLANTS
+
+    public static final RegistryObject<Block> PHANTASHROOM = registerBlock("phantashroom", () ->
+            new PhantashroomBlock(BlockBehaviour.Properties.copy(Blocks.MUSHROOM_STEM).lightLevel(s -> 8)
+                    .offsetType(BlockBehaviour.OffsetType.XZ).dynamicShape()));
+
+    public static final RegistryObject<Block> PHANTASHROOM_BLOCK = registerBlock("phantashroom_block", () ->
+            new HugePhantashroomBlock(BlockBehaviour.Properties.copy(Blocks.BROWN_MUSHROOM_BLOCK).lightLevel(s -> 8)));
+
+    // REGISTRY HELPERS
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         return registerBlock(name, block, new Item.Properties());

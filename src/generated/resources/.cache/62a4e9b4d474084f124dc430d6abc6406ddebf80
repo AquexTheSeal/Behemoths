@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-16T20:58:02.7823744	Item Models: behemoths
+// 1.20.1	2026-02-22T21:03:48.5345954	Item Models: behemoths
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/behemoths/models/item/archzombie_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/behemoths/models/item/banishing_stampede_spawn_egg.json
 a786baa9052b8d56887563e1e6b3743497b671ee assets/behemoths/models/item/behebugger.json
@@ -24,4 +24,6 @@ bab1710c61a6d904dd3a049392906aba32f93931 assets/behemoths/models/item/mortyx_pic
 874fff2014598a9ccc55ad2f8811c3c5c9db15ad assets/behemoths/models/item/mortyx_shovel.json
 a5f12d59ee0a5072a5afc6af8ab6d9f016559b98 assets/behemoths/models/item/mortyx_sword.json
 c6c81aa5e90b5803639ca6c5bb0368652e150442 assets/behemoths/models/item/mortyx_upgrade_smithing_template.json
+6adad86cd978c20a0509cf04b49e303709f1fca4 assets/behemoths/models/item/phantashroom.json
+fea464fee79fa0084a5cdd3a652548a6333a0525 assets/behemoths/models/item/phantashroom_block.json
 39fc5dcd5910d7f2b6835deaa484805c27c9d9b0 assets/behemoths/models/item/savage_flesh.json

@@ -49,6 +49,9 @@ public class BMItemModelProvider extends ItemModelProvider {
         handheld(BMItems.MORTYX_SHOVEL.get());
         handheld(BMItems.MORTYX_HOE.get());
         block(BMBlocks.MORTYX_BLOCK.get());
+
+        block(BMBlocks.PHANTASHROOM.get());
+        block(BMBlocks.PHANTASHROOM_BLOCK.get());
     }
 
     public void handheld(Item item) {

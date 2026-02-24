@@ -122,7 +122,7 @@ public class HollowborneTurret extends PathfinderMob implements BMEntity, Enemy 
 
         if (this.getTarget() != null) {
             double targetY = getTarget().getEyeY();
-            this.getLookControl().setLookAt(getTarget().getX(), targetY, getTarget().getZ(), 1.5F, 90F);
+            this.getLookControl().setLookAt(getTarget().getX(), targetY, getTarget().getZ(), 1.2F, 90F);
         }
     }
 

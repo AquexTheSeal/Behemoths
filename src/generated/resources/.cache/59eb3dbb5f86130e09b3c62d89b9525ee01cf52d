@@ -1,7 +1,10 @@
-// 1.20.1	2026-02-16T00:17:37.9613046	Loot Tables
+// 1.20.1	2026-02-22T21:03:48.5323404	Loot Tables
 bb3ea02a8eb63dc54778b0096a247ed591deb318 data/behemoths/loot_tables/blocks/magnalyth_block.json
 912965e3f9927c63124636678dc7d3f91e515d8d data/behemoths/loot_tables/blocks/mortyx_block.json
+d10cf225d491a094b6e33ef9d796fa799ea09a20 data/behemoths/loot_tables/blocks/phantashroom.json
+8bc041de7afa555657faa94dba58645631983302 data/behemoths/loot_tables/blocks/phantashroom_block.json
 17d4ab8fd1fd2a28d4fb91f0b0ecb76ce7dfa23b data/behemoths/loot_tables/entities/archzombie.json
 6e7b61c0227333c07ec4f879ca8e345daa2a2d53 data/behemoths/loot_tables/entities/banishing_stampede.json
 0cf710dc303515a469a215a566c968435b42d67c data/behemoths/loot_tables/entities/hollowborne.json
 33311f9965b5c9cc4b2bca4737e9f25de2d53e9a data/behemoths/loot_tables/entities/hollowborne_turret.json
+833870d4c47027795d3707c38207bc794acd2fe5 data/behemoths/loot_tables/entities/sky_charydbis.json

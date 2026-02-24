@@ -1,0 +1,6 @@
+{
+  "type": "behemoths:charydbis_zone",
+  "biomes": "#behemoths:contains_charydbis_zone",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

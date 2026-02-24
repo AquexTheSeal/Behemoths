@@ -36,6 +36,9 @@ public class Behemoths {
         BMPandemoniumCurses.PANDEMONIUM_CURSES.register(modBus);
         BMItemSpecialties.ITEM_SPECIALTIES.register(modBus);
         BMLootModifiers.LOOT_MODIFIERS.register(modBus);
+        BMMobEffects.MOB_EFFECTS.register(modBus);
+        BMStructures.STRUCTURE_TYPES.register(modBus);
+        BMStructures.STRUCTURE_PIECES.register(modBus);
     }
 
     public static ResourceLocation prefix(String path) {

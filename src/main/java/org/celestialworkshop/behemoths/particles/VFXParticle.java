@@ -282,7 +282,7 @@ public class VFXParticle extends TextureSheetParticle {
 
     @Override
     public @NotNull ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        return ParticleRenderType.CUSTOM;
     }
 
     public static void clearCaches() {

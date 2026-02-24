@@ -39,7 +39,7 @@ import org.celestialworkshop.behemoths.entities.ai.goals.StampedeMovementGoal;
 import org.celestialworkshop.behemoths.entities.ai.goals.StampedeRunAroundGoal;
 import org.celestialworkshop.behemoths.entities.ai.mount.CustomJumpingMount;
 import org.celestialworkshop.behemoths.entities.ai.mount.MountJumpManager;
-import org.celestialworkshop.behemoths.entities.ai.movecontrols.BMMoveControl;
+import org.celestialworkshop.behemoths.entities.ai.controls.move.BMMoveControl;
 import org.celestialworkshop.behemoths.particles.VFXParticleData;
 import org.celestialworkshop.behemoths.particles.VFXTypes;
 import org.celestialworkshop.behemoths.registries.BMItems;

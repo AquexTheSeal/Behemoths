@@ -22,7 +22,7 @@ public interface BMEntity {
     }
 
     default List<ActionManager> getActionManagers() {
-        return null;
+        return List.of();
     }
 
     // ATTACKING

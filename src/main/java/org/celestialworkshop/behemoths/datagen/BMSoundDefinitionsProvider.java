@@ -17,33 +17,17 @@ public class BMSoundDefinitionsProvider extends SoundDefinitionsProvider {
 
     @Override
     public void registerSounds() {
-        this.variantSound(BMSoundEvents.ARCHZOMBIE_AMBIENT, 2);
-        this.basicSound(BMSoundEvents.ARCHZOMBIE_DEATH);
-        this.variantSound(BMSoundEvents.ARCHZOMBIE_HURT, 2);
-        this.variantSound(BMSoundEvents.ARCHZOMBIE_SWING, 2);
-
-        this.variantSound(BMSoundEvents.STAMPEDE_HURT, 3);
-        this.basicSound(BMSoundEvents.STAMPEDE_CHARGE_ROAR);
-        this.basicSound(BMSoundEvents.STAMPEDE_DEATH);
-        this.basicSound(BMSoundEvents.STAMPEDE_CHARGE_STEP);
-        this.variantSound(BMSoundEvents.STAMPEDE_AMBIENT, 3);
-
-        this.basicSound(BMSoundEvents.HOLLOWBORNE_AMBIENT);
-        this.basicSound(BMSoundEvents.HOLLOWBORNE_DEATH);
-        this.basicSound(BMSoundEvents.HOLLOWBORNE_HURT);
-        this.basicSound(BMSoundEvents.HOLLOWBORNE_SMASH);
-        this.basicSound(BMSoundEvents.HOLLOWBORNE_SMASH_START);
-        this.basicSound(BMSoundEvents.HOLLOWBORNE_STEP);
-        this.basicSound(BMSoundEvents.HOLLOWBORNE_JUMP);
-        this.basicSound(BMSoundEvents.HOLLOWBORNE_JUMP_STRONG);
-
-        this.basicSound(BMSoundEvents.HOLLOWBORNE_TURRET_SHOOT);
-
-        this.basicSound(BMSoundEvents.HOLLOWCORPER_IMPACT);
-
-        this.music(BMSoundEvents.VOTING_AMBIENT);
-        this.basicSound(BMSoundEvents.VOTING_DRUM);
-        this.basicSound(BMSoundEvents.VOTING_TRANSITION);
+        for (BMSoundEvents.AutoGenSound sound : BMSoundEvents.AUTO_GEN_SOUNDS) {
+            if (sound.variants() > 1) {
+                this.variantSound(sound.sound(), sound.variants());
+            } else {
+                if (sound.stream()) {
+                    this.music(sound.sound());
+                } else {
+                    this.basicSound(sound.sound());
+                }
+            }
+        }
     }
 
     private void music(RegistryObject<SoundEvent> sound) {

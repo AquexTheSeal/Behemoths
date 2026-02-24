@@ -3,6 +3,7 @@ package org.celestialworkshop.behemoths.loot;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -45,6 +46,12 @@ public class CurseScalableLootModifier extends LootModifier {
 
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+
+        ResourceLocation lootTableId = context.getQueriedLootTableId();
+        if (!lootTableId.getPath().startsWith("chests/")) {
+            return generatedLoot;
+        }
+
         ServerLevel level = context.getLevel();
         WorldPandemoniumData data = WorldPandemoniumData.get(level);
         int curseCount = data.getActivePandemoniumCurses().size();

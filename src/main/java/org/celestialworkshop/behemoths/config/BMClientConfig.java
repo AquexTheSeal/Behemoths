@@ -10,11 +10,14 @@ public class BMClientConfig {
     public final ForgeConfigSpec.IntValue votingScreenParticlesMin;
     public final ForgeConfigSpec.IntValue votingScreenParticlesMax;
 
+    public final ForgeConfigSpec.BooleanValue enableScreenShake;
+
+
     public BMClientConfig(ForgeConfigSpec.Builder builder) {
         builder.push("Pandemonium Voting");
 
         enableVotingMusic = builder
-                .comment("Should the custom music be played during Pandemonium Voting?")
+                .comment("Should the custom stream be played during Pandemonium Voting?")
                 .define("Enable Voting Music", true);
 
         enableResultsChatLogging = builder
@@ -29,6 +32,14 @@ public class BMClientConfig {
         votingScreenParticlesMax = builder
                 .comment("How many particles in maximum should pop up in the background of the Pandemonium Voting screens?")
                 .defineInRange("Maximum Voting Screen Particles", 10, 0, Integer.MAX_VALUE);
+
+        builder.pop();
+
+        builder.push("Miscellaneous");
+
+        enableScreenShake = builder
+                .comment("Should screen shake be enabled?")
+                .define("Enable Screen Shake", true);
 
         builder.pop();
     }

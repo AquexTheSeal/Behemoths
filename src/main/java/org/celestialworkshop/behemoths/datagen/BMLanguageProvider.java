@@ -1,6 +1,7 @@
 package org.celestialworkshop.behemoths.datagen;
 
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -105,6 +106,14 @@ public class BMLanguageProvider extends LanguageProvider {
         for (RegistryObject<EntityType<?>> en : BMEntityTypes.ENTITY_TYPES.getEntries()) {
             this.addEntityType(en, WordUtils.capitalize(en.getId().getPath().replace("_", " ")));
         }
+
+        for (RegistryObject<MobEffect> ef : BMMobEffects.MOB_EFFECTS.getEntries()) {
+            this.addEffect(ef, WordUtils.capitalize(ef.getId().getPath().replace("_", " ")));
+        }
+
+        // JEI
+        this.add("item.behemoths.behemoth_heart.jei_description", "This item has a chance to drop when slaying a Behemoth.");
+        this.add("item.behemoths.mortyx_upgrade_smithing_template.jei_description", "This item can be found in overworld underground structure loot. Its generation chance increases as there are more active Pandemonium Curses in the world.");
     }
 
     private void addSpecialty(ItemSpecialty specialty, String value) {

@@ -2,6 +2,7 @@ package org.celestialworkshop.behemoths.datagen;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
@@ -43,7 +44,9 @@ public class BMDataGenerators {
         generator.addProvider(event.includeServer(), new BMGlobalLootModifierProvider(packOutput));
 
         generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(packOutput, lookupProvider, new RegistrySetBuilder()
-                .add(ForgeRegistries.Keys.BIOME_MODIFIERS, BMMobSpawnsProvider::bootstrapBiome),
+                .add(ForgeRegistries.Keys.BIOME_MODIFIERS, BMMobSpawnsProvider::bootstrapBiome)
+                .add(Registries.STRUCTURE, BMStructuresProvider::bootstrapStructure)
+                .add(Registries.STRUCTURE_SET, BMStructuresProvider::bootstrapStructureSet),
                 Set.of(Behemoths.MODID)
         ));
     }

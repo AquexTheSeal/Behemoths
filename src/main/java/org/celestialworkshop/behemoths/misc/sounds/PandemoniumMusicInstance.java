@@ -14,7 +14,7 @@ public class PandemoniumMusicInstance extends AbstractTickableSoundInstance {
 
 
     public PandemoniumMusicInstance(SoundEvent sound, float volume, float pitch) {
-        super(sound, SoundSource.MUSIC, SoundInstance.createUnseededRandom());
+        super(sound, SoundSource.RECORDS, SoundInstance.createUnseededRandom());
         this.looping = true;
         this.delay = 0;
         this.maxVolume = volume;

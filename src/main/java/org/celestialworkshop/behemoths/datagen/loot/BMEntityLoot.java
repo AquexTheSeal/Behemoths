@@ -88,6 +88,13 @@ public class BMEntityLoot extends EntityLootSubProvider {
                 ))
         );
 
+        this.add(BMEntityTypes.SKY_CHARYDBIS.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(BMItems.BEHEMOTH_HEART.get())
+                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.17F, 0.02F))
+                ))
+        );
+
         this.add(BMEntityTypes.HOLLOWBORNE_TURRET.get(), LootTable.lootTable());
     }
 

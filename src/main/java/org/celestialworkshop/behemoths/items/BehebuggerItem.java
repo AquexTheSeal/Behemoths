@@ -1,19 +1,16 @@
 package org.celestialworkshop.behemoths.items;
 
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import org.celestialworkshop.behemoths.entities.Hollowborne;
-import org.celestialworkshop.behemoths.entities.HollowborneTurret;
+import net.minecraft.world.level.block.Blocks;
 import org.celestialworkshop.behemoths.misc.utils.ClientUtils;
-import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 
 public class BehebuggerItem extends Item {
 
@@ -32,12 +29,16 @@ public class BehebuggerItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
         if (!pContext.getLevel().isClientSide) {
-            Hollowborne borne = BMEntityTypes.HOLLOWBORNE.get().spawn((ServerLevel) pContext.getLevel(), pContext.getClickedPos(), MobSpawnType.NATURAL);
-            borne.equipCustomSaddle(null);
-            for (int i = 0; i <= 5; i++) {
-                HollowborneTurret turret = BMEntityTypes.HOLLOWBORNE_TURRET.get().create(pContext.getLevel());
-                pContext.getLevel().addFreshEntity(turret);
-                turret.startRiding(borne);
+            Level level = pContext.getLevel();
+            int ww = 3;
+            int hh = (level.getMaxBuildHeight() - 5) - pContext.getClickedPos().getY();
+            for (int x = -ww; x <= ww; x++) {
+                for (int z = -ww; z <= ww; z++) {
+                    for (int y = -hh; y <= hh; y++) {
+                        BlockPos pos = pContext.getClickedPos().offset(x, y, z);
+                        level.setBlock(pos, Blocks.BEDROCK.defaultBlockState(), 3);
+                    }
+                }
             }
         }
         return InteractionResult.SUCCESS;

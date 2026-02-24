@@ -6,10 +6,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.celestialworkshop.behemoths.Behemoths;
-import org.celestialworkshop.behemoths.entities.Archzombie;
-import org.celestialworkshop.behemoths.entities.BanishingStampede;
-import org.celestialworkshop.behemoths.entities.Hollowborne;
-import org.celestialworkshop.behemoths.entities.HollowborneTurret;
+import org.celestialworkshop.behemoths.entities.*;
+import org.celestialworkshop.behemoths.entities.misc.Cragpiercer;
 import org.celestialworkshop.behemoths.entities.projectile.Hollowcorper;
 
 public class BMEntityTypes {
@@ -30,6 +28,16 @@ public class BMEntityTypes {
 
     public static final RegistryObject<EntityType<HollowborneTurret>> HOLLOWBORNE_TURRET = ENTITY_TYPES.register("hollowborne_turret", () -> EntityType.Builder.of(
             HollowborneTurret::new, MobCategory.MONSTER).sized(2.0F, 3.0F).build("hollowborne_turret")
+    );
+
+    public static final RegistryObject<EntityType<SkyCharydbis>> SKY_CHARYDBIS = ENTITY_TYPES.register("sky_charydbis", () -> EntityType.Builder.of(
+            SkyCharydbis::new, MobCategory.MONSTER).sized(3.0F, 2.5F).build("sky_charydbis")
+    );
+
+    // MISC
+
+    public static final RegistryObject<EntityType<Cragpiercer>> CRAGPIERCER = ENTITY_TYPES.register("cragpiercer", () -> EntityType.Builder.of(
+            Cragpiercer::new, MobCategory.MISC).sized(1.5F, 1.5F).build("cragpiercer")
     );
 
     // PROJECTILE

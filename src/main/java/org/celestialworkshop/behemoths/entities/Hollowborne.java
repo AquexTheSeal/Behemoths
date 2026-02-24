@@ -49,7 +49,7 @@ import org.celestialworkshop.behemoths.entities.ai.action.HollowborneSmashAction
 import org.celestialworkshop.behemoths.entities.ai.goals.WanderGoal;
 import org.celestialworkshop.behemoths.entities.ai.mount.CustomJumpingMount;
 import org.celestialworkshop.behemoths.entities.ai.mount.MountJumpManager;
-import org.celestialworkshop.behemoths.entities.ai.movecontrols.BMMoveControl;
+import org.celestialworkshop.behemoths.entities.ai.controls.move.BMMoveControl;
 import org.celestialworkshop.behemoths.misc.utils.EntityUtils;
 import org.celestialworkshop.behemoths.particles.VFXParticleData;
 import org.celestialworkshop.behemoths.particles.VFXTypes;
@@ -279,7 +279,6 @@ public class Hollowborne extends TamableAnimal implements BMEntity, Enemy, Custo
                 if (!this.isImmobile()) {
                     if (this.getRandom().nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, pPlayer)) {
                         this.tame(pPlayer);
-                        this.enableTamedParticles();
                         this.level().broadcastEntityEvent(this, TAME_HEARTS_EVENT);
                     } else {
                         this.forceSmash = true;
@@ -302,6 +301,12 @@ public class Hollowborne extends TamableAnimal implements BMEntity, Enemy, Custo
         }
 
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public void tame(Player pPlayer) {
+        super.tame(pPlayer);
+        this.enableTamedParticles();
     }
 
     @Override
@@ -473,11 +478,6 @@ public class Hollowborne extends TamableAnimal implements BMEntity, Enemy, Custo
         } else {
             switchStep = true;
         }
-    }
-
-    @Override
-    public void move(MoverType pType, Vec3 pPos) {
-        super.move(pType, pPos);
     }
 
     @Override
