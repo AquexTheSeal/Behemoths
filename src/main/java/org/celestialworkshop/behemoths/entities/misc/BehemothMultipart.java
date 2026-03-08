@@ -26,6 +26,11 @@ public class BehemothMultipart<T extends Mob> extends PartEntity<Mob> {
     }
 
     @Override
+    public Mob getParent() {
+        return parentMob;
+    }
+
+    @Override
     public EntityDimensions getDimensions(Pose pPose) {
         return size;
     }

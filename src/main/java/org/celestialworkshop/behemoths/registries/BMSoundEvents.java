@@ -33,11 +33,19 @@ public class BMSoundEvents {
     public static final RegistryObject<SoundEvent> HOLLOWBORNE_STEP = registerSoundEvent("hollowborne_step");
     public static final RegistryObject<SoundEvent> HOLLOWBORNE_JUMP = registerSoundEvent("hollowborne_jump");
     public static final RegistryObject<SoundEvent> HOLLOWBORNE_JUMP_STRONG = registerSoundEvent("hollowborne_jump_strong");
-
     public static final RegistryObject<SoundEvent> HOLLOWBORNE_TURRET_SHOOT = registerSoundEvent("hollowborne_turret_shoot");
-
     public static final RegistryObject<SoundEvent> HOLLOWCORPER_IMPACT = registerSoundEvent("hollowcorper_impact");
 
+    public static final RegistryObject<SoundEvent> CHARYDBIS_AMBIENT = registerSoundEvent("charydbis_ambient");
+    public static final RegistryObject<SoundEvent> CHARYDBIS_DEATH = registerSoundEvent("charydbis_death");
+    public static final RegistryObject<SoundEvent> CHARYDBIS_HURT = registerSoundEvent("charydbis_hurt");
+    public static final RegistryObject<SoundEvent> CHARYDBIS_FLAP = registerSoundEvent("charydbis_flap");
+    public static final RegistryObject<SoundEvent> CHARYDBIS_CRASH_START = registerSoundEvent("charydbis_crash_start");
+    public static final RegistryObject<SoundEvent> CHARYDBIS_SHARD_SUMMON = registerSoundEvent("charydbis_shard_summon");
+    public static final RegistryObject<SoundEvent> CHARYDBIS_SHARD_RELEASE = registerSoundEvent("charydbis_shard_release");
+    public static final RegistryObject<SoundEvent> CHARYDBIS_SHARD_EXPLODE = registerSoundEvent("charydbis_shard_explode");
+    public static final RegistryObject<SoundEvent> CHARYDBIS_SHARD_SUSPEND = registerSoundEvent("charydbis_shard_suspend");
+    public static final RegistryObject<SoundEvent> CHARYDBIS_SHARD_EXPIRE = registerSoundEvent("charydbis_shard_expire");
     public static final RegistryObject<SoundEvent> PHANTASHROOM_BOUNCE = registerSoundEvent("phantashroom_bounce");
 
     public static final RegistryObject<SoundEvent> VOTING_AMBIENT = registerMusic("voting_ambient");

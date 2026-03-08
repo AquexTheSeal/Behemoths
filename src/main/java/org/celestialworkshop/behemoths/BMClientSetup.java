@@ -14,6 +14,7 @@ import org.celestialworkshop.behemoths.client.guis.tooltips.HeartTooltip;
 import org.celestialworkshop.behemoths.client.guis.tooltips.SpecialtyTooltip;
 import org.celestialworkshop.behemoths.client.models.*;
 import org.celestialworkshop.behemoths.client.renderers.*;
+import org.celestialworkshop.behemoths.particles.TrailParticle;
 import org.celestialworkshop.behemoths.particles.VFXParticle;
 import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 import org.celestialworkshop.behemoths.registries.BMItems;
@@ -32,7 +33,7 @@ public class BMClientSetup {
         event.registerEntityRenderer(BMEntityTypes.HOLLOWBORNE_TURRET.get(), HollowborneTurretRenderer::new);
         event.registerEntityRenderer(BMEntityTypes.HOLLOWCORPER.get(), HollowcorperRenderer::new);
         event.registerEntityRenderer(BMEntityTypes.SKY_CHARYDBIS.get(), SkyCharydbisRenderer::new);
-        event.registerEntityRenderer(BMEntityTypes.CRAGPIERCER.get(), CragpiercerRenderer::new);
+        event.registerEntityRenderer(BMEntityTypes.CHARYDBIS_SHARD.get(), CharydbisShardRenderer::new);
     }
 
     @SubscribeEvent
@@ -44,8 +45,7 @@ public class BMClientSetup {
         event.registerLayerDefinition(HollowcorperModel.LAYER_LOCATION, HollowcorperModel::createBodyLayer);
         event.registerLayerDefinition(HollowborneSaddleModel.LAYER_LOCATION, HollowborneSaddleModel::createBodyLayer);
         event.registerLayerDefinition(SkyCharydbisModel.LAYER_LOCATION, SkyCharydbisModel::createBodyLayer);
-        event.registerLayerDefinition(CragpiercerModel.LAYER_LOCATION, CragpiercerModel::createBodyLayer);
-
+        event.registerLayerDefinition(CharydbisShardModel.LAYER_LOCATION, CharydbisShardModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -69,6 +69,7 @@ public class BMClientSetup {
     @SubscribeEvent
     public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(BMParticleTypes.VFX.get(), VFXParticle.Provider::new);
+        event.registerSpriteSet(BMParticleTypes.TRAIL.get(), TrailParticle.Provider::new);
     }
 
     @SubscribeEvent

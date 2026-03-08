@@ -26,6 +26,66 @@
     ],
     "subtitle": "behemoths.subtitle.archzombie_swing"
   },
+  "charydbis_ambient": {
+    "sounds": [
+      "behemoths:charydbis_ambient"
+    ],
+    "subtitle": "behemoths.subtitle.charydbis_ambient"
+  },
+  "charydbis_crash_start": {
+    "sounds": [
+      "behemoths:charydbis_crash_start"
+    ],
+    "subtitle": "behemoths.subtitle.charydbis_crash_start"
+  },
+  "charydbis_death": {
+    "sounds": [
+      "behemoths:charydbis_death"
+    ],
+    "subtitle": "behemoths.subtitle.charydbis_death"
+  },
+  "charydbis_flap": {
+    "sounds": [
+      "behemoths:charydbis_flap"
+    ],
+    "subtitle": "behemoths.subtitle.charydbis_flap"
+  },
+  "charydbis_hurt": {
+    "sounds": [
+      "behemoths:charydbis_hurt"
+    ],
+    "subtitle": "behemoths.subtitle.charydbis_hurt"
+  },
+  "charydbis_shard_expire": {
+    "sounds": [
+      "behemoths:charydbis_shard_expire"
+    ],
+    "subtitle": "behemoths.subtitle.charydbis_shard_expire"
+  },
+  "charydbis_shard_explode": {
+    "sounds": [
+      "behemoths:charydbis_shard_explode"
+    ],
+    "subtitle": "behemoths.subtitle.charydbis_shard_explode"
+  },
+  "charydbis_shard_release": {
+    "sounds": [
+      "behemoths:charydbis_shard_release"
+    ],
+    "subtitle": "behemoths.subtitle.charydbis_shard_release"
+  },
+  "charydbis_shard_summon": {
+    "sounds": [
+      "behemoths:charydbis_shard_summon"
+    ],
+    "subtitle": "behemoths.subtitle.charydbis_shard_summon"
+  },
+  "charydbis_shard_suspend": {
+    "sounds": [
+      "behemoths:charydbis_shard_suspend"
+    ],
+    "subtitle": "behemoths.subtitle.charydbis_shard_suspend"
+  },
   "hollowborne_ambient": {
     "sounds": [
       "behemoths:hollowborne_ambient"

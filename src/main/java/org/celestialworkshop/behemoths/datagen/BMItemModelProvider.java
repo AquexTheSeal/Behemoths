@@ -25,6 +25,7 @@ public class BMItemModelProvider extends ItemModelProvider {
         behemothSpawnEgg(BMItems.ARCHZOMBIE_SPAWN_EGG.get());
         behemothSpawnEgg(BMItems.HOLLOWBORNE_SPAWN_EGG.get());
         behemothSpawnEgg(BMItems.HOLLOWBORNE_TURRET_SPAWN_EGG.get());
+        behemothSpawnEgg(BMItems.SKY_CHARYDBIS_SPAWN_EGG.get());
 
         basicItem(BMItems.BEHEMOTH_HEART.get());
         basicItem(BMItems.BEHEMOTH_SADDLE.get());

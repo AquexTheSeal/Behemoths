@@ -33,7 +33,7 @@ public class SkyCharydbisSurroundGoal extends Goal {
         if (target == null) return;
 
         double range = 14 - entity.getRandom().nextInt(6);
-        float rotIntensity = 0.05F;
+        float rotIntensity = 0.03F;
         double xR = Mth.sin(entity.tickCount * rotIntensity) * range;
         double yR = entity.getRandom().nextIntBetweenInclusive(12, 16);
         double zR = Mth.cos(entity.tickCount * rotIntensity) * range;

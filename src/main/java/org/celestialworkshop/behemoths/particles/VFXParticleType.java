@@ -5,8 +5,8 @@ import net.minecraft.core.particles.ParticleType;
 
 public class VFXParticleType extends ParticleType<VFXParticleData> {
 
-    public VFXParticleType(boolean pOverrideLimiter) {
-        super(pOverrideLimiter, VFXParticleData.DESERIALIZER);
+    public VFXParticleType() {
+        super(true, VFXParticleData.DESERIALIZER);
     }
 
     @Override

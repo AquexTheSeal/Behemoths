@@ -85,8 +85,8 @@ public class PhantashroomBlock extends BushBlock implements BonemealableBlock {
     public static void bounceEntity(Entity entity) {
         if (!(entity instanceof Mob) && !(entity instanceof Player)) return;
 
-        Vec3 base = entity.getDeltaMovement();
-        entity.setDeltaMovement(base.x * 3F, 1.5F, base.z * 3F);
+        Vec3 base = entity.getLookAngle().normalize();
+        entity.setDeltaMovement(base.x * 1.5F, 1.5F, base.z * 1.5F);
         entity.resetFallDistance();
         entity.setOnGround(false);
         if (entity instanceof LivingEntity livingEntity) {

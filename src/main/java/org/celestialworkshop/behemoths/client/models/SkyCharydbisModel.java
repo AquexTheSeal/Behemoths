@@ -232,7 +232,9 @@ public class SkyCharydbisModel<T extends SkyCharydbis> extends BMHierarchicalMod
 		if (entity.isSleeping()) {
 			this.animateScaled(SkyCharydbisAnimations.SLEEP, ageInTicks, 1.0F, 1.0F);
 		} else {
-			this.animateWalk(SkyCharydbisAnimations.FLY, limbSwing, limbSwingAmount, 1.0F, 1.0F);
+			if (!entity.animationManager.getAnimationState(SkyCharydbis.SHARD_RELEASE_ANIMATION).isStarted()) {
+				this.animateWalk(SkyCharydbisAnimations.FLY, limbSwing, limbSwingAmount, 1.0F, 1.0F);
+			}
 		}
 
 	}

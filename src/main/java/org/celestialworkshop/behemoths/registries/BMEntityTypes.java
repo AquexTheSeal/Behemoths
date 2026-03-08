@@ -7,7 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.entities.*;
-import org.celestialworkshop.behemoths.entities.misc.Cragpiercer;
+import org.celestialworkshop.behemoths.entities.projectile.CharydbisShard;
 import org.celestialworkshop.behemoths.entities.projectile.Hollowcorper;
 
 public class BMEntityTypes {
@@ -34,15 +34,13 @@ public class BMEntityTypes {
             SkyCharydbis::new, MobCategory.MONSTER).sized(3.0F, 2.5F).build("sky_charydbis")
     );
 
-    // MISC
-
-    public static final RegistryObject<EntityType<Cragpiercer>> CRAGPIERCER = ENTITY_TYPES.register("cragpiercer", () -> EntityType.Builder.of(
-            Cragpiercer::new, MobCategory.MISC).sized(1.5F, 1.5F).build("cragpiercer")
-    );
-
     // PROJECTILE
 
     public static final RegistryObject<EntityType<Hollowcorper>> HOLLOWCORPER = ENTITY_TYPES.register("hollowcorper", () -> EntityType.Builder.<Hollowcorper>of(
             Hollowcorper::new, MobCategory.MISC).sized(1F, 1F).build("hollowcorper")
+    );
+
+    public static final RegistryObject<EntityType<CharydbisShard>> CHARYDBIS_SHARD = ENTITY_TYPES.register("charydbis_shard", () -> EntityType.Builder.of(
+            CharydbisShard::new, MobCategory.MISC).sized(1.5F, 1.5F).build("charydbis_shard")
     );
 }

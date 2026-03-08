@@ -20,6 +20,7 @@ public class BMItems {
     public static final RegistryObject<Item> BANISHING_STAMPEDE_SPAWN_EGG = ITEMS.register("banishing_stampede_spawn_egg", () -> new ForgeSpawnEggItem(BMEntityTypes.BANISHING_STAMPEDE, 0x286344, 0x6db369, new Item.Properties()));
     public static final RegistryObject<Item> HOLLOWBORNE_SPAWN_EGG = ITEMS.register("hollowborne_spawn_egg", () -> new ForgeSpawnEggItem(BMEntityTypes.HOLLOWBORNE, 0x4b5e5e, 0xffeeed, new Item.Properties()));
     public static final RegistryObject<Item> HOLLOWBORNE_TURRET_SPAWN_EGG = ITEMS.register("hollowborne_turret_spawn_egg", () -> new ForgeSpawnEggItem(BMEntityTypes.HOLLOWBORNE_TURRET, 0x5e504b, 0xffeeed, new Item.Properties()));
+    public static final RegistryObject<Item> SKY_CHARYDBIS_SPAWN_EGG = ITEMS.register("sky_charydbis_spawn_egg", () -> new ForgeSpawnEggItem(BMEntityTypes.SKY_CHARYDBIS, 0x002fbd, 0x0dff00, new Item.Properties()));
 
     // MISC
     public static final RegistryObject<Item> BEHEBUGGER = ITEMS.register("behebugger", () -> new BehebuggerItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));

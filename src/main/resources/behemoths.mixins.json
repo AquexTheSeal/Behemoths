@@ -25,6 +25,5 @@
     "requireAnnotations": true
   },
   "client": [
-    "CameraMixin"
   ]
 }

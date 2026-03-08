@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.phys.Vec3;
 import org.celestialworkshop.behemoths.entities.SkyCharydbis;
 
 public class FlyingLookBasedMoveControl extends FlyingMoveControl {
@@ -32,8 +33,8 @@ public class FlyingLookBasedMoveControl extends FlyingMoveControl {
             float targetYaw = (float) (Mth.atan2(dz, dx) * Mth.RAD_TO_DEG) - 90.0F;
             float targetPitch = (float) (-(Mth.atan2(dy, horizontalDist) * Mth.RAD_TO_DEG));
 
-            this.mob.setXRot(this.rotlerp(this.mob.getXRot(), targetPitch, 4.5F));
-            this.mob.setYRot(this.rotlerp(this.mob.getYRot(), targetYaw, 3.0F));
+            this.mob.setXRot(this.rotlerp(this.mob.getXRot(), targetPitch, 4.5F * (float) speedModifier));
+            this.mob.setYRot(this.rotlerp(this.mob.getYRot(), targetYaw, 3.0F * (float) speedModifier));
             this.mob.yBodyRot = this.mob.getYRot();
             this.mob.yHeadRot = this.mob.getYRot();
         }
@@ -47,14 +48,20 @@ public class FlyingLookBasedMoveControl extends FlyingMoveControl {
         checkAndFixCollision();
 
         double speed = this.speedModifier * this.mob.getAttributeValue(Attributes.FLYING_SPEED);
-        this.mob.setDeltaMovement(this.mob.getLookAngle().scale(speed));
+        Vec3 delta = this.mob.getDeltaMovement().add(this.mob.getLookAngle().scale(speed));
 
+        double maxSpeed = speed * 1.5;
+        if (delta.lengthSqr() > maxSpeed * maxSpeed) {
+            delta = delta.normalize().scale(maxSpeed);
+        }
+
+        this.mob.setDeltaMovement(delta);
     }
 
     private void checkAndFixCollision() {
-        if (mob.horizontalCollision) {
-            this.mob.setXRot(this.rotlerp(this.mob.getXRot(), mob.getXRot() + this.calculateOptimalYAdjustment() * 5, 4));
-            this.mob.setYRot(this.rotlerp(this.mob.getYRot(), mob.getYRot() - 15, 5));
+        if (mob.horizontalCollision || mob.verticalCollision) {
+//            this.mob.setXRot(this.rotlerp(this.mob.getXRot(), mob.getXRot() + this.calculateOptimalYAdjustment() * 5, 4));
+            this.mob.setYRot(this.rotlerp(this.mob.getYRot(), mob.getYRot() - 45, 10));
         }
     }
 

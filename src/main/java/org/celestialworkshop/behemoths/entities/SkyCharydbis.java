@@ -1,5 +1,6 @@
 package org.celestialworkshop.behemoths.entities;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -7,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -29,11 +31,15 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
+import org.celestialworkshop.behemoths.api.camera.CameraAngleManager;
 import org.celestialworkshop.behemoths.api.client.animation.EntityAnimationManager;
 import org.celestialworkshop.behemoths.api.entity.ActionManager;
 import org.celestialworkshop.behemoths.client.animations.SkyCharydbisAnimations;
 import org.celestialworkshop.behemoths.entities.ai.BMEntity;
 import org.celestialworkshop.behemoths.entities.ai.CustomSaddleable;
+import org.celestialworkshop.behemoths.entities.ai.action.CharydbisCrashAction;
+import org.celestialworkshop.behemoths.entities.ai.action.CharydbisShardReleaseAction;
+import org.celestialworkshop.behemoths.entities.ai.action.CharydbisShardSummonAction;
 import org.celestialworkshop.behemoths.entities.ai.controls.look.NoXRotResetLookControl;
 import org.celestialworkshop.behemoths.entities.ai.controls.move.FlyingLookBasedMoveControl;
 import org.celestialworkshop.behemoths.entities.ai.controls.pathnav.TrueFlightPathNavigation;
@@ -42,7 +48,10 @@ import org.celestialworkshop.behemoths.entities.ai.goals.SkyCharydbisSurroundGoa
 import org.celestialworkshop.behemoths.entities.ai.mount.CustomJumpingMount;
 import org.celestialworkshop.behemoths.entities.ai.mount.MountJumpManager;
 import org.celestialworkshop.behemoths.entities.misc.BehemothMultipart;
+import org.celestialworkshop.behemoths.entities.projectile.CharydbisShard;
+import org.celestialworkshop.behemoths.particles.TrailParticleData;
 import org.celestialworkshop.behemoths.registries.BMItems;
+import org.celestialworkshop.behemoths.registries.BMSoundEvents;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -60,12 +69,17 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
     public final BehemothMultipart<SkyCharydbis> head, tail, tailMid, tailTip, leftWing, rightWing, leftWingTip, rightWingTip;
 
     public static final String AWAKEN_ANIMATION = "awaken";
+    public static final String SHARD_SUMMON_ANIMATION = "shard_summon";
+    public static final String SHARD_RELEASE_ANIMATION = "shard_release";
+
     public static final byte SLEEPING_FLAG = 2;
     public static final byte WAKING_FLAG = 1;
     public static final byte AWAKE_FLAG = 0;
 
     public @Nullable BlockPos spawnPos;
     public int wakingTicks = 0;
+    public int attackCooldown = 0;
+    public List<CharydbisShard> heldShards = new ObjectArrayList<>();
 
     public float tailYRot = 0;
     public float tailYRotO = 0;
@@ -84,6 +98,12 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
         this.noCulling = true;
 
         this.animationManager.registerAnimation(AWAKEN_ANIMATION, () -> SkyCharydbisAnimations.AWAKEN);
+        this.animationManager.registerAnimation(SHARD_SUMMON_ANIMATION, () -> SkyCharydbisAnimations.ATTACK_SHARDS_START);
+        this.animationManager.registerAnimation(SHARD_RELEASE_ANIMATION, () -> SkyCharydbisAnimations.ATTACK_SHARDS_END);
+
+        this.attackManager.addAction(new CharydbisShardSummonAction(this));
+        this.attackManager.addAction(new CharydbisShardReleaseAction(this));
+        this.attackManager.addAction(new CharydbisCrashAction(this));
 
         head = new BehemothMultipart<>(this, "head", 1.5F, 1.5F);
         tail = new BehemothMultipart<>(this, "tail", 2, 2);
@@ -128,6 +148,22 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
 
     @Override
     public void tick() {
+        if (this.getSleepFlag() == AWAKE_FLAG) {
+            if (this.tickCount % 50 == 0) {
+                this.playSound(BMSoundEvents.CHARYDBIS_FLAP.get(), 3.0F, 1.0F);
+            }
+
+            if (this.tickCount % 30 == 0) {
+                this.playSound(BMSoundEvents.CHARYDBIS_AMBIENT.get(), 3.0F, 1.0F);
+                CameraAngleManager.shakeArea(level(), this.position(), 64, 0.5F, 100, 70);
+            }
+
+            if (this.level().isClientSide && this.tickCount % 20 == 0) {
+                TrailParticleData data = new TrailParticleData(this.getId(), 40, 30, 3.0F, 0, 0.4F, 0, 0.5F);
+                this.level().addParticle(data, this.getX(), this.getEyeY(), this.getZ(), 0, 0, 0);
+            }
+        }
+
         this.tailYRotO = this.tailYRot;
         this.tailYRot = Mth.rotLerp(0.15F, this.tailYRot, this.getYRot());
 
@@ -139,7 +175,7 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
 
         if (!this.level().isClientSide) {
             if (this.isCurrentSleepFlag(SLEEPING_FLAG)) {
-                if (this.level().isNight() && this.getTarget() != null) {
+                if (/*this.level().isNight() &&*/ this.getTarget() != null) {
                     this.wakeUp();
                 }
             } else if (this.isCurrentSleepFlag(WAKING_FLAG)) {
@@ -149,9 +185,17 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
                     this.hurtMarked = true;
                 }
 
+                if (this.wakingTicks > 25 && this.wakingTicks < 35) {
+                    this.setXRot(this.getXRot() - 5);
+                }
+
                 if (this.wakingTicks >= 60) {
                     this.setSleepFlag(AWAKE_FLAG);
                 }
+            }
+
+            if (this.attackCooldown > 0) {
+                this.attackCooldown--;
             }
         }
     }
@@ -334,19 +378,37 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        pCompound.putBoolean("HasSpawnPos", this.spawnPos != null);
-        if (this.spawnPos != null) {
-            pCompound.put("SpawnPos", NbtUtils.writeBlockPos(this.spawnPos));
+    protected @Nullable SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return BMSoundEvents.CHARYDBIS_HURT.get();
+    }
+
+    @Override
+    protected @Nullable SoundEvent getDeathSound() {
+        return BMSoundEvents.CHARYDBIS_DEATH.get();
+    }
+
+    @Override
+    protected float getSoundVolume() {
+        return 3.0F;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+
+        if (spawnPos != null) {
+            tag.put("SpawnPos", NbtUtils.writeBlockPos(spawnPos));
         }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
-        if (pCompound.getBoolean("HasSpawnPos")) {
-            this.spawnPos = NbtUtils.readBlockPos(pCompound.getCompound("SpawnPos"));
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+
+        if (tag.contains("SpawnPos")) {
+            spawnPos = NbtUtils.readBlockPos(tag.getCompound("SpawnPos"));
+        } else {
+            spawnPos = null;
         }
     }
 

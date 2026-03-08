@@ -15,7 +15,6 @@ import org.celestialworkshop.behemoths.entities.projectile.Hollowcorper;
 
 public class HollowcorperRenderer extends EntityRenderer<Hollowcorper> {
 
-    private static final ResourceLocation LOCATION = Behemoths.prefix("textures/entity/projectile/hollowcorper.png");
     private final HollowcorperModel<Hollowcorper> model;
 
     public HollowcorperRenderer(EntityRendererProvider.Context pContext) {
@@ -29,13 +28,13 @@ public class HollowcorperRenderer extends EntityRenderer<Hollowcorper> {
         pPoseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(pPartialTick, pEntity.yRotO, pEntity.getYRot()) - 180));
         pPoseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(pPartialTick, pEntity.xRotO, pEntity.getXRot())));
         pPoseStack.translate(0, -1, 0);
-        this.model.renderToBuffer(pPoseStack, pBuffer.getBuffer(RenderType.entityTranslucent(LOCATION)), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        this.model.renderToBuffer(pPoseStack, pBuffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(pEntity))), pPackedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         pPoseStack.popPose();
         super.render(pEntity, pEntityYaw, pPartialTick, pPoseStack, pBuffer, pPackedLight);
     }
 
     @Override
     public ResourceLocation getTextureLocation(Hollowcorper pEntity) {
-        return null;
+        return Behemoths.prefix("textures/entity/projectile/hollowcorper.png");
     }
 }

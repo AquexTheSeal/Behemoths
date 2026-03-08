@@ -84,7 +84,7 @@ public class BMCommonEvents {
         if (entity instanceof LivingEntity livingEntity) {
             if (livingEntity.hasEffect(BMMobEffects.SOFTFOOTED.get())) {
                 livingEntity.removeEffect(BMMobEffects.SOFTFOOTED.get());
-                event.cancel();
+                event.setDamageMultiplier(0.1F);
             }
         }
     }
