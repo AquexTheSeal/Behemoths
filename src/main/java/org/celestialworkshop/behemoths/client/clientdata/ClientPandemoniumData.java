@@ -1,4 +1,4 @@
-package org.celestialworkshop.behemoths.world.clientdata;
+package org.celestialworkshop.behemoths.client.clientdata;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;

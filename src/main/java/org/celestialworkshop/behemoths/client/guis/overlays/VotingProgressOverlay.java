@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.celestialworkshop.behemoths.client.guis.screens.VotingSelectionScreen;
 import org.celestialworkshop.behemoths.registries.BMKeybinds;
-import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
+import org.celestialworkshop.behemoths.client.clientdata.ClientPandemoniumData;
 
 import java.awt.*;
 

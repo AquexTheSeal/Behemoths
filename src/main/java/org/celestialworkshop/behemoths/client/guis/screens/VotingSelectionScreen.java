@@ -13,7 +13,7 @@ import org.celestialworkshop.behemoths.client.guis.uielements.CurseSelectionEntr
 import org.celestialworkshop.behemoths.client.guis.uielements.CurseSelectionTitleElement;
 import org.celestialworkshop.behemoths.config.BMConfigManager;
 import org.celestialworkshop.behemoths.registries.BMSoundEvents;
-import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
+import org.celestialworkshop.behemoths.client.clientdata.ClientPandemoniumData;
 
 import java.util.List;
 

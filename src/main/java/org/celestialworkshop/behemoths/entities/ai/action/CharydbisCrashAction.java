@@ -20,35 +20,47 @@ public class CharydbisCrashAction extends ManagedAction<SkyCharydbis> {
 
     @Override
     public boolean canStart() {
-        return entity.attackCooldown == 0 && entity.heldShards.isEmpty() && entity.isCurrentSleepFlag(SkyCharydbis.AWAKE_FLAG)
-                && entity.getTarget() != null && entity.getTarget().onGround();
+        return entity.attackCooldown == 0 && entity.heldShards.isEmpty() && entity.isCurrentSleepFlag(SkyCharydbis.AWAKE_FLAG) &&
+                entity.getTarget() != null && entity.getY() > entity.getTarget().getY() + 2;
+    }
+
+    @Override
+    public void onStart() {
+        timer = 0;
+        collidedTime = 0;
+        collided = false;
+        this.targetPos = entity.lastTrackedTargetFloor.add(0, -2, 0);
+        entity.attackCooldown = 200;
+        entity.playSound(BMSoundEvents.CHARYDBIS_CRASH_START.get(), 3.0F, 1.0F);
     }
 
     @Override
     public boolean onTick() {
         timer++;
-        if (timer < 20) {
+        if (timer < 40) {
             entity.getNavigation().stop();
-            entity.setDeltaMovement(0, 2, 0);
-            entity.setXRot(entity.getXRot() - 3);
+            entity.setDeltaMovement(0, 3, 0);
+            entity.setXRot(entity.getXRot() - 2);
         } else {
             entity.getNavigation().stop();
-            entity.getMoveControl().setWantedPosition(targetPos.x(), targetPos.y() - 2, targetPos.z(), 3.0F);
+            entity.getMoveControl().setWantedPosition(targetPos.x(), targetPos.y() - 2, targetPos.z(), 4.0F);
         }
 
         if (collided) {
             if (entity.tickCount % 4 == 0) {
                 entity.playSound(BMSoundEvents.HOLLOWBORNE_SMASH.get(), 3.0F, 1.0F);
-                List<LivingEntity> targets = entity.level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(6));
+                int dist = 8;
+                List<LivingEntity> targets = entity.level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(dist, dist / 2F, dist));
                 for (LivingEntity target : targets.stream().filter(t -> t != entity).toList()) {
-                    target.knockback(1.0F, entity.getX() - target.getX(), entity.getZ() - target.getZ());
-                    target.hurtMarked = true;
+                    entity.attackTargetMultiplication(target, 1 - (target.distanceTo(entity) / dist));
+                    target.knockback(4.0F * (1 - (target.distanceTo(entity) / dist)), entity.getX() - target.getX(), entity.getZ() - target.getZ());
                 }
+                entity.level().broadcastEntityEvent(entity,  (byte)68);
             }
 
-            if (collidedTime++ >= 20) {
+            if (collidedTime++ >= 40) {
                 entity.getNavigation().stop();
-                entity.getMoveControl().setWantedPosition(entity.getX(), entity.getY() + 10, entity.getZ(), 3.0F);
+                entity.getNavigation().moveTo(this.targetPos.x(), this.targetPos.y() + 10, this.targetPos.z(), 2.0F);
                 return false;
             }
 
@@ -61,22 +73,7 @@ public class CharydbisCrashAction extends ManagedAction<SkyCharydbis> {
     }
 
     @Override
-    public void onStart() {
-        timer = 0;
-        collidedTime = 0;
-        collided = false;
-        this.targetPos = entity.getTarget().position().add(0, -1, 0);
-        entity.attackCooldown = 200;
-        entity.playSound(BMSoundEvents.CHARYDBIS_CRASH_START.get(), 3.0F, 1.0F);
-    }
-
-    @Override
     public void onStop() {
         timer = 0;
-    }
-
-    @Override
-    public int getWeight() {
-        return 200;
     }
 }

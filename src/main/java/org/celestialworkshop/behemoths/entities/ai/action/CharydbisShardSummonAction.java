@@ -1,10 +1,14 @@
 package org.celestialworkshop.behemoths.entities.ai.action;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.celestialworkshop.behemoths.api.entity.ManagedAction;
 import org.celestialworkshop.behemoths.entities.SkyCharydbis;
 import org.celestialworkshop.behemoths.entities.projectile.CharydbisShard;
 import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 import org.celestialworkshop.behemoths.registries.BMSoundEvents;
+
+import java.util.Collections;
+import java.util.List;
 
 public class CharydbisShardSummonAction extends ManagedAction<SkyCharydbis> {
 
@@ -31,10 +35,16 @@ public class CharydbisShardSummonAction extends ManagedAction<SkyCharydbis> {
                     shard.setControlled(true);
                     shard.controlledRotationOffset = i;
                     shard.controlledLayer = j;
-                    shard.setStatusFlag(entity.getRandom().nextFloat() < 0.15F ? CharydbisShard.RETURNABLE_STATUS : CharydbisShard.HOSTILE_STATUS);
+                    shard.setStatusFlag(CharydbisShard.HOSTILE_STATUS);
                     entity.heldShards.add(shard);
                     entity.level().addFreshEntity(shard);
                 }
+            }
+
+            List<CharydbisShard> copy = new ObjectArrayList<>(entity.heldShards);
+            Collections.shuffle(copy);
+            for (CharydbisShard shard : copy.subList(0, Math.min(5 + entity.getRandom().nextInt(5), copy.size()))) {
+                shard.setStatusFlag(CharydbisShard.RETURNABLE_STATUS);
             }
         }
         return timer < 50;
@@ -51,5 +61,10 @@ public class CharydbisShardSummonAction extends ManagedAction<SkyCharydbis> {
     public void onStop() {
         timer = 0;
         entity.getAnimationManager().stopAnimation(SkyCharydbis.SHARD_SUMMON_ANIMATION);
+    }
+
+    @Override
+    public int getWeight() {
+        return 150;
     }
 }

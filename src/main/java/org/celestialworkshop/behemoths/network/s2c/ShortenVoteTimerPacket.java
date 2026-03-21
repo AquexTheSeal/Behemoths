@@ -2,7 +2,7 @@ package org.celestialworkshop.behemoths.network.s2c;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
-import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
+import org.celestialworkshop.behemoths.client.clientdata.ClientPandemoniumData;
 
 import java.util.function.Supplier;
 

@@ -28,4 +28,9 @@ public class SkyCharydbisRenderer extends MobRenderer<SkyCharydbis, SkyCharydbis
         super.setupRotations(pEntityLiving, pPoseStack, pAgeInTicks, pRotationYaw, pPartialTicks);
         pPoseStack.mulPose(Axis.XP.rotationDegrees(-Mth.lerp(pPartialTicks, pEntityLiving.xRotO, pEntityLiving.getXRot())));
     }
+
+    @Override
+    protected float getFlipDegrees(SkyCharydbis pLivingEntity) {
+        return 0;
+    }
 }

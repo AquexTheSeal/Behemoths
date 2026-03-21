@@ -3,6 +3,8 @@
 --- 
 ### New Features
 - Added the **Sky Charybdis**, a mini-boss Behemoth of the Phantom.
+- Added multiple new Charydbis-related blocks such as **Phantashrooms**.
+- Added the Phantashroom Glutton, an entity crucial for the mini-boss mechanic for the Sky Charydbis.
 - Added the **Charydbis Zone** structure, a fighting arena for the Sky Charybdis.
 
 --- 
@@ -16,3 +18,4 @@
 ### Bug / Incompatibility Fixes
 - Fixed a bug where Behemoths' VFX particles make some other particles turn into black squares.
 - Fixed a bug where Mortyx Upgrade Smithing Templates spawn when breaking some blocks below Y-50.
+- Fixed a bug where Soul Particles emit from Hollowbornes despite it not being tamed yet.

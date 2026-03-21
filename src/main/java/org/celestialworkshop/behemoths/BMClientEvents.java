@@ -5,15 +5,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderTooltipEvent;
-import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.celestialworkshop.behemoths.api.camera.ScreenShakeHandler;
+import org.celestialworkshop.behemoths.client.clientdata.ClientBossBarData;
+import org.celestialworkshop.behemoths.client.clientdata.ClientPandemoniumData;
+import org.celestialworkshop.behemoths.client.guis.overlays.BehemothBossBarOverlay;
 import org.celestialworkshop.behemoths.client.guis.tooltips.HeartTooltip;
 import org.celestialworkshop.behemoths.client.guis.tooltips.SpecialtyTooltip;
 import org.celestialworkshop.behemoths.config.BMConfigManager;
@@ -22,7 +22,8 @@ import org.celestialworkshop.behemoths.entities.ai.mount.MountJumpManager;
 import org.celestialworkshop.behemoths.items.BehemothHeartItem;
 import org.celestialworkshop.behemoths.registries.BMCapabilities;
 import org.celestialworkshop.behemoths.registries.BMKeybinds;
-import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
+
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = Behemoths.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class BMClientEvents {
@@ -66,6 +67,16 @@ public class BMClientEvents {
         stack.getCapability(BMCapabilities.ITEM_SPECIALTY).ifPresent(handler -> {
             event.getTooltipElements().add(Either.right(new SpecialtyTooltip(handler.getSpecialties())));
         });
+    }
+
+    @SubscribeEvent
+    public static void onRenderBossOverlay(CustomizeGuiOverlayEvent.BossEventProgress event) {
+        UUID currentBossId = event.getBossEvent().getId();
+        int bossIdx = ClientBossBarData.getBossIdx(currentBossId);
+        if (bossIdx == 0) {
+            event.setCanceled(true);
+            BehemothBossBarOverlay.renderSkyCharydbisBossBar(event);
+        }
     }
 
     @SubscribeEvent

@@ -29,6 +29,8 @@ public class BMNetwork {
         INSTANCE.registerMessage(id++, ShortenVoteTimerPacket.class, ShortenVoteTimerPacket::encode, ShortenVoteTimerPacket::decode, ShortenVoteTimerPacket::handle);
         INSTANCE.registerMessage(id++, SyncSpecialtiesDataPacket.class, SyncSpecialtiesDataPacket::encode, SyncSpecialtiesDataPacket::decode, SyncSpecialtiesDataPacket::handle);
         INSTANCE.registerMessage(id++, BMCameraShakePacket.class, BMCameraShakePacket::encode, BMCameraShakePacket::decode, BMCameraShakePacket::handle);
+        INSTANCE.registerMessage(id++, SyncBossBarDataPacket.class, SyncBossBarDataPacket::encode, SyncBossBarDataPacket::decode, SyncBossBarDataPacket::handle);
+        INSTANCE.registerMessage(id++, RemoveBossBarDataPacket.class, RemoveBossBarDataPacket::encode, RemoveBossBarDataPacket::decode, RemoveBossBarDataPacket::handle);
 
         INSTANCE.registerMessage(id++, CurseSelectionIndexPacket.class, CurseSelectionIndexPacket::encode, CurseSelectionIndexPacket::decode, CurseSelectionIndexPacket::handle);
 

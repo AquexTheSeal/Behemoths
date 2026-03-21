@@ -7,6 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.entities.*;
+import org.celestialworkshop.behemoths.entities.misc.PhantashroomGlutton;
 import org.celestialworkshop.behemoths.entities.projectile.CharydbisShard;
 import org.celestialworkshop.behemoths.entities.projectile.Hollowcorper;
 
@@ -32,6 +33,12 @@ public class BMEntityTypes {
 
     public static final RegistryObject<EntityType<SkyCharydbis>> SKY_CHARYDBIS = ENTITY_TYPES.register("sky_charydbis", () -> EntityType.Builder.of(
             SkyCharydbis::new, MobCategory.MONSTER).sized(3.0F, 2.5F).build("sky_charydbis")
+    );
+
+    // MISC
+
+    public static final RegistryObject<EntityType<PhantashroomGlutton>> PHANTASHROOM_GLUTTON = ENTITY_TYPES.register("phantashroom_glutton", () -> EntityType.Builder.of(
+            PhantashroomGlutton::new, MobCategory.MONSTER).sized(1.0F, 1.5F).build("phantashroom_glutton")
     );
 
     // PROJECTILE

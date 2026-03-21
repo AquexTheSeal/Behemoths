@@ -1,5 +1,6 @@
 package org.celestialworkshop.behemoths.entities.projectile;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -11,6 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
@@ -35,6 +37,8 @@ public class CharydbisShard extends ThrowableProjectile {
 
     public static final int HOSTILE_STATUS = -1, RETURNABLE_STATUS = 0, SUSPENDED_STATUS = 1, RETURNED_STATUS = 2;
 
+    public List<LivingEntity> trackedPhantoms = new ObjectArrayList<>();
+    public float allocatedDamage = 10.0F;
     public float suspendScale = 1.0F;
     public float suspendedTicks = 0;
     public int controlledRotationOffset = 0;
@@ -60,9 +64,9 @@ public class CharydbisShard extends ThrowableProjectile {
             float a = 1.0F;
             if (this.isControlled()) a = 0.2F;
             if (this.getStatusFlag() == HOSTILE_STATUS) {
-                data = new TrailParticleData(this.getId(), 20, 15, 0.4F, 0.2F, 1, 0.2F, a);
+                data = new TrailParticleData(this.getId(), 20, 15, 0.6F, 0.2F, 1, 0.2F, a);
             } else {
-                data = new TrailParticleData(this.getId(), 20, 15, 0.4F, 1.0F, 0.1F, 0.6F, a);
+                data = new TrailParticleData(this.getId(), 20, 15, 0.6F, 1.0F, 0.1F, 0.6F, a);
             }
             this.level().addParticle(data, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
         }
@@ -106,21 +110,12 @@ public class CharydbisShard extends ThrowableProjectile {
         if (!this.isInvulnerableTo(pSource) && this.getStatusFlag() == SUSPENDED_STATUS) {
             this.markHurt();
             this.setStatusFlag(RETURNED_STATUS);
-            this.setNoGravity(false);
+//            this.setNoGravity(false);
             Entity entity = pSource.getEntity();
             if (entity != null) {
                 if (!this.level().isClientSide && entity instanceof Player) {
                     Entity hitter = pSource.getEntity();
-                    SkyCharydbis lookTarget = this.level().getNearestEntity(SkyCharydbis.class, TargetingConditions.forCombat(), null, getX(), getY(), getZ(), this.getBoundingBox().inflate(48));
-                    if (lookTarget != null) {
-                        Vec3 estimatedTargetPos = lookTarget.getEyePosition().add(lookTarget.getDeltaMovement());
-                        double dx = estimatedTargetPos.x() - this.getX();
-                        double dy = estimatedTargetPos.y() - this.getY();
-                        double dz = estimatedTargetPos.z() - this.getZ();
-                        double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-                        this.shoot(dx / dist, dy / dist, dz / dist, 1.5F + 6.0F * (suspendedTicks / 400), 0.0F);
-                    } else {
+                    if (!this.shootTowardsNearestTarget(5.0F)) {
                         this.shootFromRotation(hitter, hitter.getXRot(), hitter.getYHeadRot(), 0, 3.0F, 0.0F);
                     }
                     this.setOwner(hitter);
@@ -131,11 +126,41 @@ public class CharydbisShard extends ThrowableProjectile {
         return false;
     }
 
+    public boolean shootTowardsNearestTarget(float vel) {
+        LivingEntity target = null;
+
+        if (trackedPhantoms.size() < 5) {
+            TargetingConditions phantomCond = TargetingConditions.forCombat().selector(e -> e instanceof Phantom && !trackedPhantoms.contains(e) && e.hasLineOfSight(this));
+            target = this.level().getNearestEntity(Phantom.class, phantomCond, null, getX(), getY(), getZ(), this.getBoundingBox().inflate(16));
+        }
+
+        if (target == null || trackedPhantoms.size() >= 10) {
+            target = this.level().getNearestEntity(SkyCharydbis.class, TargetingConditions.forCombat(), null, getX(), getY(), getZ(), this.getBoundingBox().inflate(64));
+        }
+
+        if (target != null) {
+            Vec3 estimatedTargetPos = target.getEyePosition().add(target.getDeltaMovement());
+            Vec3 dir = estimatedTargetPos.subtract(this.position()).normalize();
+            this.shoot(dir.x, dir.y, dir.z, vel, 0.0F);
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         if (this.level().isClientSide) return;
+
         if (this.getOwner() != null) {
-            this.explode();
+            if (this.getStatusFlag() == RETURNED_STATUS && pResult.getEntity() instanceof Phantom ph) {
+                this.explode(false);
+                trackedPhantoms.add(ph);
+                this.shootTowardsNearestTarget(Math.min((float) this.getDeltaMovement().length() * 1.25F, 5.0F));
+                this.allocatedDamage *= 1.3F;
+            } else {
+                this.explode(true);
+            }
         }
     }
 
@@ -149,29 +174,30 @@ public class CharydbisShard extends ThrowableProjectile {
                 this.playSound(BMSoundEvents.CHARYDBIS_SHARD_SUSPEND.get(), 1.0F, 1.0F);
                 setStatusFlag(SUSPENDED_STATUS);
                 suspendScale = 1.0F;
-                setNoGravity(true);
+                this.setNoGravity(true);
             } else if (status == RETURNED_STATUS || status == HOSTILE_STATUS) {
-                this.explode();
+                this.explode(true);
             }
         }
     }
 
-    public void explode() {
+    public void explode(boolean discard) {
         if (level().isClientSide) return;
 
         List<Entity> targets = this.level().getEntitiesOfClass(Entity.class, this.getBoundingBox().inflate(3));
         for (Entity target : targets) {
-            if (this.getOwner() != null && (target instanceof LivingEntity || target instanceof PartEntity<?>)) {
-                target.hurt(damageSources().indirectMagic(this.getOwner(), this), 5F);
+            if (this.getOwner() instanceof LivingEntity lo && target != lo && (target instanceof LivingEntity || target instanceof PartEntity<?>)) {
+                target.hurt(damageSources().mobProjectile(this, lo), this.allocatedDamage);
             }
         }
 
         this.playSound(BMSoundEvents.CHARYDBIS_SHARD_EXPLODE.get(), 1.0F, 1.0F);
         VFXParticleData.Builder particle = new VFXParticleData.Builder().textureName(Behemoths.prefix("charydbis_shard_explode"))
-                .type(VFXTypes.FLAT_LOOK).scale(2.0F + random.nextFloat()).zRot(random.nextInt(180))
+                .type(VFXTypes.FLAT_LOOK).scale(1.5F + (trackedPhantoms.size() * 0.3F)).zRot(random.nextInt(180))
                 .lifetime(7 + random.nextInt(5));
         ((ServerLevel) this.level()).sendParticles(particle.build(), this.getX(), this.getY(), this.getZ(), 0, 0, 0, 0, 0);
-        remove(RemovalReason.DISCARDED);
+
+        if (discard) remove(RemovalReason.DISCARDED);
     }
 
     @Override

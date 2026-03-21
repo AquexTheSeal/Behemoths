@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
-import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
+import org.celestialworkshop.behemoths.client.clientdata.ClientPandemoniumData;
 
 import java.util.function.Supplier;
 

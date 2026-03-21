@@ -46,7 +46,7 @@ import org.celestialworkshop.behemoths.registries.BMAdvancementTriggers;
 import org.celestialworkshop.behemoths.registries.BMCapabilities;
 import org.celestialworkshop.behemoths.registries.BMMobEffects;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
-import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
+import org.celestialworkshop.behemoths.client.clientdata.ClientPandemoniumData;
 import org.celestialworkshop.behemoths.world.savedata.WorldPandemoniumData;
 
 import java.util.List;
@@ -72,8 +72,11 @@ public class BMCommonEvents {
             mount.getMountJumpManager().entityTick();
         }
 
+        if (entity.hasEffect(BMMobEffects.SOFTFOOTED.get())) {
+            entity.setDeltaMovement(entity.getDeltaMovement().add(entity.getLookAngle().normalize().multiply(0.05, 0, 0.05)));
+        }
+
         if (entity.hasEffect(BMMobEffects.SOFTFOOTED.get()) && entity.onGround()) {
-            entity.resetFallDistance();
             entity.removeEffect(BMMobEffects.SOFTFOOTED.get());
         }
     }

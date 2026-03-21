@@ -8,7 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import org.celestialworkshop.behemoths.api.client.gui.AnimatedUIElement;
 import org.celestialworkshop.behemoths.client.guis.screens.VotingSelectionScreen;
-import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
+import org.celestialworkshop.behemoths.client.clientdata.ClientPandemoniumData;
 
 public class CurseSelectionTitleElement extends AnimatedUIElement<VotingSelectionScreen> {
 

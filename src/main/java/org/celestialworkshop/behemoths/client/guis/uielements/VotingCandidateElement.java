@@ -9,7 +9,7 @@ import org.celestialworkshop.behemoths.api.client.gui.AnimatedUIElement;
 import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.client.guis.screens.VotingResultsScreen;
 import org.celestialworkshop.behemoths.misc.utils.ClientUtils;
-import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
+import org.celestialworkshop.behemoths.client.clientdata.ClientPandemoniumData;
 import org.joml.Quaternionf;
 
 import javax.annotation.Nullable;

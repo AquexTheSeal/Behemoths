@@ -9,7 +9,7 @@ import org.celestialworkshop.behemoths.api.client.gui.AnimatedUIElement;
 import org.celestialworkshop.behemoths.client.guis.screens.VotingSelectionScreen;
 import org.celestialworkshop.behemoths.network.BMNetwork;
 import org.celestialworkshop.behemoths.network.c2s.CurseSelectionIndexPacket;
-import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
+import org.celestialworkshop.behemoths.client.clientdata.ClientPandemoniumData;
 
 public class CurseSelectionButtonElement extends AnimatedUIElement<VotingSelectionScreen> {
 

@@ -19,17 +19,48 @@ public class SkyCharydbisStationaryGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return entity.getTarget() == null;
+        return entity.getTarget() == null && entity.isCurrentSleepFlag(SkyCharydbis.AWAKE_FLAG);
+    }
+
+    @Override
+    public void start() {
+        entity.awakeNoTargetTime = 0;
+    }
+
+    @Override
+    public void stop() {
+        entity.awakeNoTargetTime = 0;
     }
 
     @Override
     public void tick() {
 
+        if (entity.level().isDay()) {
+            entity.awakeNoTargetTime++;
+        }
+
+        if (entity.awakeNoTargetTime >= 200) {
+            if (entity.distanceToSqr(entity.spawnPos.getX(), entity.spawnPos.getY(), entity.spawnPos.getZ()) < 16) {
+                entity.goBackToSleep();
+            }
+        }
+
         if (--pathRecalcTicks > 0) return;
 
         pathRecalcTicks = 10 + entity.getRandom().nextInt(5);
 
-        if (entity.spawnPos != null) {
+        if (entity.spawnPos == null) {
+            Vec3 targetPos = AirAndWaterRandomPos.getPos(this.entity, 14, 10, 0, entity.getX(), entity.getZ(), (float) Math.PI / 2F);
+            if (targetPos == null) return;
+            entity.getNavigation().moveTo(targetPos.x, targetPos.y + 4, targetPos.z, 1.0F);
+
+        } else {
+
+            if (entity.awakeNoTargetTime++ >= 200) {
+                entity.getNavigation().moveTo(entity.spawnPos.getX(), entity.spawnPos.getY(), entity.spawnPos.getZ(), 1.0F);
+                return;
+            }
+
             double range = 20 - entity.getRandom().nextInt(6);
             float rotIntensity = 0.04F;
             double xR = Mth.sin(entity.tickCount * rotIntensity) * range;
@@ -38,10 +69,6 @@ public class SkyCharydbisStationaryGoal extends Goal {
             Vec3 targetPos = new Vec3(entity.spawnPos.getX(), entity.spawnPos.getY(), entity.spawnPos.getZ()).add(xR, yR, zR);
 
             entity.getNavigation().moveTo(targetPos.x, targetPos.y, targetPos.z, 2.0F);
-        } else {
-            Vec3 targetPos = AirAndWaterRandomPos.getPos(this.entity, 14, 10, 0, entity.getX(), entity.getZ(), (float)Math.PI / 2F);
-            if (targetPos == null) return;
-            entity.getNavigation().moveTo(targetPos.x, targetPos.y + 4, targetPos.z, 1.0F);
         }
     }
 }

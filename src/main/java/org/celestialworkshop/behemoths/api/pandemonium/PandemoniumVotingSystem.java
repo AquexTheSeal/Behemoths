@@ -151,47 +151,46 @@ public class PandemoniumVotingSystem {
         data.setDirty();
     }
 
-    public static int[] getVoteResultsFromData(Object2IntMap<UUID> voteData, int selectableSize) {
-        int[] counts = new int[]{-1, -1, -1};
-
-        for (int i = 0; i < selectableSize; i++) {
-            counts[i] = 0;
+    public static int[] getVoteResultsFromData(Object2IntMap<UUID> voteData, int validSize) {
+        int[] tallies = new int[]{-1, -1, -1};
+        for (int i = 0; i < validSize; i++) {
+            tallies[i] = 0;
         }
 
         voteData.object2IntEntrySet().forEach(entry -> {
             int v = entry.getIntValue();
-            if (v >= 0 && v < selectableSize) {
-                counts[v]++;
+            if (v >= 0 && v < validSize) {
+                tallies[v]++;
             }
         });
 
-        if (selectableSize == 0) {
+        if (validSize == 0) {
             return new int[]{-1, -1, -1, -1};
         }
 
-        int max = 0;
-        for (int i = 0; i < selectableSize; i++) {
-            max = Math.max(max, counts[i]);
+        int maxVoteIdx = 0;
+        for (int i = 0; i < validSize; i++) {
+            maxVoteIdx = Math.max(maxVoteIdx, tallies[i]);
         }
 
         Random rand = new Random();
 
-        if (max == 0) {
-            return new int[]{counts[0], counts[1], counts[2], rand.nextInt(selectableSize)};
+        if (maxVoteIdx == 0) {
+            return new int[]{tallies[0], tallies[1], tallies[2], rand.nextInt(validSize)};
         }
 
-        int[] tieIndices = new int[selectableSize];
+        int[] tieIdxs = new int[validSize];
         int tieCount = 0;
 
-        for (int i = 0; i < selectableSize; i++) {
-            if (counts[i] == max) {
-                tieIndices[tieCount++] = i;
+        for (int i = 0; i < validSize; i++) {
+            if (tallies[i] == maxVoteIdx) {
+                tieIdxs[tieCount++] = i;
             }
         }
 
-        int chosen = tieIndices[rand.nextInt(tieCount)];
+        int chosen = tieIdxs[rand.nextInt(tieCount)];
 
-        return new int[]{counts[0], counts[1], counts[2], chosen};
+        return new int[]{tallies[0], tallies[1], tallies[2], chosen};
     }
 
 

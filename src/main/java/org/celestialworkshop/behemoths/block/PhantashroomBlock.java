@@ -48,7 +48,7 @@ public class PhantashroomBlock extends BushBlock implements BonemealableBlock {
 
     @Override
     public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable) {
-        return state.is(Blocks.MUD);
+        return this.mayPlaceOn(state, world, pos);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class PhantashroomBlock extends BushBlock implements BonemealableBlock {
 
     @Override
     public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
-        return pLevel.getBlockState(pPos.below()).is(Blocks.MUD);
+        return this.mayPlaceOn(pLevel.getBlockState(pPos.below()), pLevel, pPos.below());
     }
 
     @Override
@@ -86,7 +86,7 @@ public class PhantashroomBlock extends BushBlock implements BonemealableBlock {
         if (!(entity instanceof Mob) && !(entity instanceof Player)) return;
 
         Vec3 base = entity.getLookAngle().normalize();
-        entity.setDeltaMovement(base.x * 1.5F, 1.5F, base.z * 1.5F);
+        entity.setDeltaMovement(base.x, 1.5F, base.z);
         entity.resetFallDistance();
         entity.setOnGround(false);
         if (entity instanceof LivingEntity livingEntity) {

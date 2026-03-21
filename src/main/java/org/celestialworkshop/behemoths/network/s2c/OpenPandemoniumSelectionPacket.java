@@ -8,7 +8,7 @@ import org.celestialworkshop.behemoths.api.pandemonium.PandemoniumCurse;
 import org.celestialworkshop.behemoths.misc.sounds.PandemoniumMusicManager;
 import org.celestialworkshop.behemoths.registries.BMPandemoniumCurses;
 import org.celestialworkshop.behemoths.registries.BMSoundEvents;
-import org.celestialworkshop.behemoths.world.clientdata.ClientPandemoniumData;
+import org.celestialworkshop.behemoths.client.clientdata.ClientPandemoniumData;
 
 import java.util.List;
 import java.util.function.Supplier;

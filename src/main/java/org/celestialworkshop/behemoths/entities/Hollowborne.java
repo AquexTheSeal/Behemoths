@@ -274,6 +274,11 @@ public class Hollowborne extends TamableAnimal implements BMEntity, Enemy, Custo
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
+
+        if (this.level().isClientSide) {
+            return InteractionResult.PASS;
+        }
+
         if (this.isFood(itemstack) && !(this.getControllingPassenger() instanceof HollowborneTurret)) {
             if (!this.isTame()) {
                 if (!this.isImmobile()) {
@@ -306,7 +311,9 @@ public class Hollowborne extends TamableAnimal implements BMEntity, Enemy, Custo
     @Override
     public void tame(Player pPlayer) {
         super.tame(pPlayer);
-        this.enableTamedParticles();
+        if (!this.level().isClientSide) {
+            this.enableTamedParticles();
+        }
     }
 
     @Override

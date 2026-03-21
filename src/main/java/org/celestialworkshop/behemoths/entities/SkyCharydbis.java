@@ -3,18 +3,20 @@ package org.celestialworkshop.behemoths.entities;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -31,6 +33,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
+import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.api.camera.CameraAngleManager;
 import org.celestialworkshop.behemoths.api.client.animation.EntityAnimationManager;
 import org.celestialworkshop.behemoths.api.entity.ActionManager;
@@ -48,18 +51,26 @@ import org.celestialworkshop.behemoths.entities.ai.goals.SkyCharydbisSurroundGoa
 import org.celestialworkshop.behemoths.entities.ai.mount.CustomJumpingMount;
 import org.celestialworkshop.behemoths.entities.ai.mount.MountJumpManager;
 import org.celestialworkshop.behemoths.entities.misc.BehemothMultipart;
+import org.celestialworkshop.behemoths.entities.misc.PhantashroomGlutton;
 import org.celestialworkshop.behemoths.entities.projectile.CharydbisShard;
 import org.celestialworkshop.behemoths.particles.TrailParticleData;
+import org.celestialworkshop.behemoths.particles.VFXParticleData;
+import org.celestialworkshop.behemoths.particles.VFXTypes;
+import org.celestialworkshop.behemoths.registries.BMBlocks;
+import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 import org.celestialworkshop.behemoths.registries.BMItems;
 import org.celestialworkshop.behemoths.registries.BMSoundEvents;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 
 public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, CustomSaddleable, CustomJumpingMount<SkyCharydbis> {
 
     private static final EntityDataAccessor<Byte> DATA_SLEEP_FLAG = SynchedEntityData.defineId(SkyCharydbis.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Boolean> DATA_IS_SADDLED = SynchedEntityData.defineId(SkyCharydbis.class, EntityDataSerializers.BOOLEAN);
+
+    public final ServerBossEvent bossEvent = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.NOTCHED_6);
 
     public final EntityAnimationManager animationManager = new EntityAnimationManager(this);
     public final ActionManager<SkyCharydbis> attackManager = new ActionManager<>(this);
@@ -77,10 +88,13 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
     public static final byte AWAKE_FLAG = 0;
 
     public @Nullable BlockPos spawnPos;
+    public List<BlockPos> islandPositions = new ObjectArrayList<>();
+
+    public Vec3 lastTrackedTargetFloor = Vec3.ZERO;
+    public int awakeNoTargetTime = 0;
     public int wakingTicks = 0;
     public int attackCooldown = 0;
     public List<CharydbisShard> heldShards = new ObjectArrayList<>();
-
     public float tailYRot = 0;
     public float tailYRotO = 0;
     public float tailXRot = 0;
@@ -143,7 +157,7 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new SkyCharydbisSurroundGoal(this));
         this.goalSelector.addGoal(2, new SkyCharydbisStationaryGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false, e -> e.getY() > this.spawnPos.getY() - 15));
     }
 
     @Override
@@ -175,14 +189,17 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
 
         if (!this.level().isClientSide) {
             if (this.isCurrentSleepFlag(SLEEPING_FLAG)) {
-                if (/*this.level().isNight() &&*/ this.getTarget() != null) {
+                if (this.level().isNight() && this.getTarget() != null) {
                     this.wakeUp();
+                } else {
+                    this.setDeltaMovement(0, 0, 0);
                 }
             } else if (this.isCurrentSleepFlag(WAKING_FLAG)) {
                 this.wakingTicks++;
                 if (this.wakingTicks == 30) {
                     this.setDeltaMovement(0, 1.0F, 0);
                     this.hurtMarked = true;
+                    this.populateIslandCenters();
                 }
 
                 if (this.wakingTicks > 25 && this.wakingTicks < 35) {
@@ -191,6 +208,11 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
 
                 if (this.wakingTicks >= 60) {
                     this.setSleepFlag(AWAKE_FLAG);
+                    this.animationManager.stopAnimation(AWAKEN_ANIMATION);
+
+                    for (ServerPlayer player : ((ServerLevel)this.level()).getPlayers(p -> this.getSensing().hasLineOfSight(p) || this.distanceTo(p) < 512)) {
+                        this.addBossBarPlayer(bossEvent, player, 0);
+                    }
                 }
             }
 
@@ -201,13 +223,113 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
     }
 
     @Override
+    public void aiStep() {
+        super.aiStep();
+
+        if (this.getTarget() != null) {
+            if (!this.getTarget().position().equals(this.lastTrackedTargetFloor) && this.getTarget().onGround()) {
+                this.lastTrackedTargetFloor = this.getTarget().position();
+            }
+            if (this.getTarget().getY() < this.spawnPos.getY() - 15) {
+                this.setTarget(null);
+            }
+        }
+
+
+
+        this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
+    }
+
+    public void goBackToSleep() {
+        this.setSleepFlag(SkyCharydbis.SLEEPING_FLAG);
+        this.getNavigation().stop();
+        for (ServerPlayer player : ((ServerLevel) this.level()).getPlayers(p -> this.getSensing().hasLineOfSight(p) || this.distanceTo(p) < 512)) {
+            this.removeBossBarPlayer(bossEvent, player);
+        }
+        this.wakingTicks = 0;
+    }
+
+    @Override
+    public void startSeenByPlayer(ServerPlayer pServerPlayer) {
+        super.startSeenByPlayer(pServerPlayer);
+        if (this.getSleepFlag() == AWAKE_FLAG) {
+            this.addBossBarPlayer(bossEvent, pServerPlayer, 0);
+        }
+    }
+
+    @Override
+    public void stopSeenByPlayer(ServerPlayer pServerPlayer) {
+        super.stopSeenByPlayer(pServerPlayer);
+        this.removeBossBarPlayer(bossEvent, pServerPlayer);
+    }
+
+    public void populateIslandCenters() {
+        if (this.level().isClientSide || this.islandPositions.isEmpty()) return;
+
+        ServerLevel serverLevel = (ServerLevel) this.level();
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        double range = 6.0;
+
+        Collections.shuffle(this.islandPositions);
+        for (BlockPos center : this.islandPositions.subList(0, this.islandPositions.size() / 2)) {
+            for (int tryCount = 0; tryCount < 10; tryCount++) {
+                double offX = (this.random.nextDouble() - 0.5) * range;
+                double offY = (this.random.nextDouble() - 0.5) * range;
+                double offZ = (this.random.nextDouble() - 0.5) * range;
+
+                double spawnX = center.getX() + 0.5 + offX;
+                double spawnY = center.getY() + offY;
+                double spawnZ = center.getZ() + 0.5 + offZ;
+
+                mutablePos.set(spawnX, spawnY, spawnZ);
+
+                BlockState stateAt = serverLevel.getBlockState(mutablePos);
+                if (stateAt.isAir() || !stateAt.canOcclude()) {
+                    BlockState stateAbove = serverLevel.getBlockState(mutablePos.above());
+
+                    if (stateAbove.isAir() || !stateAbove.canOcclude()) {
+                        BlockState ground = serverLevel.getBlockState(mutablePos.below());
+
+                        if (!ground.isAir() && !ground.is(BMBlocks.PHANTASHROOM_BLOCK.get()) && !ground.is(BMBlocks.PHANTASHROOM.get())) {
+                            PhantashroomGlutton glutton = BMEntityTypes.PHANTASHROOM_GLUTTON.get().create(serverLevel);
+
+                            if (glutton != null) {
+                                glutton.moveTo(mutablePos.getX() + 0.5, mutablePos.getY(), mutablePos.getZ() + 0.5, 0.0F, 0.0F);
+                                glutton.openTimer = -random.nextInt(80);
+                                glutton.setOwner(this);
+                                serverLevel.addFreshEntity(glutton);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (this.isCurrentSleepFlag(SLEEPING_FLAG)) {
-            this.wakeUp();
-        } else if (this.isCurrentSleepFlag(WAKING_FLAG)) {
-            return false;
+        if (!this.level().isClientSide) {
+            if (this.isCurrentSleepFlag(SLEEPING_FLAG) && this.level().isNight()) {
+                this.wakeUp();
+            } else if (this.isCurrentSleepFlag(WAKING_FLAG)) {
+                return false;
+            }
         }
         return super.hurt(pSource, pAmount);
+    }
+
+    @Override
+    protected void tickDeath() {
+        ++this.deathTime;
+        if (!this.onGround()) {
+            this.push(0, -0.05, 0);
+            this.setXRot(Math.min(90, Mth.rotLerp(0.2F, this.getXRot(), this.getXRot() + 7)));
+        }
+        if (((this.onGround() && this.deathTime > 20) || this.deathTime > 200) && !this.level().isClientSide() && !this.isRemoved()) {
+            this.level().broadcastEntityEvent(this, (byte)60);
+            this.remove(Entity.RemovalReason.KILLED);
+        }
     }
 
     @Override
@@ -217,11 +339,11 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
-    @Override
-    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-        pPlayer.startRiding(this);
-        return InteractionResult.sidedSuccess(this.level().isClientSide);
-    }
+//    @Override
+//    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+//        pPlayer.startRiding(this);
+//        return InteractionResult.sidedSuccess(this.level().isClientSide);
+//    }
 
     @Override
     public AABB getBoundingBoxForCulling() {
@@ -373,6 +495,20 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
     }
 
     @Override
+    public void handleEntityEvent(byte pId) {
+        super.handleEntityEvent(pId);
+        if (pId == 68) {
+            for (int i = 0; i < 10; i++) {
+                VFXParticleData.Builder data = new VFXParticleData.Builder().textureName(Behemoths.prefix("charydbis_explode"))
+                        .lifetime(random.nextInt(10) + 10).type(VFXTypes.FLAT_LOOK).scale((random.nextFloat() * 1.5F) + 1.5F);
+                int rad = 6;
+                Vec3 rPos = this.position().add(random.nextGaussian() * rad, random.nextGaussian() * rad / 2, random.nextGaussian() * rad);
+                this.level().addParticle(data.build(), rPos.x(), rPos.y(), rPos.z(), 0, 0, 0);
+            }
+        }
+    }
+
+    @Override
     public MountJumpManager<SkyCharydbis> getMountJumpManager() {
         return this.mountJumpManager;
     }
@@ -399,6 +535,14 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
         if (spawnPos != null) {
             tag.put("SpawnPos", NbtUtils.writeBlockPos(spawnPos));
         }
+
+        if (!islandPositions.isEmpty()) {
+            ListTag islandPos = new ListTag();
+            for (BlockPos pos : islandPositions) {
+                islandPos.add(NbtUtils.writeBlockPos(pos));
+            }
+            tag.put("IslandPositions", islandPos);
+        }
     }
 
     @Override
@@ -409,6 +553,14 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
             spawnPos = NbtUtils.readBlockPos(tag.getCompound("SpawnPos"));
         } else {
             spawnPos = null;
+        }
+
+        if (tag.contains("IslandPositions")) {
+            ListTag islandPos = tag.getList("IslandPositions", 10);
+            islandPositions.clear();
+            for (int i = 0; i < islandPos.size(); i++) {
+                islandPositions.add(NbtUtils.readBlockPos(islandPos.getCompound(i)));
+            }
         }
     }
 
@@ -432,7 +584,7 @@ public class SkyCharydbis extends TamableAnimal implements BMEntity, Enemy, Cust
 
     @Override
     public boolean isNoGravity() {
-        return true;
+        return !this.isSleeping();
     }
 
     @Override

@@ -34,6 +34,7 @@ public class BMClientSetup {
         event.registerEntityRenderer(BMEntityTypes.HOLLOWCORPER.get(), HollowcorperRenderer::new);
         event.registerEntityRenderer(BMEntityTypes.SKY_CHARYDBIS.get(), SkyCharydbisRenderer::new);
         event.registerEntityRenderer(BMEntityTypes.CHARYDBIS_SHARD.get(), CharydbisShardRenderer::new);
+        event.registerEntityRenderer(BMEntityTypes.PHANTASHROOM_GLUTTON.get(), PhantashroomGluttonRenderer::new);
     }
 
     @SubscribeEvent
@@ -46,6 +47,7 @@ public class BMClientSetup {
         event.registerLayerDefinition(HollowborneSaddleModel.LAYER_LOCATION, HollowborneSaddleModel::createBodyLayer);
         event.registerLayerDefinition(SkyCharydbisModel.LAYER_LOCATION, SkyCharydbisModel::createBodyLayer);
         event.registerLayerDefinition(CharydbisShardModel.LAYER_LOCATION, CharydbisShardModel::createBodyLayer);
+        event.registerLayerDefinition(PhantashroomGluttonModel.LAYER_LOCATION, PhantashroomGluttonModel::createBodyLayer);
     }
 
     @SubscribeEvent

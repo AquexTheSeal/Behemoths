@@ -1,5 +1,6 @@
 package org.celestialworkshop.behemoths.registries;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -16,5 +17,6 @@ public class BMEntityAttributes {
         event.put(BMEntityTypes.HOLLOWBORNE.get(), Hollowborne.createAttributes());
         event.put(BMEntityTypes.HOLLOWBORNE_TURRET.get(), HollowborneTurret.createAttributes());
         event.put(BMEntityTypes.SKY_CHARYDBIS.get(), SkyCharydbis.createAttributes());
+        event.put(BMEntityTypes.PHANTASHROOM_GLUTTON.get(), LivingEntity.createLivingAttributes().build());
     }
 }
