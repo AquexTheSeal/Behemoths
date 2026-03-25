@@ -1,5 +1,6 @@
 package org.celestialworkshop.behemoths.entities.ai.action;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.celestialworkshop.behemoths.api.entity.ManagedAction;
 import org.celestialworkshop.behemoths.entities.SkyCharydbis;
@@ -43,7 +44,7 @@ public class CharydbisShardReleaseAction extends ManagedAction<SkyCharydbis> {
     @Override
     public void onStart() {
         timer = 0;
-        entity.attackCooldown = 100;
+        entity.attackCooldown = Mth.ceil(300 * entity.getAttacksIntervalScale());
         entity.getAnimationManager().startAnimation(SkyCharydbis.SHARD_RELEASE_ANIMATION);
         entity.playSound(BMSoundEvents.CHARYDBIS_SHARD_RELEASE.get(), 3.0F, 1.0F);
     }

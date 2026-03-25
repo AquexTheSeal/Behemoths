@@ -7,6 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.celestialworkshop.behemoths.Behemoths;
 import org.celestialworkshop.behemoths.entities.*;
+import org.celestialworkshop.behemoths.entities.misc.AutomatedAttackEntity;
 import org.celestialworkshop.behemoths.entities.misc.PhantashroomGlutton;
 import org.celestialworkshop.behemoths.entities.projectile.CharydbisShard;
 import org.celestialworkshop.behemoths.entities.projectile.Hollowcorper;
@@ -39,6 +40,10 @@ public class BMEntityTypes {
 
     public static final RegistryObject<EntityType<PhantashroomGlutton>> PHANTASHROOM_GLUTTON = ENTITY_TYPES.register("phantashroom_glutton", () -> EntityType.Builder.of(
             PhantashroomGlutton::new, MobCategory.MONSTER).sized(1.0F, 1.5F).build("phantashroom_glutton")
+    );
+
+    public static final RegistryObject<EntityType<AutomatedAttackEntity>> AUTOMATED_ATTACK = ENTITY_TYPES.register("automated_attack", () -> EntityType.Builder.of(
+            AutomatedAttackEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).build("automated_attack")
     );
 
     // PROJECTILE

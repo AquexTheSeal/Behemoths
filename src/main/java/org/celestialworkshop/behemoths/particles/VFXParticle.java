@@ -181,12 +181,12 @@ public class VFXParticle extends TextureSheetParticle {
         PoseStack pose = new PoseStack();
         pose.pushPose();
         pose.translate(x, y, z);
-        this.renderBasedOnTypings(pose, pRenderInfo, bufferSource, pPartialTicks, this.quadSize);
+        this.renderByType(pose, pRenderInfo, bufferSource, pPartialTicks, this.quadSize);
         pose.popPose();
         bufferSource.endBatch();
     }
 
-    public void renderBasedOnTypings(PoseStack pose, Camera renderInfo, MultiBufferSource.BufferSource bufferSource, float pPartialTicks, float size) {
+    public void renderByType(PoseStack pose, Camera renderInfo, MultiBufferSource.BufferSource bufferSource, float pPartialTicks, float size) {
         switch (this.getVFXType()) {
             case FLAT_LOOK -> {
                 pose.mulPose(renderInfo.rotation());
@@ -220,6 +220,15 @@ public class VFXParticle extends TextureSheetParticle {
                 this.renderQuadWithBackface(pose, bufferSource, size, RenderType.entityTranslucent(this.getCurrentTexture()));
                 pose.mulPose(Axis.YP.rotationDegrees(90));
                 this.renderQuadWithBackface(pose, bufferSource, size, RenderType.entityTranslucent(this.getCurrentTexture()));
+            }
+            case CHAIN_LOOK -> {
+                pose.mulPose(Axis.YP.rotationDegrees(-renderInfo.getYRot()));
+                for (int i = 0; i < 50 / size; i++) {
+                    pose.pushPose();
+                    pose.translate(0, i * size * 2, 0);
+                    this.renderQuadWithBackface(pose, bufferSource, size, RenderType.entityTranslucent(this.getCurrentTexture()));
+                    pose.popPose();
+                }
             }
         }
     }

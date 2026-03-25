@@ -1,5 +1,6 @@
 package org.celestialworkshop.behemoths.entities.ai.action;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.celestialworkshop.behemoths.api.entity.ManagedAction;
@@ -20,7 +21,7 @@ public class CharydbisCrashAction extends ManagedAction<SkyCharydbis> {
 
     @Override
     public boolean canStart() {
-        return entity.attackCooldown == 0 && entity.heldShards.isEmpty() && entity.isCurrentSleepFlag(SkyCharydbis.AWAKE_FLAG) &&
+        return entity.attackCooldown == 0 && entity.heldShards.isEmpty() && entity.isCurrentSleepFlag(SkyCharydbis.AWAKE_FLAG) && !entity.isSubmerged &&
                 entity.getTarget() != null && entity.getY() > entity.getTarget().getY() + 2;
     }
 
@@ -30,8 +31,8 @@ public class CharydbisCrashAction extends ManagedAction<SkyCharydbis> {
         collidedTime = 0;
         collided = false;
         this.targetPos = entity.lastTrackedTargetFloor.add(0, -2, 0);
-        entity.attackCooldown = 200;
-        entity.playSound(BMSoundEvents.CHARYDBIS_CRASH_START.get(), 3.0F, 1.0F);
+        entity.attackCooldown = Mth.ceil(500 * entity.getAttacksIntervalScale());
+        entity.playSound(BMSoundEvents.CHARYDBIS_ROAR.get(), 3.0F, 1.0F);
     }
 
     @Override
@@ -47,8 +48,8 @@ public class CharydbisCrashAction extends ManagedAction<SkyCharydbis> {
         }
 
         if (collided) {
-            if (entity.tickCount % 4 == 0) {
-                entity.playSound(BMSoundEvents.HOLLOWBORNE_SMASH.get(), 3.0F, 1.0F);
+            if (entity.tickCount % 2 == 0) {
+                entity.playSound(BMSoundEvents.HOLLOWBORNE_SMASH.get(), 3.0F, 1.3F + entity.getRandom().nextFloat() * 0.2F);
                 int dist = 8;
                 List<LivingEntity> targets = entity.level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(dist, dist / 2F, dist));
                 for (LivingEntity target : targets.stream().filter(t -> t != entity).toList()) {

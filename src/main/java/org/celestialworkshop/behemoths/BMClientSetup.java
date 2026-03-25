@@ -35,6 +35,7 @@ public class BMClientSetup {
         event.registerEntityRenderer(BMEntityTypes.SKY_CHARYDBIS.get(), SkyCharydbisRenderer::new);
         event.registerEntityRenderer(BMEntityTypes.CHARYDBIS_SHARD.get(), CharydbisShardRenderer::new);
         event.registerEntityRenderer(BMEntityTypes.PHANTASHROOM_GLUTTON.get(), PhantashroomGluttonRenderer::new);
+        event.registerEntityRenderer(BMEntityTypes.AUTOMATED_ATTACK.get(), EmptyRenderer::new);
     }
 
     @SubscribeEvent

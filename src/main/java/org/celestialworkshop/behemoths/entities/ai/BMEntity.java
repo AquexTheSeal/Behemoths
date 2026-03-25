@@ -8,12 +8,14 @@ import net.minecraft.world.entity.Mob;
 import net.minecraftforge.network.PacketDistributor;
 import org.celestialworkshop.behemoths.api.client.animation.EntityAnimationManager;
 import org.celestialworkshop.behemoths.api.entity.ActionManager;
+import org.celestialworkshop.behemoths.client.clientdata.ClientBossBarData;
 import org.celestialworkshop.behemoths.misc.mixinhelpers.IMixinMob;
 import org.celestialworkshop.behemoths.network.BMNetwork;
 import org.celestialworkshop.behemoths.network.s2c.RemoveBossBarDataPacket;
 import org.celestialworkshop.behemoths.network.s2c.SyncBossBarDataPacket;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BMEntity {
 
@@ -63,7 +65,7 @@ public interface BMEntity {
         bossEvent.addPlayer(pServerPlayer);
         BMNetwork.INSTANCE.send(
                 PacketDistributor.PLAYER.with(() -> pServerPlayer),
-                new SyncBossBarDataPacket(bossEvent.getId(), bossIdx)
+                new SyncBossBarDataPacket(bossEvent.getId(), new ClientBossBarData.DynamicData(bossIdx, Map.of()))
         );
     }
 

@@ -5,5 +5,6 @@ public enum VFXTypes {
     FLAT,
     WALLS,
     WALLS_INTERSECTED,
-    CROSS
+    CROSS,
+    CHAIN_LOOK
 }

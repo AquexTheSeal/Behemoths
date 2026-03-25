@@ -40,7 +40,7 @@ public class BMSoundEvents {
     public static final RegistryObject<SoundEvent> CHARYDBIS_DEATH = registerSoundEvent("charydbis_death");
     public static final RegistryObject<SoundEvent> CHARYDBIS_HURT = registerSoundEvent("charydbis_hurt");
     public static final RegistryObject<SoundEvent> CHARYDBIS_FLAP = registerSoundEvent("charydbis_flap");
-    public static final RegistryObject<SoundEvent> CHARYDBIS_CRASH_START = registerSoundEvent("charydbis_crash_start");
+    public static final RegistryObject<SoundEvent> CHARYDBIS_ROAR = registerSoundEvent("charydbis_crash_start");
     public static final RegistryObject<SoundEvent> CHARYDBIS_SHARD_SUMMON = registerSoundEvent("charydbis_shard_summon");
     public static final RegistryObject<SoundEvent> CHARYDBIS_SHARD_RELEASE = registerSoundEvent("charydbis_shard_release");
     public static final RegistryObject<SoundEvent> CHARYDBIS_SHARD_EXPLODE = registerSoundEvent("charydbis_shard_explode");

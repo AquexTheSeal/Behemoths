@@ -1,6 +1,7 @@
 package org.celestialworkshop.behemoths.entities.ai.action;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.util.Mth;
 import org.celestialworkshop.behemoths.api.entity.ManagedAction;
 import org.celestialworkshop.behemoths.entities.SkyCharydbis;
 import org.celestialworkshop.behemoths.entities.projectile.CharydbisShard;
@@ -18,7 +19,8 @@ public class CharydbisShardSummonAction extends ManagedAction<SkyCharydbis> {
 
     @Override
     public boolean canStart() {
-        return entity.attackCooldown == 0 && entity.heldShards.isEmpty() && entity.getTarget() != null && entity.isCurrentSleepFlag(SkyCharydbis.AWAKE_FLAG);
+        return entity.attackCooldown == 0 && entity.heldShards.isEmpty() && entity.getTarget() != null &&
+                !entity.isSubmerged && entity.isCurrentSleepFlag(SkyCharydbis.AWAKE_FLAG);
     }
 
     @Override
@@ -53,7 +55,7 @@ public class CharydbisShardSummonAction extends ManagedAction<SkyCharydbis> {
     @Override
     public void onStart() {
         timer = 0;
-        entity.attackCooldown = 100;
+        entity.attackCooldown = Mth.ceil(300 * entity.getAttacksIntervalScale());
         entity.getAnimationManager().startAnimation(SkyCharydbis.SHARD_SUMMON_ANIMATION);
     }
 

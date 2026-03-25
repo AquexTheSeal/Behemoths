@@ -7,7 +7,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.VegetationFeatures;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
@@ -16,11 +18,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.synth.PerlinNoise;
 import net.minecraft.world.level.material.FluidState;
 import org.celestialworkshop.behemoths.block.PhantashroomBlock;
+import org.celestialworkshop.behemoths.entities.SkyCharydbis;
 import org.celestialworkshop.behemoths.registries.BMBlocks;
+import org.celestialworkshop.behemoths.registries.BMEntityTypes;
 import org.celestialworkshop.behemoths.registries.BMStructures;
 
 import java.util.List;
@@ -65,6 +70,13 @@ public class CharydbisZoneIslandPiece extends CenteredFeaturePiece {
     @Override
     public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator generator, RandomSource random, BoundingBox box, ChunkPos chunkPos, BlockPos pos) {
         super.postProcess(level, structureManager, generator, random, box, chunkPos, pos);
+
+        if (this.isCenter) {
+            BlockPos bossSpawnPos = this.getLocatorPosition().below(15);
+            if (box.isInside(bossSpawnPos)) {
+                this.spawnBoss(level, structureManager.getStructureWithPieceAt(bossSpawnPos, BMStructures.CHARYDBIS_ZONE).getPieces(), bossSpawnPos);
+            }
+        }
     }
 
     @Override
@@ -166,6 +178,24 @@ public class CharydbisZoneIslandPiece extends CenteredFeaturePiece {
                     f.value().place(level, generator, random, mutablePos.set(rX, pos.getY(), rZ));
                 });
             }
+        }
+    }
+
+    private void spawnBoss(WorldGenLevel level, List<StructurePiece> pieces, BlockPos spawnPos) {
+        ServerLevel serverLevel = level.getLevel();
+        SkyCharydbis boss = BMEntityTypes.SKY_CHARYDBIS.get().create(serverLevel);
+
+        if (boss != null) {
+            boss.moveTo(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, 0, 0);
+
+//            for (StructurePiece piece : pieces) {
+//                if (piece instanceof CharydbisZoneIslandPiece island && !island.isCenter) {
+//                    boss.islandPositions.add(island.getLocatorPosition().below(12));
+//                }
+//            }
+
+            boss.finalizeSpawn(serverLevel, level.getCurrentDifficultyAt(spawnPos), MobSpawnType.STRUCTURE, null, null);
+            serverLevel.addFreshEntityWithPassengers(boss);
         }
     }
 
